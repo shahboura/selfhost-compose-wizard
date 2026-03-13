@@ -1,4 +1,5 @@
 import { useMemo, useState, type JSX } from 'react'
+import { EyeIcon, EyeOffIcon } from './Icons'
 import { generateSecretForField, getSecretGenerationSpec, validateFieldValue } from '../lib/field-security'
 import type { FieldDefinition, WizardFieldState } from '../types'
 
@@ -122,7 +123,7 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
                   aria-label={showSensitiveValue ? 'Hide value' : 'Show value'}
                   title={showSensitiveValue ? 'Hide value' : 'Show value'}
                 >
-                  {showSensitiveValue ? '🙈' : '👁'}
+                  {showSensitiveValue ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               ) : null}
             </div>

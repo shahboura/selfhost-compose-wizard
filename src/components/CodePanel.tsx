@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
+import { CheckIcon, CopyIcon } from './Icons'
 
 interface CodePanelProps {
   title: string
@@ -52,8 +53,9 @@ export function CodePanel({ title, language, content }: CodePanelProps): JSX.Ele
           data-visible={showCopyIndicator || copied}
           onClick={() => void copyContent()}
           aria-label={copied ? 'Copied to clipboard' : 'Copy code to clipboard'}
+          title={copied ? 'Copied' : 'Copy'}
         >
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? <CheckIcon /> : <CopyIcon />}
         </button>
         <pre>{content}</pre>
       </div>

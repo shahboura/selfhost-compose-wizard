@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type JSX } from 'react'
+import { CheckIcon, CopyIcon } from './Icons'
 
 interface CopyableCodeBlockProps {
   content: string
@@ -29,7 +30,7 @@ export function CopyableCodeBlock({ content }: CopyableCodeBlockProps): JSX.Elem
   return (
     <div className="copyable-pre-wrap">
       <button type="button" className="copy-indicator" data-visible="true" onClick={() => void copy()}>
-        {copied ? 'Copied' : 'Copy'}
+        {copied ? <CheckIcon /> : <CopyIcon />}
       </button>
       <pre>{content}</pre>
     </div>
