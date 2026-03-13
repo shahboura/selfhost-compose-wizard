@@ -18,6 +18,14 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
+### 2026-03-13 18:29 - GEO metadata baseline and repository canonicalization
+**Agent:** em-advisor
+**Summary:** Added generative/search discoverability metadata aligned to the new GitHub repository URL.
+- Updated `index.html` with canonical/OG metadata and JSON-LD (`SoftwareApplication`) using repo URL as temporary canonical.
+- Added `public/robots.txt`, `public/sitemap.xml`, and `public/llms.txt` for crawler and LLM discoverability.
+- Documented GEO/discoverability guidance in README with instructions to swap URLs once public site is live.
+- Confirmed no hardcoded secrets detected via pattern-based pre-push scan.
+
 ### 2026-03-13 16:05 - UX simplification and quality hardening rollout
 **Agent:** orchestrator
 **Summary:** Coordinated final UX simplification + QA automation updates.

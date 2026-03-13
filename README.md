@@ -55,6 +55,16 @@ npm run test:lighthouse
 npm run build
 ```
 
+## GEO / discoverability metadata
+
+The app includes baseline metadata for search and generative engine discoverability:
+
+- `index.html` contains canonical, Open Graph, and JSON-LD metadata.
+- `public/robots.txt` and `public/sitemap.xml` are included.
+- `public/llms.txt` provides an LLM-oriented project summary.
+
+When a public website URL is available, update canonical/OG/JSON-LD URLs and sitemap location from the repository URL to the website URL.
+
 ## CI quality gates
 
 GitHub Actions CI is configured in `.github/workflows/ci.yml` and runs:
