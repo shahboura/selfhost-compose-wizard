@@ -147,28 +147,6 @@ async function updateRegistry(rootDir, service, variant) {
   await writeFile(registryPath, updatedMappings, 'utf8')
 }
 
-async function updateMetaRegistry(rootDir, service, variant) {
-  const registryPath = path.join(rootDir, 'src', 'templates', 'meta-registry.ts')
-  const fileContent = await readFile(registryPath, 'utf8')
-
-  const importName = `${toSafeIdentifier(service)}${capitalize(toSafeIdentifier(variant))}Meta`
-  const importToken = `import ${importName} from './services/${service}/${variant}.meta.json'`
-  const mappingToken = `  'services/${service}/${variant}.compose.yaml': ${importName},`
-
-  if (fileContent.includes(importToken)) {
-    return
-  }
-
-  const updatedImports = fileContent.replace('// @scaffold-meta-imports', `${importToken}\n// @scaffold-meta-imports`)
-  const updatedMappings = updatedImports.replace('// @scaffold-meta-mappings', `${mappingToken}\n  // @scaffold-meta-mappings`)
-
-  if (updatedMappings === fileContent) {
-    throw new Error('Unable to update template meta registry. Please update src/templates/meta-registry.ts manually.')
-  }
-
-  await writeFile(registryPath, updatedMappings, 'utf8')
-}
-
 function capitalize(value) {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
@@ -244,7 +222,6 @@ async function run() {
   const templateContent = await scaffoldTemplateFile(rootDir, args)
   await writeMetaFile(rootDir, args, templateContent)
   await updateRegistry(rootDir, args.service, args.variant)
-  await updateMetaRegistry(rootDir, args.service, args.variant)
   await updateCatalog(rootDir, args)
   await updateReadmeServiceTable(rootDir, args)
 

@@ -13,46 +13,10 @@ import { parseEnvContent } from './lib/env'
 import { exportBundleAsZip } from './lib/export'
 import { buildFieldDefinitions, generateOutputs, resolveWizardStateForService, type GenerationOutput } from './lib/generator'
 import { extractComposeVariables } from './lib/template-parser'
-import { TEMPLATE_FIELD_META } from './templates/meta-registry'
 import { TEMPLATE_CONTENT } from './templates/registry'
 import { SERVICE_CATEGORIES, type ServiceCategory, type ServiceDefinition, type WizardFieldState } from './types'
 
 type Step = 1 | 2 | 3
-
-function metaFieldsToOverrides(value: unknown): Record<string, { description?: string; recommendedDefault?: string; required?: boolean; sensitive?: boolean }> {
-  if (typeof value !== 'object' || value === null || !('fields' in value)) {
-    return {}
-  }
-
-  const fields = (value as { fields?: unknown }).fields
-  if (typeof fields !== 'object' || fields === null) {
-    return {}
-  }
-
-  const overrides: Record<string, { description?: string; recommendedDefault?: string; required?: boolean; sensitive?: boolean }> = {}
-  for (const [key, field] of Object.entries(fields as Record<string, unknown>)) {
-    if (typeof field !== 'object' || field === null) {
-      continue
-    }
-
-    const typedField = field as {
-      description?: unknown
-      recommendedDefault?: unknown
-      required?: unknown
-      sensitive?: unknown
-    }
-
-    overrides[key] = {
-      description: typeof typedField.description === 'string' ? typedField.description : undefined,
-      recommendedDefault:
-        typeof typedField.recommendedDefault === 'string' ? typedField.recommendedDefault : undefined,
-      required: typeof typedField.required === 'boolean' ? typedField.required : undefined,
-      sensitive: typeof typedField.sensitive === 'boolean' ? typedField.sensitive : undefined,
-    }
-  }
-
-  return overrides
-}
 
 function App(): JSX.Element {
   const [step, setStep] = useState<Step>(1)
@@ -110,10 +74,7 @@ function App(): JSX.Element {
     () =>
       buildFieldDefinitions({
         templateVariables,
-        fieldOverrides: {
-          ...metaFieldsToOverrides(selectedService ? TEMPLATE_FIELD_META[selectedService.templateKey] : undefined),
-          ...(selectedService?.fieldOverrides ?? {}),
-        },
+        fieldOverrides: selectedService?.fieldOverrides ?? {},
       }),
     [selectedService, templateVariables],
   )
