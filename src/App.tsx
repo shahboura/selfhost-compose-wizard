@@ -108,21 +108,25 @@ function App(): JSX.Element {
     })
   }
 
-  const selectService = (serviceId: string): void => {
-    const nextService = SERVICE_CATALOG.find((service) => service.id === serviceId)
-    setSelectedServiceId(serviceId)
-    setImportStatus('')
-    if (nextService) {
-      const nextTemplate = TEMPLATE_CONTENT[nextService.templateKey] ?? ''
-      if (nextTemplate.length === 0) {
-        setStep(1)
-        setImportStatus('Selected template could not be loaded. Please pick another service.')
-        return
-      }
-      setWizardState(resolveWizardStateForService(nextTemplate, nextService.fieldOverrides))
-    } else {
-      setWizardState({})
+  const selectService = (serviceIdInput: string): void => {
+    const normalizedServiceId = typeof serviceIdInput === 'string' ? serviceIdInput : ''
+    const nextService = SERVICE_CATALOG.find((service) => service.id === normalizedServiceId)
+
+    if (!nextService) {
+      setImportStatus('Unable to select service. Please click a service card again.')
+      setStep(1)
+      return
     }
+
+    setSelectedServiceId(nextService.id)
+    setImportStatus('')
+    const nextTemplate = TEMPLATE_CONTENT[nextService.templateKey] ?? ''
+    if (nextTemplate.length === 0) {
+      setStep(1)
+      setImportStatus('Selected template could not be loaded. Please pick another service.')
+      return
+    }
+    setWizardState(resolveWizardStateForService(nextTemplate, nextService.fieldOverrides))
     setStep(2)
   }
 
@@ -168,8 +172,6 @@ function App(): JSX.Element {
     window.localStorage.setItem('onboarding_tip_dismissed', 'true')
   }
 
-  const pageTitle = selectedService?.name ?? 'Select a service'
-  const selectedTemplatePath = selectedService?.templateFile ?? 'N/A'
   const categories = useMemo<ServiceCategory[]>(
     () => [...new Set(SERVICE_CATALOG.map((service) => service.category))],
     [],
@@ -323,12 +325,7 @@ function App(): JSX.Element {
 
   return (
     <main className="app-shell">
-      <TopNav
-        selectedServiceName={pageTitle}
-        selectedTemplatePath={selectedTemplatePath}
-        selectedServiceId={selectedServiceId || ''}
-        onHome={goHome}
-      />
+      <TopNav onHome={goHome} />
 
       <p className="subtitle">
         Generate docker compose + env files with a guided wizard.
@@ -345,6 +342,8 @@ function App(): JSX.Element {
           </button>
         </section>
       ) : null}
+
+      {importStatus && step === 1 ? <p className="status-note">{importStatus}</p> : null}
 
       {importStatus && step === 2 ? <p className="status-note">{importStatus}</p> : null}
 
@@ -373,8 +372,7 @@ function App(): JSX.Element {
 
       {step === 1 ? (
         <section className="card">
-          <h2>1. Pick a service template</h2>
-          <p className="muted">Select a service to start.</p>
+          <h2>1. Choose a service</h2>
           {visibleServices.length === 0 ? (
             <p className="muted">No services matched your current filters.</p>
           ) : (
@@ -439,9 +437,7 @@ function App(): JSX.Element {
           </div>
 
           <div className="field-list">
-            {!selectedService ? (
-              <p className="muted">Select a service in Step 1 to configure environment values.</p>
-            ) : fields.length === 0 ? (
+            {!selectedService ? null : fields.length === 0 ? (
               <p className="muted">No configurable environment variables found in this template.</p>
             ) : (
               fields.map((field) => (

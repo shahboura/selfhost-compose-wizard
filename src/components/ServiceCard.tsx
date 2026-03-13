@@ -24,7 +24,6 @@ export function ServiceCard({ service, selected, onSelect }: ServiceCardProps): 
           <span key={tag}>{tag}</span>
         ))}
       </div>
-      <small>{service.templateFile}</small>
     </button>
   )
 }
