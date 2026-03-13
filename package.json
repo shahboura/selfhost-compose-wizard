@@ -11,6 +11,7 @@
     "test": "vitest run src",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "validate:links": "node ./scripts/validate-links.mjs",
     "scaffold:service": "node ./scripts/scaffold-service.mjs"
   },
   "dependencies": {

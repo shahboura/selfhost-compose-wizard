@@ -1,6 +1,8 @@
 import type { TemplateKey } from './templates/registry'
 
-export type ServiceCategory = 'media' | 'documents' | 'observability' | 'utilities' | 'photos'
+export const SERVICE_CATEGORIES = ['media', 'observability', 'utilities'] as const
+
+export type ServiceCategory = (typeof SERVICE_CATEGORIES)[number]
 
 export interface ComposeVariableReference {
   key: string
@@ -30,6 +32,11 @@ export interface ToolingHint {
   url?: string
 }
 
+export interface ResearchReference {
+  title: string
+  url: string
+}
+
 export interface ServiceDefinition {
   id: string
   name: string
@@ -41,4 +48,5 @@ export interface ServiceDefinition {
   riskWarnings?: string[]
   fieldOverrides: Record<string, Partial<FieldDefinition>>
   extraTooling: ToolingHint[]
+  researchReferences: ResearchReference[]
 }

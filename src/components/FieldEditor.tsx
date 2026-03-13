@@ -1,6 +1,13 @@
 import type { JSX } from 'react'
 import type { FieldDefinition, WizardFieldState } from '../types'
 
+const intlWithSupportedValues = Intl as typeof Intl & { supportedValuesOf?: (key: string) => string[] }
+
+const timezoneOptions =
+  typeof Intl !== 'undefined' && typeof intlWithSupportedValues.supportedValuesOf === 'function'
+    ? intlWithSupportedValues.supportedValuesOf('timeZone')
+    : []
+
 interface FieldEditorProps {
   field: FieldDefinition
   state?: WizardFieldState
@@ -10,6 +17,7 @@ interface FieldEditorProps {
 
 export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorProps): JSX.Element {
   const resolvedState = state ?? { value: '', useDefault: true }
+  const isTimezoneField = field.key === 'TZ' && timezoneOptions.length > 0
   const defaultValue = field.recommendedDefault ?? field.composeDefault ?? ''
   const helperText = field.recommendedDefault
     ? `Recommended default: ${field.recommendedDefault}`
@@ -49,16 +57,37 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
         <label htmlFor={inputId} className="sr-only">
           {field.key}
         </label>
-        <input
-          id={inputId}
-          type={field.sensitive ? 'password' : 'text'}
-          value={resolvedState.useDefault ? defaultValue : resolvedState.value}
-          onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
-          readOnly={resolvedState.useDefault}
-          placeholder={field.required ? 'Required value' : 'Optional override'}
-          aria-describedby={hintId}
-          autoComplete="off"
-        />
+        {isTimezoneField ? (
+          <>
+            <input
+              id={inputId}
+              type="text"
+              value={resolvedState.useDefault ? defaultValue : resolvedState.value}
+              onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
+              readOnly={resolvedState.useDefault}
+              placeholder={field.required ? 'Required value' : 'Optional override'}
+              aria-describedby={hintId}
+              autoComplete="off"
+              list={`${inputId}-timezone-list`}
+            />
+            <datalist id={`${inputId}-timezone-list`}>
+              {timezoneOptions.map((timezone) => (
+                <option key={timezone} value={timezone} />
+              ))}
+            </datalist>
+          </>
+        ) : (
+          <input
+            id={inputId}
+            type={field.sensitive ? 'password' : 'text'}
+            value={resolvedState.useDefault ? defaultValue : resolvedState.value}
+            onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
+            readOnly={resolvedState.useDefault}
+            placeholder={field.required ? 'Required value' : 'Optional override'}
+            aria-describedby={hintId}
+            autoComplete="off"
+          />
+        )}
       </div>
     </article>
   )

@@ -10,6 +10,7 @@ interface CodePanelProps {
 
 export function CodePanel({ title, language, content, fileName }: CodePanelProps): JSX.Element {
   const [copied, setCopied] = useState<boolean>(false)
+  const [showCopyIndicator, setShowCopyIndicator] = useState<boolean>(false)
   const timeoutRef = useRef<number | undefined>(undefined)
   const lineCount = useMemo<number>(() => content.split('\n').length, [content])
 
@@ -41,15 +42,27 @@ export function CodePanel({ title, language, content, fileName }: CodePanelProps
           </small>
         </div>
         <div className="actions-inline">
-          <button type="button" className="button" onClick={() => void copyContent()}>
-            {copied ? 'Copied' : 'Copy'}
-          </button>
           <button type="button" className="button" onClick={() => downloadTextFile(fileName, content)}>
             Download
           </button>
         </div>
       </header>
-      <pre>{content}</pre>
+      <div
+        className="code-pre-wrap"
+        onMouseEnter={() => setShowCopyIndicator(true)}
+        onMouseLeave={() => setShowCopyIndicator(false)}
+      >
+        <button
+          type="button"
+          className="copy-indicator"
+          data-visible={showCopyIndicator || copied}
+          onClick={() => void copyContent()}
+          aria-label={copied ? 'Copied to clipboard' : 'Copy code to clipboard'}
+        >
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+        <pre>{content}</pre>
+      </div>
     </section>
   )
 }

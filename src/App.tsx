@@ -7,7 +7,6 @@ import { ServiceCard } from './components/ServiceCard'
 import { ServiceFilters } from './components/ServiceFilters'
 import { TopNav } from './components/TopNav'
 import { WizardStepper } from './components/WizardStepper'
-import { RESEARCH_SOURCES } from './data/defaults'
 import { SERVICE_CATALOG } from './data/service-catalog'
 import { downloadTextFile } from './lib/download'
 import { parseEnvContent } from './lib/env'
@@ -15,7 +14,7 @@ import { exportBundleAsZip } from './lib/export'
 import { buildFieldDefinitions, generateOutputs, resolveWizardStateForService, type GenerationOutput } from './lib/generator'
 import { extractComposeVariables } from './lib/template-parser'
 import { TEMPLATE_CONTENT } from './templates/registry'
-import type { ServiceCategory, ServiceDefinition, WizardFieldState } from './types'
+import { SERVICE_CATEGORIES, type ServiceCategory, type ServiceDefinition, type WizardFieldState } from './types'
 
 type Step = 1 | 2 | 3
 
@@ -173,7 +172,7 @@ function App(): JSX.Element {
   }
 
   const categories = useMemo<ServiceCategory[]>(
-    () => [...new Set(SERVICE_CATALOG.map((service) => service.category))],
+    () => SERVICE_CATEGORIES.filter((category) => SERVICE_CATALOG.some((service) => service.category === category)),
     [],
   )
 
@@ -210,13 +209,10 @@ function App(): JSX.Element {
   }, [activeCategory, searchText])
 
   const groupedVisibleServices = useMemo<Record<ServiceCategory, ServiceDefinition[]>>(() => {
-    const base: Record<ServiceCategory, ServiceDefinition[]> = {
-      documents: [],
-      media: [],
-      observability: [],
-      photos: [],
-      utilities: [],
-    }
+    const base = SERVICE_CATEGORIES.reduce<Record<ServiceCategory, ServiceDefinition[]>>((accumulator, category) => {
+      accumulator[category] = []
+      return accumulator
+    }, {} as Record<ServiceCategory, ServiceDefinition[]>)
 
     for (const service of visibleServices) {
       base[service.category].push(service)
@@ -288,36 +284,31 @@ function App(): JSX.Element {
 
     try {
       await exportBundleAsZip({
-        service: selectedService,
         composeContent: output.composeContent,
         envContent: output.envContent,
-        extraTooling: selectedService.extraTooling,
       })
       return
     } catch {
-      const noteLines = selectedService.extraTooling.map((tool) =>
-        `${tool.title}: ${tool.description}${tool.command ? ` | ${tool.command}` : ''}${tool.url ? ` | ${tool.url}` : ''}`,
-      )
-
-      const fallbackBundle = [
-        '# Bundle fallback export',
-        `Service=${selectedService.name}`,
-        '',
-        '[compose]',
-        output.composeContent,
-        '',
-        '[env]',
-        output.envContent,
-        '',
-        '[notes]',
-        ...noteLines,
-      ].join('\n')
-
-      downloadTextFile(`${selectedService.id}-bundle.txt`, fallbackBundle)
+      downloadTextFile('docker-compose.yaml', output.composeContent)
+      downloadTextFile('.env', output.envContent)
     }
   }
 
   const hasMissingRequired = output ? output.missingRequired.length > 0 : false
+  const selectedResearchReferences = useMemo(() => {
+    if (!selectedService) {
+      return []
+    }
+
+    const uniqueByUrl = new Map<string, { title: string; url: string }>()
+    for (const reference of selectedService.researchReferences) {
+      if (!uniqueByUrl.has(reference.url)) {
+        uniqueByUrl.set(reference.url, reference)
+      }
+    }
+
+    return [...uniqueByUrl.values()]
+  }, [selectedService])
 
   const jumpToMissingFields = (): void => {
     setStep(2)
@@ -529,15 +520,19 @@ function App(): JSX.Element {
 
           <section className="subsection">
             <h3>Defaults research references</h3>
-            <ul className="reference-list">
-              {RESEARCH_SOURCES.map((source) => (
-                <li key={source.url}>
-                  <a href={source.url} target="_blank" rel="noreferrer">
-                    {source.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {selectedResearchReferences.length === 0 ? (
+              <p className="muted">No service-specific references listed for this template.</p>
+            ) : (
+              <ul className="reference-list">
+                {selectedResearchReferences.map((source) => (
+                  <li key={source.url}>
+                    <a href={source.url} target="_blank" rel="noreferrer">
+                      {source.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
 
           <div className="actions">

@@ -49,6 +49,7 @@ Open `http://localhost:5173`.
 ```bash
 npm run lint
 npm run test
+npm run validate:links
 npm run test:e2e
 npm run test:lighthouse
 npm run build
@@ -61,6 +62,7 @@ GitHub Actions CI is configured in `.github/workflows/ci.yml` and runs:
 - `npm audit --omit=dev`
 - `npm run lint`
 - `npm run test`
+- `npm run validate:links`
 - `npm run build`
 - `npm run test:e2e`
 - `npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json`
@@ -94,7 +96,7 @@ Active generator templates are only under:
 
 ## Phase 2 (UX/accessibility) highlights
 
-- Improved top navigation with current selection context
+- Improved top navigation and onboarding flow
 - Added selected service details panel
 - Improved form accessibility (`htmlFor`, labeled controls, ARIA hints)
 - Strengthened responsive layout behavior
@@ -105,7 +107,7 @@ Active generator templates are only under:
 - Service search and category filters in the wizard
 - Grouped service cards by category
 - `.env` import to prefill wizard values
-- Bundle export (`.zip`) including compose, `.env`, and notes
+- Bundle export (`.zip`) including `docker-compose.yaml` and `.env` in a flat structure
 - Playwright E2E setup for onboarding flow
 - Service scaffold CLI for faster template onboarding
 
@@ -128,7 +130,7 @@ For each environment variable in a template:
    - otherwise use compose inline fallback (`${VAR:-default}`),
    - otherwise keep empty and mark required.
 
-Research references are listed in `src/data/defaults.ts` under `RESEARCH_SOURCES`.
+Research references are defined per service in `src/data/service-catalog.ts` via `researchReferences` (service-relevant only).
 
 ## Add a new service template
 
@@ -137,6 +139,7 @@ Research references are listed in `src/data/defaults.ts` under `RESEARCH_SOURCES
    - `id`, `name`, `templateFile`, `templateKey`, `description`, `tags`
    - optional `fieldOverrides`
    - optional `extraTooling` hints
+   - `researchReferences` (service-specific docs/reference URLs)
 3. Export the raw template in `src/templates/registry.ts`.
 4. (Optional) add recommended defaults or descriptions in `src/data/defaults.ts`.
 

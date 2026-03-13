@@ -6,18 +6,24 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     name: 'BentoPDF',
     templateFile: 'services/bentopdf/base.compose.yaml',
     templateKey: 'services/bentopdf/base.compose.yaml',
-    category: 'documents',
+    category: 'utilities',
     description: 'Privacy-first PDF toolkit service.',
     tags: ['pdf', 'privacy', 'single-service'],
     fieldOverrides: {},
     extraTooling: [],
+    researchReferences: [
+      {
+        title: 'BentoPDF repository',
+        url: 'https://github.com/alam00000/bentopdf',
+      },
+    ],
   },
   {
     id: 'bentopdf-oauth2-proxy',
     name: 'BentoPDF + OAuth2 Proxy',
     templateFile: 'services/bentopdf/oauth2-proxy.compose.yaml',
     templateKey: 'services/bentopdf/oauth2-proxy.compose.yaml',
-    category: 'documents',
+    category: 'utilities',
     description: 'BentoPDF with OIDC reverse-proxy authentication flow.',
     tags: ['pdf', 'oauth2-proxy', 'oidc'],
     fieldOverrides: {
@@ -36,6 +42,16 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
         url: 'https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/#generating-a-cookie-secret',
       },
     ],
+    researchReferences: [
+      {
+        title: 'BentoPDF repository',
+        url: 'https://github.com/alam00000/bentopdf',
+      },
+      {
+        title: 'OAuth2 Proxy configuration overview',
+        url: 'https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/',
+      },
+    ],
   },
   {
     id: 'dozzle',
@@ -50,6 +66,16 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     ],
     fieldOverrides: {},
     extraTooling: [],
+    researchReferences: [
+      {
+        title: 'Dozzle getting started + auth docs',
+        url: 'https://dozzle.dev/guide/getting-started',
+      },
+      {
+        title: 'Dozzle authentication options',
+        url: 'https://dozzle.dev/guide/authentication',
+      },
+    ],
   },
   {
     id: 'dozzle-oauth2-proxy',
@@ -78,13 +104,27 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
         url: 'https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/#generating-a-cookie-secret',
       },
     ],
+    researchReferences: [
+      {
+        title: 'Dozzle getting started + auth docs',
+        url: 'https://dozzle.dev/guide/getting-started',
+      },
+      {
+        title: 'Dozzle authentication options',
+        url: 'https://dozzle.dev/guide/authentication',
+      },
+      {
+        title: 'OAuth2 Proxy configuration overview',
+        url: 'https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/',
+      },
+    ],
   },
   {
     id: 'immich',
     name: 'Immich',
     templateFile: 'services/immich/base.compose.yaml',
     templateKey: 'services/immich/base.compose.yaml',
-    category: 'photos',
+    category: 'media',
     description: 'Self-hosted photo and video backup stack.',
     tags: ['photos', 'postgres', 'valkey'],
     fieldOverrides: {
@@ -105,6 +145,16 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
         url: 'https://docs.immich.app/install/docker-compose/',
       },
     ],
+    researchReferences: [
+      {
+        title: 'Immich docker compose install',
+        url: 'https://docs.immich.app/install/docker-compose/',
+      },
+      {
+        title: 'Immich environment variables',
+        url: 'https://docs.immich.app/install/environment-variables/',
+      },
+    ],
   },
   {
     id: 'it-tools',
@@ -116,6 +166,12 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     tags: ['utilities', 'single-service'],
     fieldOverrides: {},
     extraTooling: [],
+    researchReferences: [
+      {
+        title: 'IT Tools repository self-hosting section',
+        url: 'https://github.com/CorentinTh/it-tools',
+      },
+    ],
   },
   {
     id: 'jellyfin',
@@ -142,6 +198,12 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
         title: 'Optional hardware acceleration check',
         description:
           'If you enable /dev/dri device mapping, verify host GPU drivers and permissions first.',
+        url: 'https://jellyfin.org/docs/general/installation/container',
+      },
+    ],
+    researchReferences: [
+      {
+        title: 'Jellyfin container installation',
         url: 'https://jellyfin.org/docs/general/installation/container',
       },
     ],

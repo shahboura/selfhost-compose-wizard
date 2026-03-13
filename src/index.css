@@ -467,6 +467,38 @@ input[type='password']:disabled {
   line-height: 1.4;
 }
 
+.code-pre-wrap {
+  position: relative;
+}
+
+.copy-indicator {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  background: rgba(15, 23, 42, 0.85);
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  pointer-events: none;
+}
+
+.copy-indicator[data-visible='true'] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.code-pre-wrap:focus-within .copy-indicator {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
 .subsection {
   margin-top: 1rem;
   display: grid;

@@ -3,7 +3,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
-const ALLOWED_CATEGORIES = new Set(['media', 'documents', 'observability', 'utilities', 'photos'])
+const ALLOWED_CATEGORIES = new Set(['media', 'observability', 'utilities'])
 const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 function toTsStringLiteral(value) {
@@ -136,7 +136,7 @@ async function updateCatalog(rootDir, args) {
     return
   }
 
-  const entry = `  {\n    id: ${toTsStringLiteral(id)},\n    name: ${toTsStringLiteral(args.name)},\n    templateFile: ${toTsStringLiteral(templatePath)},\n    templateKey: ${toTsStringLiteral(templatePath)},\n    category: ${toTsStringLiteral(args.category)},\n    description: ${toTsStringLiteral(args.description)},\n    tags: [${toTsStringLiteral(args.service)}],\n    fieldOverrides: {},\n    extraTooling: [],\n  },\n`
+  const entry = `  {\n    id: ${toTsStringLiteral(id)},\n    name: ${toTsStringLiteral(args.name)},\n    templateFile: ${toTsStringLiteral(templatePath)},\n    templateKey: ${toTsStringLiteral(templatePath)},\n    category: ${toTsStringLiteral(args.category)},\n    description: ${toTsStringLiteral(args.description)},\n    tags: [${toTsStringLiteral(args.service)}],\n    fieldOverrides: {},\n    extraTooling: [],\n    researchReferences: [],\n  },\n`
 
   const updated = fileContent.replace(/\]\s*$/, `${entry}]`)
   await writeFile(catalogPath, updated, 'utf8')

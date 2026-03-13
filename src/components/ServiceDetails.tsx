@@ -6,29 +6,31 @@ interface ServiceDetailsProps {
 }
 
 export function ServiceDetails({ service }: ServiceDetailsProps): JSX.Element {
+  const docsReference = service.researchReferences[0]
+
   return (
     <section className="card service-details" aria-label="Selected service details">
-      <h2>Selected service details</h2>
-      <p className="muted">Review what this template includes before generating files.</p>
+      <h2>Selected service</h2>
+      <p className="muted">{service.description}</p>
       <dl>
         <div>
-          <dt>Name</dt>
-          <dd>{service.name}</dd>
-        </div>
-        <div>
-          <dt>Description</dt>
-          <dd>{service.description}</dd>
-        </div>
-        <div>
-          <dt>Template path</dt>
-          <dd>
-            <code>{service.templateFile}</code>
-          </dd>
+          <dt>Category</dt>
+          <dd>{service.category}</dd>
         </div>
         <div>
           <dt>Tags</dt>
           <dd>{service.tags.join(', ')}</dd>
         </div>
+        {docsReference ? (
+          <div>
+            <dt>Docs</dt>
+            <dd>
+              <a href={docsReference.url} target="_blank" rel="noreferrer">
+                {docsReference.title}
+              </a>
+            </dd>
+          </div>
+        ) : null}
       </dl>
 
       {service.riskWarnings && service.riskWarnings.length > 0 ? (
