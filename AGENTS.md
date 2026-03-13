@@ -18,6 +18,14 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
+### 2026-03-13 22:31 - CI supply-chain hardening and Pages deployment modernization
+**Agent:** orchestrator
+**Summary:** Replaced third-party Pages publish action with official GitHub Pages actions and tightened CI permissions.
+- Pinned all referenced GitHub Actions to immutable SHAs (`checkout`, `setup-node`, `upload-artifact`, `configure-pages`, `upload-pages-artifact`, `deploy-pages`).
+- Migrated deployment from `peaceiris/actions-gh-pages` to artifact-based `configure-pages` + `upload-pages-artifact` + `deploy-pages` flow.
+- Pruned CI by splitting deploy into `deploy-pages` job with scoped `pages/id-token` permissions; kept top-level permissions at `contents: read`.
+- Consolidated duplicate Lighthouse steps into a single conditional step with PR non-blocking behavior retained.
+
 ### 2026-03-13 22:20 - Env variable naming convention consolidation across templates
 **Agent:** orchestrator
 **Summary:** Standardized service env variable naming with explicit prefixes/suffixes across active and legacy templates.
