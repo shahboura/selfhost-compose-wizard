@@ -102,28 +102,31 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
               </datalist>
             </>
           ) : (
-            <input
-              id={inputId}
-              type={currentInputType}
-              value={resolvedState.useDefault ? defaultValue : resolvedState.value}
-              onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
-              readOnly={resolvedState.useDefault}
-              placeholder={field.required ? 'Required value' : 'Optional override'}
-              aria-describedby={hintId}
-              autoComplete="off"
-            />
-          )}
+            <div className="sensitive-input-wrap">
+              <input
+                id={inputId}
+                type={currentInputType}
+                value={resolvedState.useDefault ? defaultValue : resolvedState.value}
+                onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
+                readOnly={resolvedState.useDefault}
+                placeholder={field.required ? 'Required value' : 'Optional override'}
+                aria-describedby={hintId}
+                autoComplete="off"
+              />
 
-          {field.sensitive ? (
-            <button
-              type="button"
-              className="button"
-              onClick={() => setShowSensitiveValue((current) => !current)}
-              aria-label={showSensitiveValue ? 'Hide value' : 'Show value'}
-            >
-              {showSensitiveValue ? 'Hide' : 'Show'}
-            </button>
-          ) : null}
+              {field.sensitive ? (
+                <button
+                  type="button"
+                  className="inline-icon-button"
+                  onClick={() => setShowSensitiveValue((current) => !current)}
+                  aria-label={showSensitiveValue ? 'Hide value' : 'Show value'}
+                  title={showSensitiveValue ? 'Hide value' : 'Show value'}
+                >
+                  {showSensitiveValue ? '🙈' : '👁'}
+                </button>
+              ) : null}
+            </div>
+          )}
 
           {generationSpec ? (
             <button

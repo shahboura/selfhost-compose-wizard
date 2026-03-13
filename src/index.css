@@ -196,10 +196,7 @@ h1 {
 }
 
 .category-group h3 {
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.8rem;
-  color: #7dd3fc;
+  text-transform: capitalize;
 }
 
 .service-card {
@@ -213,15 +210,6 @@ h1 {
   gap: 0.5rem;
   cursor: pointer;
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
-}
-
-.service-card h3 {
-  font-size: 1.02rem;
-}
-
-.service-card > p {
-  color: #cbd5e1;
-  font-size: 0.92rem;
 }
 
 .service-card:hover {
@@ -279,7 +267,7 @@ h1 {
 
 .service-category {
   color: #93c5fd;
-  font-size: 0.79rem;
+  font-size: 0.82rem;
 }
 
 .field-list {
@@ -406,8 +394,34 @@ select {
   align-items: center;
 }
 
-.field-input-row > input {
+.field-input-row > input,
+.field-input-row > .sensitive-input-wrap {
   flex: 1;
+}
+
+.sensitive-input-wrap {
+  position: relative;
+}
+
+.sensitive-input-wrap > input {
+  padding-right: 2.3rem;
+}
+
+.inline-icon-button {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #cbd5e1;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0.15rem;
+}
+
+.inline-icon-button:hover {
+  color: #e2e8f0;
 }
 
 input[type='text'],
@@ -469,6 +483,7 @@ input[type='password']:disabled {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
   gap: 0.75rem;
+  align-items: start;
 }
 
 .code-panel {
@@ -477,6 +492,7 @@ input[type='password']:disabled {
   overflow: hidden;
   display: grid;
   min-width: 0;
+  align-self: start;
 }
 
 .code-panel header {
