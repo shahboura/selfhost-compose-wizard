@@ -326,7 +326,7 @@ function App(): JSX.Element {
       <TopNav
         selectedServiceName={pageTitle}
         selectedTemplatePath={selectedTemplatePath}
-        selectedServiceId={selectedServiceId}
+        selectedServiceId={selectedServiceId || ''}
         onHome={goHome}
       />
 

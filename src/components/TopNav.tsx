@@ -8,24 +8,20 @@ interface TopNavProps {
 }
 
 export function TopNav({ selectedServiceName, selectedTemplatePath, selectedServiceId, onHome }: TopNavProps): JSX.Element {
-  const hasSelectedService = selectedServiceId.trim().length > 0
+  const normalizedSelectedServiceId =
+    typeof selectedServiceId === 'string' ? selectedServiceId : String(selectedServiceId ?? '')
+  const hasSelectedService = normalizedSelectedServiceId.trim().length > 0
 
   return (
     <header className="top-nav" role="banner">
-      <div className="brand">
-        <span className="brand-mark" aria-hidden="true">
-          ⚙
-        </span>
+      <button type="button" className="brand-home" onClick={onHome}>
         <div>
           <p className="eyebrow">Self-hosting onboarding wizard</p>
           <h1>Docker Compose Generator</h1>
         </div>
-      </div>
+      </button>
 
       <div className="selection-meta">
-        <button type="button" className="button" onClick={onHome}>
-          Home
-        </button>
         <p>
           <strong>Service:</strong> {hasSelectedService ? selectedServiceName : 'Not selected'}
         </p>

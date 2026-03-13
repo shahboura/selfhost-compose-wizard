@@ -57,10 +57,21 @@ input:focus-visible {
   padding: 0.9rem 1rem;
 }
 
-.brand {
-  display: flex;
-  gap: 0.75rem;
-  align-items: flex-start;
+.brand-home {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+}
+
+.brand-home:hover .eyebrow {
+  color: #67e8f9;
+}
+
+.brand-home:hover h1 {
+  color: #e0f2fe;
 }
 
 .brand-mark {
@@ -76,7 +87,9 @@ input:focus-visible {
   text-align: right;
   color: #cbd5e1;
   font-size: 0.9rem;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 0.2rem;
 }
 
