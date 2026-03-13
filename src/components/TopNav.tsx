@@ -3,15 +3,11 @@ import type { JSX } from 'react'
 interface TopNavProps {
   selectedServiceName: string
   selectedTemplatePath: string
-  onImportEnv: (file: File) => void
+  hasSelectedService: boolean
+  onHome: () => void
 }
 
-export function TopNav({ selectedServiceName, selectedTemplatePath, onImportEnv }: TopNavProps): JSX.Element {
-  const openFilePicker = (): void => {
-    const fileInput = document.getElementById('import-env') as HTMLInputElement | null
-    fileInput?.click()
-  }
-
+export function TopNav({ selectedServiceName, selectedTemplatePath, hasSelectedService, onHome }: TopNavProps): JSX.Element {
   return (
     <header className="top-nav" role="banner">
       <div className="brand">
@@ -25,28 +21,17 @@ export function TopNav({ selectedServiceName, selectedTemplatePath, onImportEnv 
       </div>
 
       <div className="selection-meta">
-        <p>
-          <strong>Service:</strong> {selectedServiceName}
-        </p>
-        <p>
-          <strong>Template:</strong> <code>{selectedTemplatePath}</code>
-        </p>
-        <button type="button" className="button import-env-button" onClick={openFilePicker}>
-          Import .env
+        <button type="button" className="button" onClick={onHome}>
+          Home
         </button>
-        <input
-          id="import-env"
-          className="sr-only"
-          type="file"
-          accept=".env,text/plain"
-          onChange={(event) => {
-            const selectedFile = event.currentTarget.files?.[0]
-            if (selectedFile) {
-              onImportEnv(selectedFile)
-            }
-            event.currentTarget.value = ''
-          }}
-        />
+        <p>
+          <strong>Service:</strong> {hasSelectedService ? selectedServiceName : 'Not selected'}
+        </p>
+        {hasSelectedService ? (
+          <p>
+            <strong>Template:</strong> <code>{selectedTemplatePath}</code>
+          </p>
+        ) : null}
       </div>
     </header>
   )

@@ -50,6 +50,7 @@ Open `http://localhost:5173`.
 npm run lint
 npm run test
 npm run test:e2e
+npm run test:lighthouse
 npm run build
 ```
 
@@ -62,6 +63,7 @@ GitHub Actions CI is configured in `.github/workflows/ci.yml` and runs:
 - `npm run test`
 - `npm run build`
 - `npm run test:e2e`
+- `npm run test:lighthouse`
 
 ## Popular package policy and CVE posture
 
@@ -105,6 +107,7 @@ Active generator templates are only under:
 - Block export when required values are missing to prevent invalid bundle output.
 - Highlight high-risk runtime capabilities (docker socket, host networking, device mounts) in both UI and exported notes.
 - Prefer famous, stable packages and verify with `npm audit` + CI checks.
+- Lighthouse CI checks accessibility/performance regressions as part of CI.
 
 ## How defaults work
 

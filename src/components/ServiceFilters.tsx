@@ -17,8 +17,7 @@ export function ServiceFilters({
 }: ServiceFiltersProps): JSX.Element {
   return (
     <section className="card" aria-label="Service filters">
-      <h2>Browse templates</h2>
-      <p className="muted">Filter by service name, tags, or category.</p>
+      <h2>Templates</h2>
       <div className="filters-grid">
         <label htmlFor="service-search" className="filter-control">
           Search
@@ -26,7 +25,7 @@ export function ServiceFilters({
             id="service-search"
             type="text"
             value={search}
-            placeholder="Search services..."
+            placeholder="Find service..."
             onChange={(event) => onSearchChange(event.currentTarget.value)}
           />
         </label>

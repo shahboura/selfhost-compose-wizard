@@ -1,4 +1,4 @@
-import { useMemo, useState, type JSX } from 'react'
+import { useEffect, useMemo, useState, type JSX } from 'react'
 import { CodePanel } from './components/CodePanel'
 import { FieldEditor } from './components/FieldEditor'
 import { PrivacyNotice } from './components/PrivacyNotice'
@@ -20,19 +20,18 @@ type Step = 1 | 2 | 3
 
 function App(): JSX.Element {
   const [step, setStep] = useState<Step>(1)
-  const [selectedServiceId, setSelectedServiceId] = useState<string>(SERVICE_CATALOG[0]?.id ?? '')
+  const [selectedServiceId, setSelectedServiceId] = useState<string>('')
   const [searchText, setSearchText] = useState<string>('')
   const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all')
   const [importStatus, setImportStatus] = useState<string>('')
-  const [wizardState, setWizardState] = useState<Record<string, WizardFieldState>>(() => {
-    const initialService = SERVICE_CATALOG[0]
-    if (!initialService) {
-      return {}
+  const [showOnboardingTip, setShowOnboardingTip] = useState<boolean>(() => {
+    if (typeof window === 'undefined') {
+      return true
     }
 
-    const initialTemplate = TEMPLATE_CONTENT[initialService.templateKey] ?? ''
-    return resolveWizardStateForService(initialTemplate, initialService.fieldOverrides)
+    return window.localStorage.getItem('onboarding_tip_dismissed') !== 'true'
   })
+  const [wizardState, setWizardState] = useState<Record<string, WizardFieldState>>({})
 
   const selectedService = useMemo<ServiceDefinition | undefined>(
     () => SERVICE_CATALOG.find((service) => service.id === selectedServiceId),
@@ -49,7 +48,7 @@ function App(): JSX.Element {
 
   const templateError = useMemo<string>(() => {
     if (!selectedService) {
-      return 'No service selected'
+      return ''
     }
 
     if (templateContent.length === 0) {
@@ -112,7 +111,49 @@ function App(): JSX.Element {
     } else {
       setWizardState({})
     }
+    setStep(2)
+  }
+
+  const goHome = (): void => {
     setStep(1)
+    setSelectedServiceId('')
+    setSearchText('')
+    setActiveCategory('all')
+    setImportStatus('')
+    setWizardState({})
+  }
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (!(event.altKey && event.key.toLowerCase() === 'h')) {
+        return
+      }
+
+      const target = event.target as HTMLElement | null
+      const tagName = target?.tagName.toLowerCase()
+      const isTypingContext =
+        tagName === 'input' ||
+        tagName === 'textarea' ||
+        tagName === 'select' ||
+        target?.isContentEditable === true
+
+      if (isTypingContext) {
+        return
+      }
+
+      event.preventDefault()
+      goHome()
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [])
+
+  const dismissOnboardingTip = (): void => {
+    setShowOnboardingTip(false)
+    window.localStorage.setItem('onboarding_tip_dismissed', 'true')
   }
 
   const selectedServiceIndex = SERVICE_CATALOG.findIndex((service) => service.id === selectedServiceId)
@@ -264,29 +305,41 @@ function App(): JSX.Element {
       <TopNav
         selectedServiceName={pageTitle}
         selectedTemplatePath={selectedTemplatePath}
-        onImportEnv={(file) => {
-          void importEnvFile(file)
-        }}
+        hasSelectedService={Boolean(selectedService)}
+        onHome={goHome}
       />
 
       <p className="subtitle">
-        Build starter compose + env files from your templates. Data stays in your browser, and you get
-        clear guidance for secrets and extra setup tools.
+        Generate docker compose + env files with a guided wizard.
       </p>
 
-      {importStatus ? <p className="status-note">{importStatus}</p> : null}
+      {step === 1 && showOnboardingTip ? (
+        <section className="tip-banner" aria-live="polite">
+          <p>
+            Quick start: choose a service card to jump straight into configuration. Use Home (Alt+H)
+            anytime.
+          </p>
+          <button type="button" className="button" onClick={dismissOnboardingTip}>
+            Got it
+          </button>
+        </section>
+      ) : null}
 
-      <PrivacyNotice />
+      {importStatus && step === 2 ? <p className="status-note">{importStatus}</p> : null}
 
-      <ServiceFilters
-        search={searchText}
-        category={activeCategory}
-        categories={categories}
-        onSearchChange={setSearchText}
-        onCategoryChange={handleCategoryChange}
-      />
+      {step === 1 ? <PrivacyNotice /> : null}
 
-      {selectedService ? <ServiceDetails service={selectedService} /> : null}
+      {step === 1 ? (
+        <ServiceFilters
+          search={searchText}
+          category={activeCategory}
+          categories={categories}
+          onSearchChange={setSearchText}
+          onCategoryChange={handleCategoryChange}
+        />
+      ) : null}
+
+      {selectedService && step > 1 ? <ServiceDetails service={selectedService} /> : null}
 
       <WizardStepper
         currentStep={step}
@@ -300,7 +353,7 @@ function App(): JSX.Element {
       {step === 1 ? (
         <section className="card">
           <h2>1. Pick a service template</h2>
-          <p className="muted">Choose one template variant to start.</p>
+          <p className="muted">Select a service to start.</p>
           {visibleServices.length === 0 ? (
             <p className="muted">No services matched your current filters.</p>
           ) : (
@@ -315,7 +368,7 @@ function App(): JSX.Element {
                           key={service.id}
                           service={service}
                           selected={service.id === selectedServiceId}
-                          onSelect={() => selectService(service.id)}
+                          onSelect={selectService}
                         />
                       ))}
                     </div>
@@ -343,10 +396,26 @@ function App(): JSX.Element {
       {step === 2 ? (
         <section className="card">
           <h2>2. Configure env values</h2>
-          <p className="muted">
-            If you opt out of entering a value, the wizard will fill a researched default (or compose
-            fallback when available).
-          </p>
+          <p className="muted">Use defaults or override any field.</p>
+
+          <div className="inline-actions">
+            <label htmlFor="import-env" className="button">
+              Import .env
+            </label>
+            <input
+              id="import-env"
+              className="sr-only"
+              type="file"
+              accept=".env,text/plain"
+              onChange={(event) => {
+                const selectedFile = event.currentTarget.files?.[0]
+                if (selectedFile) {
+                  void importEnvFile(selectedFile)
+                }
+                event.currentTarget.value = ''
+              }}
+            />
+          </div>
 
           <div className="field-list">
             {fields.map((field) => (
@@ -364,7 +433,12 @@ function App(): JSX.Element {
             <button type="button" className="button" onClick={() => setStep(1)}>
               Back
             </button>
-            <button type="button" className="button primary" onClick={() => setStep(3)}>
+            <button
+              type="button"
+              className="button primary"
+              disabled={!selectedService}
+              onClick={() => setStep(3)}
+            >
               Generate
             </button>
           </div>

@@ -4,7 +4,7 @@ import type { ServiceDefinition } from '../types'
 interface ServiceCardProps {
   service: ServiceDefinition
   selected: boolean
-  onSelect: () => void
+  onSelect: (serviceId: string) => void
 }
 
 export function ServiceCard({ service, selected, onSelect }: ServiceCardProps): JSX.Element {
@@ -13,7 +13,7 @@ export function ServiceCard({ service, selected, onSelect }: ServiceCardProps): 
       type="button"
       className="service-card"
       data-selected={selected}
-      onClick={onSelect}
+      onClick={() => onSelect(service.id)}
       aria-pressed={selected}
     >
       <h3>{service.name}</h3>

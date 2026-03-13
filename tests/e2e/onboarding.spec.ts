@@ -5,7 +5,7 @@ test('core onboarding flow generates compose and env outputs', async ({ page }) 
 
   await expect(page.getByRole('heading', { name: 'Docker Compose Generator' })).toBeVisible()
 
-  await page.getByRole('button', { name: /Continue/i }).click()
+  await page.getByRole('button', { name: /BentoPDF/i }).first().click()
 
   await expect(page.getByRole('heading', { name: '2. Configure env values' })).toBeVisible()
   const maybeDbPasswordInput = page.locator('#env-field-db_password')

@@ -40,3 +40,6 @@ jobs:
 
       - name: End-to-end tests
         run: npm run test:e2e
+
+      - name: Lighthouse accessibility/performance audit
+        run: npm run test:lighthouse
