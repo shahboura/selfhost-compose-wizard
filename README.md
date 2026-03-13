@@ -1,5 +1,9 @@
 # Selfhost Compose Wizard
 
+![Lighthouse Performance](https://img.shields.io/endpoint?url=https%3A%2F%2Fshahboura.github.io%2Fselfhost-compose-wizard%2Flighthouse%2Flighthouse-performance.json)
+![Lighthouse Accessibility](https://img.shields.io/endpoint?url=https%3A%2F%2Fshahboura.github.io%2Fselfhost-compose-wizard%2Flighthouse%2Flighthouse-accessibility.json)
+![Lighthouse Best Practices](https://img.shields.io/endpoint?url=https%3A%2F%2Fshahboura.github.io%2Fselfhost-compose-wizard%2Flighthouse%2Flighthouse-best-practices.json)
+
 Privacy-first web wizard for generating `docker-compose.yaml` and `.env` files for self-hosted services.
 
 ## What it does
@@ -53,6 +57,8 @@ npm run test:all
 ```
 
 `test:all` runs lint, unit tests (Vitest), template validation, link validation, E2E tests, Lighthouse audit, and build.
+
+> Lighthouse badges are published from CI to the `gh-pages` branch under `lighthouse/*.json`.
 
 ## Add a new service template
 

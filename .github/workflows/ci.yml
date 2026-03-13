@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   quality:
@@ -74,3 +74,17 @@ jobs:
           path: .lighthouseci/
           if-no-files-found: ignore
           include-hidden-files: true
+
+      - name: Generate Lighthouse badge endpoint JSON
+        if: github.ref == 'refs/heads/main' && success()
+        run: node ./scripts/generate-lighthouse-badges.mjs
+
+      - name: Publish Lighthouse badges to gh-pages
+        if: github.ref == 'refs/heads/main' && success()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./.badge-data
+          publish_branch: gh-pages
+          destination_dir: lighthouse
+          keep_files: true
