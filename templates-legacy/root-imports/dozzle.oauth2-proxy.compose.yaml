@@ -10,8 +10,8 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     volumes:
-      - ${DOZZLE_OAUTH2_PROXY_CONFIG:-./oauth2-proxy.cfg}:/oauth2-proxy.cfg:ro
-      - ${DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS:-./authenticated_emails}:/authenticated_emails:ro
+      - ${DOZZLE_OAUTH2_PROXY_CONFIG_FILE:-./oauth2-proxy.cfg}:/oauth2-proxy.cfg:ro
+      - ${DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:-./authenticated_emails}:/authenticated_emails:ro
     restart: on-failure:5
     ports:
       - ${DOZZLE_OAUTH2_PROXY_PORT:-4180}:4180

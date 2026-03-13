@@ -1,52 +1,52 @@
 {
   "fields": {
-    "DB_DATA_LOCATION": {
+    "IMMICH_DB_DATA_DIR": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "DB_DATA_LOCATION filesystem path.",
+      "description": "IMMICH_DB_DATA_DIR filesystem path.",
       "recommendedDefault": ""
     },
-    "DB_DATABASE_NAME": {
+    "IMMICH_DB_NAME": {
       "type": "text",
       "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": ""
     },
-    "DB_PASSWORD": {
+    "IMMICH_DB_PASSWORD": {
       "type": "secret",
       "required": true,
       "sensitive": true,
-      "description": "DB_PASSWORD secret value.",
+      "description": "IMMICH_DB_PASSWORD secret value.",
       "recommendedDefault": ""
     },
-    "DB_USERNAME": {
+    "IMMICH_DB_USER": {
       "type": "text",
       "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": ""
     },
-    "IMMICH_CACHE_LOCATION": {
+    "IMMICH_MATPLOTLIB_DIR": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "IMMICH_CACHE_LOCATION filesystem path.",
+      "description": "IMMICH_MATPLOTLIB_DIR filesystem path.",
       "recommendedDefault": ""
     },
-    "IMMICH_CONFIG_LOCATION": {
+    "IMMICH_MODEL_CACHE_DIR": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "IMMICH_CONFIG_LOCATION filesystem path.",
+      "description": "IMMICH_MODEL_CACHE_DIR filesystem path.",
       "recommendedDefault": ""
     },
-    "IMMICH_MATPLOTLIB_LOCATION": {
+    "IMMICH_MODEL_CONFIG_DIR": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "IMMICH_MATPLOTLIB_LOCATION filesystem path.",
+      "description": "IMMICH_MODEL_CONFIG_DIR filesystem path.",
       "recommendedDefault": ""
     },
     "IMMICH_SERVER_PORT": {
@@ -56,11 +56,18 @@
       "description": "IMMICH_SERVER_PORT numeric value.",
       "recommendedDefault": "2283"
     },
-    "IMMICH_VALKEY_DATA": {
-      "type": "text",
+    "IMMICH_UPLOAD_DIR": {
+      "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "Environment variable used by this compose template.",
+      "description": "IMMICH_UPLOAD_DIR filesystem path.",
+      "recommendedDefault": ""
+    },
+    "IMMICH_VALKEY_DIR": {
+      "type": "path",
+      "required": true,
+      "sensitive": false,
+      "description": "IMMICH_VALKEY_DIR filesystem path.",
       "recommendedDefault": ""
     },
     "IMMICH_VERSION": {
@@ -89,13 +96,6 @@
       "required": true,
       "sensitive": false,
       "description": "Timezone in TZ database format.",
-      "recommendedDefault": ""
-    },
-    "UPLOAD_LOCATION": {
-      "type": "path",
-      "required": true,
-      "sensitive": false,
-      "description": "UPLOAD_LOCATION filesystem path.",
       "recommendedDefault": ""
     }
   }

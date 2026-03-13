@@ -1,32 +1,39 @@
 {
   "fields": {
-    "APP_URL": {
+    "GETARCANE_APP_URL": {
       "type": "url",
       "required": false,
       "sensitive": false,
-      "description": "APP_URL URL.",
+      "description": "GETARCANE_APP_URL URL.",
       "recommendedDefault": "http://localhost:3552"
     },
-    "DATA_DIR": {
+    "GETARCANE_DATA_DIR": {
       "type": "path",
       "required": false,
       "sensitive": false,
-      "description": "DATA_DIR filesystem path.",
+      "description": "GETARCANE_DATA_DIR filesystem path.",
       "recommendedDefault": "./arcane-data"
     },
-    "ENCRYPTION_KEY": {
+    "GETARCANE_ENCRYPTION_KEY": {
       "type": "secret",
       "required": true,
       "sensitive": true,
-      "description": "ENCRYPTION_KEY secret value.",
+      "description": "GETARCANE_ENCRYPTION_KEY secret value.",
       "recommendedDefault": ""
     },
-    "JWT_SECRET": {
+    "GETARCANE_JWT_SECRET": {
       "type": "secret",
       "required": true,
       "sensitive": true,
-      "description": "JWT_SECRET secret value.",
+      "description": "GETARCANE_JWT_SECRET secret value.",
       "recommendedDefault": ""
+    },
+    "GETARCANE_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "GETARCANE_PORT numeric value.",
+      "recommendedDefault": "3552"
     },
     "PGID": {
       "type": "text",
@@ -34,13 +41,6 @@
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": "1000"
-    },
-    "PORT": {
-      "type": "number",
-      "required": false,
-      "sensitive": false,
-      "description": "PORT numeric value.",
-      "recommendedDefault": "3552"
     },
     "PUID": {
       "type": "text",

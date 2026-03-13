@@ -18,6 +18,14 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
+### 2026-03-13 22:20 - Env variable naming convention consolidation across templates
+**Agent:** orchestrator
+**Summary:** Standardized service env variable naming with explicit prefixes/suffixes across active and legacy templates.
+- Renamed generic and inconsistent keys to service-prefixed forms (GetArcane, Immich, BentoPDF OAuth2, Dozzle OAuth2) and aligned `_DIR`/`_FILE`/`_PORT` usage.
+- Updated generator metadata sources (`defaults.ts`, `service-catalog.ts`, `field-security.ts`) and adjusted secret/URL validation to new key patterns.
+- Extended template metadata inference to classify `*_FILE` as `path`, then rewrote all template meta files.
+- Verified with `validate:templates`, unit tests, and lint; no stale old-key references in templates.
+
 ### 2026-03-13 20:08 - GetArcane onboarding, mobile overflow hardening, and containerization
 **Agent:** orchestrator
 **Summary:** Added GetArcane templates, tightened mobile layout behavior, and introduced production container artifacts.

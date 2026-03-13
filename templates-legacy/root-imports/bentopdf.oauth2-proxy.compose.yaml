@@ -12,11 +12,11 @@ services:
     networks:
       bentopdf-oauth2: {}
     volumes:
-      - ${OAUTH2_PROXY_CONFIG_DIR:-./oauth2-proxy}:/oauth2-proxy.cfg:ro
-      - ${OAUTH2_PROXY_AUTH_DIR:-./oauth2-proxy/authenticated_emails}:/authenticated_emails:ro
+      - ${BENTOPDF_OAUTH2_PROXY_CONFIG_FILE:-./oauth2-proxy.cfg}:/oauth2-proxy.cfg:ro
+      - ${BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:-./oauth2-proxy/authenticated_emails}:/authenticated_emails:ro
     restart: on-failure:5
     ports:
-      - ${OAUTH2_PROXY_PORT:-7860}:7860
+      - ${BENTOPDF_OAUTH2_PROXY_PORT:-7860}:7860
     depends_on:
       - bentopdf
 

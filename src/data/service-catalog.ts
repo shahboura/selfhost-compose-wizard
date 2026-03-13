@@ -27,10 +27,10 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     description: 'BentoPDF with OIDC reverse-proxy authentication flow.',
     tags: ['pdf', 'oauth2-proxy', 'oidc'],
     fieldOverrides: {
-      OAUTH2_PROXY_CONFIG_DIR: {
+      BENTOPDF_OAUTH2_PROXY_CONFIG_FILE: {
         description: 'Path to oauth2-proxy configuration file on host.',
       },
-      OAUTH2_PROXY_AUTH_DIR: {
+      BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: {
         description: 'Path to authenticated emails file on host.',
       },
     },
@@ -89,10 +89,10 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       'Mounts /var/run/docker.sock, which grants broad host Docker control.',
     ],
     fieldOverrides: {
-      DOZZLE_OAUTH2_PROXY_CONFIG: {
+      DOZZLE_OAUTH2_PROXY_CONFIG_FILE: {
         description: 'Path to oauth2-proxy config file mounted read-only.',
       },
-      DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS: {
+      DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: {
         description: 'Path to allowed-authenticated-emails file mounted read-only.',
       },
     },
@@ -128,7 +128,7 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     description: 'Self-hosted photo and video backup stack.',
     tags: ['photos', 'postgres', 'valkey'],
     fieldOverrides: {
-      DB_PASSWORD: {
+      IMMICH_DB_PASSWORD: {
         description:
           'Database password. Immich docs recommend using A-Za-z0-9 for compatibility.',
         sensitive: true,
@@ -221,22 +221,22 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       'Uses cgroup: host; review host runtime isolation requirements.',
     ],
     fieldOverrides: {
-      ENCRYPTION_KEY: {
+      GETARCANE_ENCRYPTION_KEY: {
         description: 'Arcane encryption key. Must be 32 bytes (hex/base64/raw).',
         sensitive: true,
       },
-      JWT_SECRET: {
+      GETARCANE_JWT_SECRET: {
         description: 'Arcane JWT/session signing secret.',
         sensitive: true,
       },
-      DATA_DIR: {
+      GETARCANE_DATA_DIR: {
         description: 'Host path mounted to /app/data for Arcane state and projects.',
       },
     },
     extraTooling: [
       {
         title: 'Generate Arcane secrets',
-        description: 'Generate ENCRYPTION_KEY and JWT_SECRET with OpenSSL.',
+        description: 'Generate GETARCANE_ENCRYPTION_KEY and GETARCANE_JWT_SECRET with OpenSSL.',
         command: 'openssl rand -hex 32',
         url: 'https://getarcane.app/docs/setup/installation',
       },
@@ -269,26 +269,26 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       'OIDC issuer URL must be configured without trailing slash.',
     ],
     fieldOverrides: {
-      ENCRYPTION_KEY: {
+      GETARCANE_ENCRYPTION_KEY: {
         description: 'Arcane encryption key. Must be 32 bytes (hex/base64/raw).',
         sensitive: true,
       },
-      JWT_SECRET: {
+      GETARCANE_JWT_SECRET: {
         description: 'Arcane JWT/session signing secret.',
         sensitive: true,
       },
-      OIDC_ISSUER_URL: {
+      GETARCANE_OIDC_ISSUER_URL: {
         description: 'OIDC issuer URL with no trailing slash.',
       },
-      OIDC_SCOPES: {
-        description: 'Include any claim scopes needed for OIDC_ADMIN_CLAIM (for example groups).',
+      GETARCANE_OIDC_SCOPES: {
+        description: 'Include any claim scopes needed for GETARCANE_OIDC_ADMIN_CLAIM (for example groups).',
       },
     },
     extraTooling: [
       {
         title: 'OIDC callback URL reminder',
         description: 'Register this callback URI in your identity provider config.',
-        command: '${APP_URL}/auth/oidc/callback',
+        command: '${GETARCANE_APP_URL}/auth/oidc/callback',
         url: 'https://getarcane.app/docs/configuration/sso',
       },
     ],

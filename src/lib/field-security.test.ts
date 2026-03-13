@@ -3,10 +3,10 @@ import { generateSecretForField, getSecretGenerationSpec, validateFieldValue } f
 
 describe('field-security', () => {
   it('uses hex32 generation for Arcane core keys', () => {
-    const spec = getSecretGenerationSpec('ENCRYPTION_KEY', true)
+    const spec = getSecretGenerationSpec('GETARCANE_ENCRYPTION_KEY', true)
     expect(spec?.mode).toBe('hex32')
 
-    const generated = generateSecretForField('ENCRYPTION_KEY', true)
+    const generated = generateSecretForField('GETARCANE_ENCRYPTION_KEY', true)
     expect(generated).toMatch(/^[a-f0-9]{64}$/)
   })
 
@@ -19,7 +19,7 @@ describe('field-security', () => {
   })
 
   it('warns on trailing slash issuer URL', () => {
-    const validation = validateFieldValue('OIDC_ISSUER_URL', 'https://idp.example.com/')
+    const validation = validateFieldValue('GETARCANE_OIDC_ISSUER_URL', 'https://idp.example.com/')
     expect(validation).toEqual({
       level: 'warn',
       message: 'OIDC issuer URL should not have a trailing slash.',
@@ -27,7 +27,7 @@ describe('field-security', () => {
   })
 
   it('validates port range', () => {
-    const invalid = validateFieldValue('PORT', '99999')
+    const invalid = validateFieldValue('DOZZLE_PORT', '99999')
     expect(invalid?.level).toBe('error')
   })
 })

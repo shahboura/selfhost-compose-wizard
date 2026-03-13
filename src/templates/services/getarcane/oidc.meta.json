@@ -1,81 +1,88 @@
 {
   "fields": {
-    "APP_URL": {
+    "GETARCANE_APP_URL": {
       "type": "url",
       "required": false,
       "sensitive": false,
-      "description": "APP_URL URL.",
+      "description": "GETARCANE_APP_URL URL.",
       "recommendedDefault": "http://localhost:3552"
     },
-    "DATA_DIR": {
+    "GETARCANE_DATA_DIR": {
       "type": "path",
       "required": false,
       "sensitive": false,
-      "description": "DATA_DIR filesystem path.",
+      "description": "GETARCANE_DATA_DIR filesystem path.",
       "recommendedDefault": "./arcane-data"
     },
-    "ENCRYPTION_KEY": {
+    "GETARCANE_ENCRYPTION_KEY": {
       "type": "secret",
       "required": true,
       "sensitive": true,
-      "description": "ENCRYPTION_KEY secret value.",
+      "description": "GETARCANE_ENCRYPTION_KEY secret value.",
       "recommendedDefault": ""
     },
-    "JWT_SECRET": {
+    "GETARCANE_JWT_SECRET": {
       "type": "secret",
       "required": true,
       "sensitive": true,
-      "description": "JWT_SECRET secret value.",
+      "description": "GETARCANE_JWT_SECRET secret value.",
       "recommendedDefault": ""
     },
-    "OIDC_ADMIN_CLAIM": {
+    "GETARCANE_OIDC_ADMIN_CLAIM": {
       "type": "text",
       "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": ""
     },
-    "OIDC_ADMIN_VALUE": {
+    "GETARCANE_OIDC_ADMIN_VALUE": {
       "type": "text",
       "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": ""
     },
-    "OIDC_CLIENT_ID": {
+    "GETARCANE_OIDC_CLIENT_ID": {
       "type": "text",
       "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": ""
     },
-    "OIDC_CLIENT_SECRET": {
+    "GETARCANE_OIDC_CLIENT_SECRET": {
       "type": "secret",
       "required": true,
       "sensitive": true,
-      "description": "OIDC_CLIENT_SECRET secret value.",
+      "description": "GETARCANE_OIDC_CLIENT_SECRET secret value.",
       "recommendedDefault": ""
     },
-    "OIDC_ISSUER_URL": {
+    "GETARCANE_OIDC_ISSUER_URL": {
       "type": "url",
       "required": true,
       "sensitive": false,
-      "description": "OIDC_ISSUER_URL URL.",
+      "description": "GETARCANE_OIDC_ISSUER_URL URL.",
       "recommendedDefault": ""
     },
-    "OIDC_MERGE_ACCOUNTS": {
+    "GETARCANE_OIDC_MERGE_ACCOUNTS": {
       "type": "text",
       "required": false,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": "false"
     },
-    "OIDC_SCOPES": {
+    "GETARCANE_OIDC_SCOPES": {
       "type": "text",
       "required": false,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": "openid email profile"
+    },
+    "GETARCANE_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "GETARCANE_PORT numeric value.",
+      "recommendedDefault": "3552"
     },
     "PGID": {
       "type": "text",
@@ -83,13 +90,6 @@
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
       "recommendedDefault": "1000"
-    },
-    "PORT": {
-      "type": "number",
-      "required": false,
-      "sensitive": false,
-      "description": "PORT numeric value.",
-      "recommendedDefault": "3552"
     },
     "PUID": {
       "type": "text",

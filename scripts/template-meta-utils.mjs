@@ -18,7 +18,7 @@ export function inferFieldType(key) {
     return 'number'
   }
 
-  if (/(^|_)(DIR|PATH|LOCATION)$/i.test(key)) {
+  if (/(^|_)(DIR|PATH|LOCATION|FILE)$/i.test(key)) {
     return 'path'
   }
 

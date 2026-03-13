@@ -11,12 +11,12 @@ interface FieldValidation {
 }
 
 const NON_GENERATABLE_SECRET_KEYS = new Set<string>([
-  'OIDC_CLIENT_SECRET',
+  'GETARCANE_OIDC_CLIENT_SECRET',
   'CLIENT_SECRET',
   'OIDC_TOKEN_ENDPOINT',
 ])
 
-const HEX32_KEYS = new Set<string>(['ENCRYPTION_KEY', 'JWT_SECRET'])
+const HEX32_KEYS = new Set<string>(['GETARCANE_ENCRYPTION_KEY', 'GETARCANE_JWT_SECRET'])
 const BASE64URL32_KEYS = new Set<string>(['OAUTH2_PROXY_COOKIE_SECRET', 'COOKIE_SECRET'])
 
 const ALNUM_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -72,7 +72,7 @@ export function getSecretGenerationSpec(fieldKey: string, sensitive: boolean): S
     }
   }
 
-  if (fieldKey.endsWith('_PASSWORD') || fieldKey === 'DB_PASSWORD') {
+  if (fieldKey.endsWith('_PASSWORD')) {
     return {
       mode: 'alnum32',
       note: 'Generates 32-char alphanumeric password.',
@@ -130,7 +130,7 @@ export function validateFieldValue(fieldKey: string, value: string): FieldValida
         return { level: 'error', message: 'URL must use http or https.' }
       }
 
-      if (fieldKey === 'OIDC_ISSUER_URL' && parsed.pathname.endsWith('/')) {
+      if (fieldKey.endsWith('OIDC_ISSUER_URL') && parsed.pathname.endsWith('/')) {
         return { level: 'warn', message: 'OIDC issuer URL should not have a trailing slash.' }
       }
 

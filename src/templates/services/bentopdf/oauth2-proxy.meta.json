@@ -1,24 +1,24 @@
 {
   "fields": {
-    "OAUTH2_PROXY_AUTH_DIR": {
+    "BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE": {
       "type": "path",
       "required": false,
       "sensitive": false,
-      "description": "OAUTH2_PROXY_AUTH_DIR filesystem path.",
+      "description": "BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE filesystem path.",
       "recommendedDefault": "./oauth2-proxy/authenticated_emails"
     },
-    "OAUTH2_PROXY_CONFIG_DIR": {
+    "BENTOPDF_OAUTH2_PROXY_CONFIG_FILE": {
       "type": "path",
       "required": false,
       "sensitive": false,
-      "description": "OAUTH2_PROXY_CONFIG_DIR filesystem path.",
+      "description": "BENTOPDF_OAUTH2_PROXY_CONFIG_FILE filesystem path.",
       "recommendedDefault": "./oauth2-proxy.cfg"
     },
-    "OAUTH2_PROXY_PORT": {
+    "BENTOPDF_OAUTH2_PROXY_PORT": {
       "type": "number",
       "required": false,
       "sensitive": false,
-      "description": "OAUTH2_PROXY_PORT numeric value.",
+      "description": "BENTOPDF_OAUTH2_PROXY_PORT numeric value.",
       "recommendedDefault": "7860"
     },
     "PGID": {
