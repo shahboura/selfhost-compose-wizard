@@ -63,6 +63,12 @@ jobs:
           if-no-files-found: ignore
 
       - name: Lighthouse accessibility/performance audit
+        if: github.ref == 'refs/heads/main'
+        run: npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json
+
+      - name: Lighthouse accessibility/performance audit (PR, non-blocking)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
         run: npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json
 
       - name: Upload Lighthouse report

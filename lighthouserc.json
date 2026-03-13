@@ -6,7 +6,7 @@
       "url": [
         "http://127.0.0.1:4173/selfhost-compose-wizard/"
       ],
-      "numberOfRuns": 1,
+      "numberOfRuns": 3,
       "settings": {
         "preset": "desktop"
       }
