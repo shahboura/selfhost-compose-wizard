@@ -1,16 +1,4 @@
 {
-  "id": "immich",
-  "service": "immich",
-  "variant": "base",
-  "name": "Immich",
-  "category": "utilities",
-  "description": "Scaffolded metadata. Review and customize.",
-  "tags": [
-    "immich"
-  ],
-  "docs": null,
-  "riskWarnings": [],
-  "references": [],
   "fields": {
     "DB_DATA_LOCATION": {
       "type": "path",

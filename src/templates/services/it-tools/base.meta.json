@@ -1,16 +1,4 @@
 {
-  "id": "it-tools",
-  "service": "it-tools",
-  "variant": "base",
-  "name": "It Tools",
-  "category": "utilities",
-  "description": "Scaffolded metadata. Review and customize.",
-  "tags": [
-    "it-tools"
-  ],
-  "docs": null,
-  "riskWarnings": [],
-  "references": [],
   "fields": {
     "IT_TOOLS_PORT": {
       "type": "number",

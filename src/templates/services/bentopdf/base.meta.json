@@ -1,16 +1,4 @@
 {
-  "id": "bentopdf",
-  "service": "bentopdf",
-  "variant": "base",
-  "name": "Bentopdf",
-  "category": "utilities",
-  "description": "Scaffolded metadata. Review and customize.",
-  "tags": [
-    "bentopdf"
-  ],
-  "docs": null,
-  "riskWarnings": [],
-  "references": [],
   "fields": {
     "BENTOPDF_PORT": {
       "type": "number",

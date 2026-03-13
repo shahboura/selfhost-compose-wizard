@@ -284,6 +284,7 @@ function App(): JSX.Element {
 
     try {
       await exportBundleAsZip({
+        serviceId: selectedService.id,
         composeContent: output.composeContent,
         envContent: output.envContent,
       })
@@ -485,13 +486,11 @@ function App(): JSX.Element {
               title={selectedService.templateFile}
               language="yaml"
               content={output.composeContent}
-              fileName={selectedService.templateFile}
             />
             <CodePanel
               title=".env"
               language="dotenv"
               content={output.envContent}
-              fileName={`${selectedService.id}.env`}
             />
           </div>
 

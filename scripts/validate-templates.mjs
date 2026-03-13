@@ -2,9 +2,7 @@
 
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
-
-const PLACEHOLDER_REGEX = /\$\{([A-Za-z_][A-Za-z0-9_]*)(?:(:-|-)([^}]*))?\}/g
-const ALLOWED_FIELD_TYPES = new Set(['text', 'secret', 'url', 'number', 'timezone', 'path'])
+import { ALLOWED_FIELD_TYPES, extractComposeVariables } from './template-meta-utils.mjs'
 
 async function walkFiles(dirPath) {
   const entries = await readdir(dirPath, { withFileTypes: true })
@@ -24,34 +22,10 @@ async function walkFiles(dirPath) {
   return collected
 }
 
-function extractVariables(templateContent) {
-  const keys = new Set()
-
-  for (const match of templateContent.matchAll(PLACEHOLDER_REGEX)) {
-    const key = match[1]
-    if (key) {
-      keys.add(key)
-    }
-  }
-
-  return [...keys].sort()
-}
-
-function serviceAndVariantFromPath(composePath) {
-  const service = path.basename(path.dirname(composePath))
-  const fileName = path.basename(composePath)
-  const variant = fileName.replace(/\.compose\.ya?ml$/, '')
-  return { service, variant }
-}
-
-function expectedServiceId(service, variant) {
-  return variant === 'base' ? service : `${service}-${variant}`
-}
-
 async function validateComposeTemplate(composePath) {
   const failures = []
   const composeContent = await readFile(composePath, 'utf8')
-  const composeVariables = extractVariables(composeContent)
+  const composeVariables = extractComposeVariables(composeContent).map((entry) => entry.key)
   const metaPath = composePath.replace(/\.compose\.ya?ml$/, '.meta.json')
 
   let meta
@@ -66,17 +40,14 @@ async function validateComposeTemplate(composePath) {
     return failures
   }
 
-  const { service, variant } = serviceAndVariantFromPath(composePath)
-  const expectedId = expectedServiceId(service, variant)
-  if (meta.id !== expectedId) {
+  const fields = typeof meta.fields === 'object' && meta.fields !== null ? meta.fields : {}
+  if (Object.keys(fields).length === 0) {
     failures.push({
       path: metaPath,
-      reason: 'Meta id mismatch',
-      detail: `Expected ${expectedId}, found ${meta.id}`,
+      reason: 'Missing fields object',
+      detail: 'Expected non-empty "fields" metadata map',
     })
   }
-
-  const fields = typeof meta.fields === 'object' && meta.fields !== null ? meta.fields : {}
   const metaKeys = Object.keys(fields).sort()
 
   const missingInMeta = composeVariables.filter((key) => !metaKeys.includes(key))
@@ -114,6 +85,30 @@ async function validateComposeTemplate(composePath) {
         path: metaPath,
         reason: 'Unsupported field type',
         detail: `${key}: ${String(field.type)}`,
+      })
+    }
+
+    if (typeof field.required !== 'boolean') {
+      failures.push({
+        path: metaPath,
+        reason: 'Invalid required flag',
+        detail: key,
+      })
+    }
+
+    if (typeof field.sensitive !== 'boolean') {
+      failures.push({
+        path: metaPath,
+        reason: 'Invalid sensitive flag',
+        detail: key,
+      })
+    }
+
+    if (typeof field.recommendedDefault !== 'string') {
+      failures.push({
+        path: metaPath,
+        reason: 'Invalid recommendedDefault type',
+        detail: key,
       })
     }
 

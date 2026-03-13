@@ -1,16 +1,4 @@
 {
-  "id": "dozzle-oauth2-proxy",
-  "service": "dozzle",
-  "variant": "oauth2-proxy",
-  "name": "Dozzle (oauth2-proxy)",
-  "category": "utilities",
-  "description": "Scaffolded metadata. Review and customize.",
-  "tags": [
-    "dozzle"
-  ],
-  "docs": null,
-  "riskWarnings": [],
-  "references": [],
   "fields": {
     "DOZZLE_DATA_DIR": {
       "type": "path",

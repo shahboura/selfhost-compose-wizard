@@ -1,16 +1,4 @@
 {
-  "id": "jellyfin",
-  "service": "jellyfin",
-  "variant": "base",
-  "name": "Jellyfin",
-  "category": "utilities",
-  "description": "Scaffolded metadata. Review and customize.",
-  "tags": [
-    "jellyfin"
-  ],
-  "docs": null,
-  "riskWarnings": [],
-  "references": [],
   "fields": {
     "JELLYFIN_CACHE_DIR": {
       "type": "path",

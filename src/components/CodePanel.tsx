@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
-import { downloadTextFile } from '../lib/download'
 
 interface CodePanelProps {
   title: string
   language: 'yaml' | 'dotenv' | 'text'
   content: string
-  fileName: string
 }
 
-export function CodePanel({ title, language, content, fileName }: CodePanelProps): JSX.Element {
+export function CodePanel({ title, language, content }: CodePanelProps): JSX.Element {
   const [copied, setCopied] = useState<boolean>(false)
   const [showCopyIndicator, setShowCopyIndicator] = useState<boolean>(false)
   const timeoutRef = useRef<number | undefined>(undefined)
@@ -40,11 +38,6 @@ export function CodePanel({ title, language, content, fileName }: CodePanelProps
           <small>
             {lineCount} lines • {language}
           </small>
-        </div>
-        <div className="actions-inline">
-          <button type="button" className="button" onClick={() => downloadTextFile(fileName, content)}>
-            Download
-          </button>
         </div>
       </header>
       <div

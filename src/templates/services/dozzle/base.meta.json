@@ -1,16 +1,4 @@
 {
-  "id": "dozzle",
-  "service": "dozzle",
-  "variant": "base",
-  "name": "Dozzle",
-  "category": "utilities",
-  "description": "Scaffolded metadata. Review and customize.",
-  "tags": [
-    "dozzle"
-  ],
-  "docs": null,
-  "riskWarnings": [],
-  "references": [],
   "fields": {
     "DOZZLE_DATA_DIR": {
       "type": "path",
