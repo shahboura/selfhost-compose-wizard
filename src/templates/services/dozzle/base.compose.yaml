@@ -14,10 +14,6 @@ services:
      TZ: ${TZ}
      PUID: ${PUID}
      PGID: ${PGID}
-     DOZZLE_AUTH_PROVIDER: forward-proxy
-     DOZZLE_AUTH_HEADER_USER: X-Forwarded-User
-     DOZZLE_AUTH_HEADER_EMAIL: X-Forwarded-Email
-     DOZZLE_AUTH_HEADER_NAME: X-Forwarded-Preferred-Username
     healthcheck:
       test: ["CMD", "/dozzle", "healthcheck"]
       interval: 10s

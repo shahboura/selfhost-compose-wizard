@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type JSX } from 'react'
+import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
 import { CodePanel } from './components/CodePanel'
 import { FieldEditor } from './components/FieldEditor'
 import { PrivacyNotice } from './components/PrivacyNotice'
@@ -9,6 +9,7 @@ import { TopNav } from './components/TopNav'
 import { WizardStepper } from './components/WizardStepper'
 import { RESEARCH_SOURCES } from './data/defaults'
 import { SERVICE_CATALOG } from './data/service-catalog'
+import { downloadTextFile } from './lib/download'
 import { parseEnvContent } from './lib/env'
 import { exportBundleAsZip } from './lib/export'
 import { buildFieldDefinitions, generateOutputs, resolveWizardStateForService, type GenerationOutput } from './lib/generator'
@@ -32,6 +33,12 @@ function App(): JSX.Element {
     return window.localStorage.getItem('onboarding_tip_dismissed') !== 'true'
   })
   const [wizardState, setWizardState] = useState<Record<string, WizardFieldState>>({})
+  const selectedServiceIdRef = useRef<string>('')
+  const envImportRequestIdRef = useRef<number>(0)
+
+  useEffect(() => {
+    selectedServiceIdRef.current = selectedServiceId
+  }, [selectedServiceId])
 
   const selectedService = useMemo<ServiceDefinition | undefined>(
     () => SERVICE_CATALOG.find((service) => service.id === selectedServiceId),
@@ -107,6 +114,11 @@ function App(): JSX.Element {
     setImportStatus('')
     if (nextService) {
       const nextTemplate = TEMPLATE_CONTENT[nextService.templateKey] ?? ''
+      if (nextTemplate.length === 0) {
+        setStep(1)
+        setImportStatus('Selected template could not be loaded. Please pick another service.')
+        return
+      }
       setWizardState(resolveWizardStateForService(nextTemplate, nextService.fieldOverrides))
     } else {
       setWizardState({})
@@ -156,7 +168,6 @@ function App(): JSX.Element {
     window.localStorage.setItem('onboarding_tip_dismissed', 'true')
   }
 
-  const selectedServiceIndex = SERVICE_CATALOG.findIndex((service) => service.id === selectedServiceId)
   const pageTitle = selectedService?.name ?? 'Select a service'
   const selectedTemplatePath = selectedService?.templateFile ?? 'N/A'
   const categories = useMemo<ServiceCategory[]>(
@@ -213,6 +224,16 @@ function App(): JSX.Element {
   }, [visibleServices])
 
   const importEnvFile = async (file: File): Promise<void> => {
+    if (!selectedService) {
+      setImportStatus('Select a service before importing an env file.')
+      return
+    }
+
+    const serviceIdAtStart = selectedServiceIdRef.current
+    const requestId = envImportRequestIdRef.current + 1
+    envImportRequestIdRef.current = requestId
+    const fieldsAtImportStart = fields
+
     const maxImportSizeBytes = 1_500_000
     if (file.size > maxImportSizeBytes) {
       setImportStatus('Import failed: file is too large. Please keep it below 1.5MB.')
@@ -222,11 +243,16 @@ function App(): JSX.Element {
     try {
       const text = await file.text()
       const parsed = parseEnvContent(text)
+
+      if (envImportRequestIdRef.current !== requestId || selectedServiceIdRef.current !== serviceIdAtStart) {
+        return
+      }
+
       let importedCount = 0
 
       setWizardState((currentState) => {
         const nextState: Record<string, WizardFieldState> = { ...currentState }
-        for (const field of fields) {
+        for (const field of fieldsAtImportStart) {
           const importedValue = parsed[field.key]
           if (typeof importedValue === 'string') {
             nextState[field.key] = {
@@ -240,22 +266,17 @@ function App(): JSX.Element {
         return nextState
       })
 
-      setImportStatus(importedCount > 0 ? `Imported ${importedCount} values from ${file.name}.` : 'No matching keys found in imported .env file.')
+      setImportStatus(
+        importedCount > 0
+          ? `Imported ${importedCount} values from ${file.name}.`
+          : 'No matching keys found in imported .env file.',
+      )
     } catch {
+      if (envImportRequestIdRef.current !== requestId || selectedServiceIdRef.current !== serviceIdAtStart) {
+        return
+      }
       setImportStatus('Import failed: could not parse the selected .env file.')
     }
-  }
-
-  const downloadTextFile = (fileName: string, content: string): void => {
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = fileName
-    document.body.appendChild(anchor)
-    anchor.click()
-    anchor.remove()
-    URL.revokeObjectURL(url)
   }
 
   const exportBundle = async (): Promise<void> => {
@@ -382,7 +403,7 @@ function App(): JSX.Element {
             <button
               type="button"
               className="button primary"
-              disabled={selectedServiceIndex < 0 || Boolean(templateError)}
+              disabled={!selectedService || Boolean(templateError)}
               onClick={() => setStep(2)}
             >
               Continue

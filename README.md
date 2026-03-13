@@ -63,6 +63,15 @@ GitHub Actions CI is configured in `.github/workflows/ci.yml` and runs:
 - `npm run test`
 - `npm run build`
 - `npm run test:e2e`
+- `npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json`
+
+CI optimizations/hardening included:
+
+- Push trigger limited to `main` (PRs run via `pull_request` trigger)
+- Concurrency cancellation for superseded runs
+- Minimal token permissions (`contents: read`)
+- Playwright retries/workers tuned for CI stability
+- Playwright and Lighthouse reports uploaded as artifacts
 - `npm run test:lighthouse`
 
 ## Popular package policy and CVE posture

@@ -1,22 +1,11 @@
 import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
+import { downloadTextFile } from '../lib/download'
 
 interface CodePanelProps {
   title: string
   language: 'yaml' | 'dotenv' | 'text'
   content: string
   fileName: string
-}
-
-function downloadTextFile(fileName: string, content: string): void {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = fileName
-  document.body.appendChild(anchor)
-  anchor.click()
-  anchor.remove()
-  URL.revokeObjectURL(url)
 }
 
 export function CodePanel({ title, language, content, fileName }: CodePanelProps): JSX.Element {
