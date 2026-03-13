@@ -1,0 +1,43 @@
+# for better separation, better to put all dozzle related data in one folder.
+
+services:
+  oauth2-proxy:
+    container_name: dozzle-oidc
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    command: --config /oauth2-proxy.cfg
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${DOZZLE_OAUTH2_PROXY_CONFIG:-./oauth2-proxy.cfg}:/oauth2-proxy.cfg:ro
+      - ${DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS:-./authenticated_emails}:/authenticated_emails:ro
+    restart: on-failure:5
+    ports:
+      - ${DOZZLE_OAUTH2_PROXY_PORT:-4180}:4180
+    depends_on:
+      - dozzle
+
+  dozzle:
+    container_name: Dozzle
+    image: amir20/dozzle:latest
+    security_opt:
+      - no-new-privileges:true
+    restart: on-failure:5
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOZZLE_DATA_DIR:-./dozzle}:/data:rw
+    environment:
+     TZ: ${TZ}
+     PUID: ${PUID}
+     PGID: ${PGID}
+     DOZZLE_AUTH_PROVIDER: forward-proxy
+     DOZZLE_AUTH_HEADER_USER: X-Forwarded-User
+     DOZZLE_AUTH_HEADER_EMAIL: X-Forwarded-Email
+     DOZZLE_AUTH_HEADER_NAME: X-Forwarded-Preferred-Username
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s

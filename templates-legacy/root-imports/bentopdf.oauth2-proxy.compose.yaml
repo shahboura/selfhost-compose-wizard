@@ -1,0 +1,43 @@
+# for better separation, better to put all bentopdf related data in one folder.
+
+services:
+  oauth2-proxy:
+    container_name: bentopdf-oidc
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    command: --config /oauth2-proxy.cfg
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    networks:
+      bentopdf-oauth2: {}
+    volumes:
+      - ${OAUTH2_PROXY_CONFIG_DIR:-./oauth2-proxy}:/oauth2-proxy.cfg:ro
+      - ${OAUTH2_PROXY_AUTH_DIR:-./oauth2-proxy/authenticated_emails}:/authenticated_emails:ro
+    restart: on-failure:5
+    ports:
+      - ${OAUTH2_PROXY_PORT:-7860}:7860
+    depends_on:
+      - bentopdf
+
+  bentopdf:
+    container_name: bentopdf
+    image: ghcr.io/alam00000/bentopdf-simple:latest
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    networks:
+      bentopdf-oauth2: {}
+    restart: on-failure:5
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  bentopdf-oauth2: {}

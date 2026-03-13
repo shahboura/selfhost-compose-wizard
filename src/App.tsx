@@ -1,0 +1,463 @@
+import { useMemo, useState, type JSX } from 'react'
+import { CodePanel } from './components/CodePanel'
+import { FieldEditor } from './components/FieldEditor'
+import { PrivacyNotice } from './components/PrivacyNotice'
+import { ServiceDetails } from './components/ServiceDetails'
+import { ServiceCard } from './components/ServiceCard'
+import { ServiceFilters } from './components/ServiceFilters'
+import { TopNav } from './components/TopNav'
+import { WizardStepper } from './components/WizardStepper'
+import { RESEARCH_SOURCES } from './data/defaults'
+import { SERVICE_CATALOG } from './data/service-catalog'
+import { parseEnvContent } from './lib/env'
+import { exportBundleAsZip } from './lib/export'
+import { buildFieldDefinitions, generateOutputs, resolveWizardStateForService, type GenerationOutput } from './lib/generator'
+import { extractComposeVariables } from './lib/template-parser'
+import { TEMPLATE_CONTENT } from './templates/registry'
+import type { ServiceCategory, ServiceDefinition, WizardFieldState } from './types'
+
+type Step = 1 | 2 | 3
+
+function App(): JSX.Element {
+  const [step, setStep] = useState<Step>(1)
+  const [selectedServiceId, setSelectedServiceId] = useState<string>(SERVICE_CATALOG[0]?.id ?? '')
+  const [searchText, setSearchText] = useState<string>('')
+  const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all')
+  const [importStatus, setImportStatus] = useState<string>('')
+  const [wizardState, setWizardState] = useState<Record<string, WizardFieldState>>(() => {
+    const initialService = SERVICE_CATALOG[0]
+    if (!initialService) {
+      return {}
+    }
+
+    const initialTemplate = TEMPLATE_CONTENT[initialService.templateKey] ?? ''
+    return resolveWizardStateForService(initialTemplate, initialService.fieldOverrides)
+  })
+
+  const selectedService = useMemo<ServiceDefinition | undefined>(
+    () => SERVICE_CATALOG.find((service) => service.id === selectedServiceId),
+    [selectedServiceId],
+  )
+
+  const templateContent = useMemo<string>(() => {
+    if (!selectedService) {
+      return ''
+    }
+
+    return TEMPLATE_CONTENT[selectedService.templateKey] ?? ''
+  }, [selectedService])
+
+  const templateError = useMemo<string>(() => {
+    if (!selectedService) {
+      return 'No service selected'
+    }
+
+    if (templateContent.length === 0) {
+      return `Template not found for key: ${selectedService.templateKey}`
+    }
+
+    return ''
+  }, [selectedService, templateContent])
+
+  const templateVariables = useMemo(
+    () => extractComposeVariables(templateContent),
+    [templateContent],
+  )
+
+  const fields = useMemo(
+    () =>
+      buildFieldDefinitions({
+        templateVariables,
+        fieldOverrides: selectedService?.fieldOverrides ?? {},
+      }),
+    [selectedService, templateVariables],
+  )
+
+  const output = useMemo<GenerationOutput | undefined>(() => {
+    if (!selectedService) {
+      return undefined
+    }
+
+    return generateOutputs({
+      templateContent,
+      fields,
+      wizardState,
+    })
+  }, [fields, selectedService, templateContent, wizardState])
+
+  const updateField = (key: string, patch: Partial<WizardFieldState>): void => {
+    setWizardState((currentState) => {
+      const previousValue = currentState[key] ?? {
+        value: '',
+        useDefault: true,
+      }
+
+      return {
+        ...currentState,
+        [key]: {
+          ...previousValue,
+          ...patch,
+        },
+      }
+    })
+  }
+
+  const selectService = (serviceId: string): void => {
+    const nextService = SERVICE_CATALOG.find((service) => service.id === serviceId)
+    setSelectedServiceId(serviceId)
+    setImportStatus('')
+    if (nextService) {
+      const nextTemplate = TEMPLATE_CONTENT[nextService.templateKey] ?? ''
+      setWizardState(resolveWizardStateForService(nextTemplate, nextService.fieldOverrides))
+    } else {
+      setWizardState({})
+    }
+    setStep(1)
+  }
+
+  const selectedServiceIndex = SERVICE_CATALOG.findIndex((service) => service.id === selectedServiceId)
+  const pageTitle = selectedService?.name ?? 'Select a service'
+  const selectedTemplatePath = selectedService?.templateFile ?? 'N/A'
+  const categories = useMemo<ServiceCategory[]>(
+    () => [...new Set(SERVICE_CATALOG.map((service) => service.category))],
+    [],
+  )
+
+  function isServiceCategory(value: string): value is ServiceCategory {
+    return categories.includes(value as ServiceCategory)
+  }
+
+  const handleCategoryChange = (value: string): void => {
+    if (value === 'all') {
+      setActiveCategory('all')
+      return
+    }
+
+    if (isServiceCategory(value)) {
+      setActiveCategory(value)
+    }
+  }
+
+  const visibleServices = useMemo<ServiceDefinition[]>(() => {
+    const normalizedSearch = searchText.trim().toLowerCase()
+    return SERVICE_CATALOG.filter((service) => {
+      const categoryMatch = activeCategory === 'all' || service.category === activeCategory
+      if (!categoryMatch) {
+        return false
+      }
+
+      if (normalizedSearch.length === 0) {
+        return true
+      }
+
+      const haystack = `${service.name} ${service.description} ${service.tags.join(' ')}`.toLowerCase()
+      return haystack.includes(normalizedSearch)
+    })
+  }, [activeCategory, searchText])
+
+  const groupedVisibleServices = useMemo<Record<ServiceCategory, ServiceDefinition[]>>(() => {
+    const base: Record<ServiceCategory, ServiceDefinition[]> = {
+      documents: [],
+      media: [],
+      observability: [],
+      photos: [],
+      utilities: [],
+    }
+
+    for (const service of visibleServices) {
+      base[service.category].push(service)
+    }
+
+    return base
+  }, [visibleServices])
+
+  const importEnvFile = async (file: File): Promise<void> => {
+    const maxImportSizeBytes = 1_500_000
+    if (file.size > maxImportSizeBytes) {
+      setImportStatus('Import failed: file is too large. Please keep it below 1.5MB.')
+      return
+    }
+
+    try {
+      const text = await file.text()
+      const parsed = parseEnvContent(text)
+      let importedCount = 0
+
+      setWizardState((currentState) => {
+        const nextState: Record<string, WizardFieldState> = { ...currentState }
+        for (const field of fields) {
+          const importedValue = parsed[field.key]
+          if (typeof importedValue === 'string') {
+            nextState[field.key] = {
+              value: importedValue,
+              useDefault: false,
+            }
+            importedCount += 1
+          }
+        }
+
+        return nextState
+      })
+
+      setImportStatus(importedCount > 0 ? `Imported ${importedCount} values from ${file.name}.` : 'No matching keys found in imported .env file.')
+    } catch {
+      setImportStatus('Import failed: could not parse the selected .env file.')
+    }
+  }
+
+  const downloadTextFile = (fileName: string, content: string): void => {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = fileName
+    document.body.appendChild(anchor)
+    anchor.click()
+    anchor.remove()
+    URL.revokeObjectURL(url)
+  }
+
+  const exportBundle = async (): Promise<void> => {
+    if (!selectedService || !output) {
+      return
+    }
+
+    try {
+      await exportBundleAsZip({
+        service: selectedService,
+        composeContent: output.composeContent,
+        envContent: output.envContent,
+        extraTooling: selectedService.extraTooling,
+      })
+      return
+    } catch {
+      const noteLines = selectedService.extraTooling.map((tool) =>
+        `${tool.title}: ${tool.description}${tool.command ? ` | ${tool.command}` : ''}${tool.url ? ` | ${tool.url}` : ''}`,
+      )
+
+      const fallbackBundle = [
+        '# Bundle fallback export',
+        `Service=${selectedService.name}`,
+        '',
+        '[compose]',
+        output.composeContent,
+        '',
+        '[env]',
+        output.envContent,
+        '',
+        '[notes]',
+        ...noteLines,
+      ].join('\n')
+
+      downloadTextFile(`${selectedService.id}-bundle.txt`, fallbackBundle)
+    }
+  }
+
+  const hasMissingRequired = output ? output.missingRequired.length > 0 : false
+
+  const jumpToMissingFields = (): void => {
+    setStep(2)
+  }
+
+  return (
+    <main className="app-shell">
+      <TopNav
+        selectedServiceName={pageTitle}
+        selectedTemplatePath={selectedTemplatePath}
+        onImportEnv={(file) => {
+          void importEnvFile(file)
+        }}
+      />
+
+      <p className="subtitle">
+        Build starter compose + env files from your templates. Data stays in your browser, and you get
+        clear guidance for secrets and extra setup tools.
+      </p>
+
+      {importStatus ? <p className="status-note">{importStatus}</p> : null}
+
+      <PrivacyNotice />
+
+      <ServiceFilters
+        search={searchText}
+        category={activeCategory}
+        categories={categories}
+        onSearchChange={setSearchText}
+        onCategoryChange={handleCategoryChange}
+      />
+
+      {selectedService ? <ServiceDetails service={selectedService} /> : null}
+
+      <WizardStepper
+        currentStep={step}
+        steps={[
+          'Select service',
+          'Configure values',
+          'Generate files',
+        ]}
+      />
+
+      {step === 1 ? (
+        <section className="card">
+          <h2>1. Pick a service template</h2>
+          <p className="muted">Choose one template variant to start.</p>
+          {visibleServices.length === 0 ? (
+            <p className="muted">No services matched your current filters.</p>
+          ) : (
+            <div className="grouped-services">
+              {Object.entries(groupedVisibleServices).map(([category, services]) =>
+                services.length === 0 ? null : (
+                  <section key={category} className="category-group">
+                    <h3>{category}</h3>
+                    <div className="service-grid">
+                      {services.map((service) => (
+                        <ServiceCard
+                          key={service.id}
+                          service={service}
+                          selected={service.id === selectedServiceId}
+                          onSelect={() => selectService(service.id)}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                ),
+              )}
+            </div>
+          )}
+
+          <div className="actions">
+            <button
+              type="button"
+              className="button primary"
+              disabled={selectedServiceIndex < 0 || Boolean(templateError)}
+              onClick={() => setStep(2)}
+            >
+              Continue
+            </button>
+          </div>
+
+          {templateError ? <p className="error-text">Failed to load template: {templateError}</p> : null}
+        </section>
+      ) : null}
+
+      {step === 2 ? (
+        <section className="card">
+          <h2>2. Configure env values</h2>
+          <p className="muted">
+            If you opt out of entering a value, the wizard will fill a researched default (or compose
+            fallback when available).
+          </p>
+
+          <div className="field-list">
+            {fields.map((field) => (
+              <FieldEditor
+                key={field.key}
+                field={field}
+                state={wizardState[field.key]}
+                idPrefix="env-field"
+                onChange={(patch) => updateField(field.key, patch)}
+              />
+            ))}
+          </div>
+
+          <div className="actions">
+            <button type="button" className="button" onClick={() => setStep(1)}>
+              Back
+            </button>
+            <button type="button" className="button primary" onClick={() => setStep(3)}>
+              Generate
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {step === 3 && output && selectedService ? (
+        <section className="card">
+          <h2>3. Generated output</h2>
+          <p className="muted">
+            Side-by-side preview of your template compose file and generated <code>.env</code>.
+          </p>
+
+          {output.missingRequired.length > 0 ? (
+            <div className="warning">
+              <strong>Review required values:</strong>
+              <ul>
+                {output.missingRequired.map((missingKey) => (
+                  <li key={missingKey}>{missingKey}</li>
+                ))}
+              </ul>
+              <button type="button" className="button" onClick={jumpToMissingFields}>
+                Go fix missing values
+              </button>
+            </div>
+          ) : null}
+
+          <div className="code-grid">
+            <CodePanel
+              title={selectedService.templateFile}
+              language="yaml"
+              content={output.composeContent}
+              fileName={selectedService.templateFile}
+            />
+            <CodePanel
+              title=".env"
+              language="dotenv"
+              content={output.envContent}
+              fileName={`${selectedService.id}.env`}
+            />
+          </div>
+
+          <section className="subsection">
+            <h3>Additional tooling / secrets</h3>
+            {selectedService.extraTooling.length === 0 ? (
+              <p className="muted">No additional key-generation tooling is required for this template.</p>
+            ) : (
+              <ul className="tool-list">
+                {selectedService.extraTooling.map((tool) => (
+                  <li key={tool.title}>
+                    <p>
+                      <strong>{tool.title}:</strong> {tool.description}
+                    </p>
+                    {tool.command ? <pre>{tool.command}</pre> : null}
+                    {tool.url ? (
+                      <a href={tool.url} target="_blank" rel="noreferrer">
+                        Source
+                      </a>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section className="subsection">
+            <h3>Defaults research references</h3>
+            <ul className="reference-list">
+              {RESEARCH_SOURCES.map((source) => (
+                <li key={source.url}>
+                  <a href={source.url} target="_blank" rel="noreferrer">
+                    {source.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <div className="actions">
+            <button type="button" className="button" onClick={() => setStep(2)}>
+              Back to fields
+            </button>
+            <button type="button" className="button" disabled={hasMissingRequired} onClick={() => void exportBundle()}>
+              Export bundle
+            </button>
+            <button type="button" className="button" onClick={() => setStep(1)}>
+              Start over
+            </button>
+          </div>
+        </section>
+      ) : null}
+    </main>
+  )
+}
+
+export default App

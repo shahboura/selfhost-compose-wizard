@@ -1,0 +1,30 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: Jellyfin
+    user: ${PUID:-1000}:${PGID:-100}
+    environment:
+      TZ: ${TZ}
+    ports:
+      - ${JELLYFIN_PORT:-8096}:8096
+      - ${JELLYFIN_UDP_PORT:-7359}:7359/udp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${JELLYFIN_CONFIG_DIR:-./jellyfin/config}:/config:rw
+      - ${JELLYFIN_CACHE_DIR:-./jellyfin/cache}:/cache:rw
+      - ${JELLYFIN_LOGS_DIR:-./jellyfin/logs}:/logs:rw
+      - ${JELLYFIN_MOVIES_DIR:-./jellyfin/movies}:/movies:rw
+      - ${JELLYFIN_MUSIC_DIR:-./jellyfin/music}:/music:rw
+      - ${JELLYFIN_TV_DIR:-./jellyfin/tv}:/shows:rw
+    devices:
+    # Optional - only needed if you want to use hardware acceleration for video encoding/decoding
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    restart: on-failure:5
+    network_mode: host
+    healthcheck:
+      test: timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8096' || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
