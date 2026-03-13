@@ -63,7 +63,6 @@ jobs:
           if-no-files-found: ignore
 
       - name: Lighthouse accessibility/performance audit
-        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         run: npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json
 
       - name: Upload Lighthouse report
@@ -79,12 +78,14 @@ jobs:
         if: github.ref == 'refs/heads/main' && success()
         run: node ./scripts/generate-lighthouse-badges.mjs
 
-      - name: Publish Lighthouse badges to gh-pages
+      - name: Stage static site for GitHub Pages
+        if: github.ref == 'refs/heads/main' && success()
+        run: mkdir -p dist/lighthouse && cp .badge-data/*.json dist/lighthouse/ && touch dist/.nojekyll
+
+      - name: Publish static site to gh-pages
         if: github.ref == 'refs/heads/main' && success()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./.badge-data
+          publish_dir: ./dist
           publish_branch: gh-pages
-          destination_dir: lighthouse
-          keep_files: true
