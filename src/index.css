@@ -305,6 +305,16 @@ h1 {
   margin-top: 0.65rem;
 }
 
+.field-search-row {
+  margin-top: 0.65rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field-search-row small {
+  color: #94a3b8;
+}
+
 .filters-grid {
   margin-top: 0.75rem;
   display: grid;
@@ -384,7 +394,8 @@ select {
 }
 
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+input[type='search'] {
   width: 100%;
   background: rgba(15, 23, 42, 0.65);
   border: 1px solid rgba(148, 163, 184, 0.35);
@@ -407,6 +418,13 @@ input[type='password']:disabled {
   gap: 0.5rem;
   justify-content: flex-end;
   margin-top: 1rem;
+}
+
+.sticky-actions {
+  position: sticky;
+  bottom: 0;
+  padding-top: 0.55rem;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0), rgba(15, 23, 42, 0.95) 40%);
 }
 
 .button {

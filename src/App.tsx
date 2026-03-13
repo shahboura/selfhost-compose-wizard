@@ -13,15 +13,52 @@ import { parseEnvContent } from './lib/env'
 import { exportBundleAsZip } from './lib/export'
 import { buildFieldDefinitions, generateOutputs, resolveWizardStateForService, type GenerationOutput } from './lib/generator'
 import { extractComposeVariables } from './lib/template-parser'
+import { TEMPLATE_FIELD_META } from './templates/meta-registry'
 import { TEMPLATE_CONTENT } from './templates/registry'
 import { SERVICE_CATEGORIES, type ServiceCategory, type ServiceDefinition, type WizardFieldState } from './types'
 
 type Step = 1 | 2 | 3
 
+function metaFieldsToOverrides(value: unknown): Record<string, { description?: string; recommendedDefault?: string; required?: boolean; sensitive?: boolean }> {
+  if (typeof value !== 'object' || value === null || !('fields' in value)) {
+    return {}
+  }
+
+  const fields = (value as { fields?: unknown }).fields
+  if (typeof fields !== 'object' || fields === null) {
+    return {}
+  }
+
+  const overrides: Record<string, { description?: string; recommendedDefault?: string; required?: boolean; sensitive?: boolean }> = {}
+  for (const [key, field] of Object.entries(fields as Record<string, unknown>)) {
+    if (typeof field !== 'object' || field === null) {
+      continue
+    }
+
+    const typedField = field as {
+      description?: unknown
+      recommendedDefault?: unknown
+      required?: unknown
+      sensitive?: unknown
+    }
+
+    overrides[key] = {
+      description: typeof typedField.description === 'string' ? typedField.description : undefined,
+      recommendedDefault:
+        typeof typedField.recommendedDefault === 'string' ? typedField.recommendedDefault : undefined,
+      required: typeof typedField.required === 'boolean' ? typedField.required : undefined,
+      sensitive: typeof typedField.sensitive === 'boolean' ? typedField.sensitive : undefined,
+    }
+  }
+
+  return overrides
+}
+
 function App(): JSX.Element {
   const [step, setStep] = useState<Step>(1)
   const [selectedServiceId, setSelectedServiceId] = useState<string>('')
   const [searchText, setSearchText] = useState<string>('')
+  const [fieldSearchText, setFieldSearchText] = useState<string>('')
   const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all')
   const [importStatus, setImportStatus] = useState<string>('')
   const [showOnboardingTip, setShowOnboardingTip] = useState<boolean>(() => {
@@ -73,7 +110,10 @@ function App(): JSX.Element {
     () =>
       buildFieldDefinitions({
         templateVariables,
-        fieldOverrides: selectedService?.fieldOverrides ?? {},
+        fieldOverrides: {
+          ...metaFieldsToOverrides(selectedService ? TEMPLATE_FIELD_META[selectedService.templateKey] : undefined),
+          ...(selectedService?.fieldOverrides ?? {}),
+        },
       }),
     [selectedService, templateVariables],
   )
@@ -119,6 +159,7 @@ function App(): JSX.Element {
 
     setSelectedServiceId(nextService.id)
     setImportStatus('')
+    setFieldSearchText('')
     const nextTemplate = TEMPLATE_CONTENT[nextService.templateKey] ?? ''
     if (nextTemplate.length === 0) {
       setStep(1)
@@ -133,6 +174,7 @@ function App(): JSX.Element {
     setStep(1)
     setSelectedServiceId('')
     setSearchText('')
+    setFieldSearchText('')
     setActiveCategory('all')
     setImportStatus('')
     setWizardState({})
@@ -315,6 +357,25 @@ function App(): JSX.Element {
     setStep(2)
   }
 
+  const visibleFields = useMemo(() => {
+    const normalized = fieldSearchText.trim().toLowerCase()
+    const sorted = [...fields].sort((left, right) => {
+      if (left.required !== right.required) {
+        return left.required ? -1 : 1
+      }
+      return left.key.localeCompare(right.key)
+    })
+
+    if (normalized.length === 0) {
+      return sorted
+    }
+
+    return sorted.filter((field) => {
+      const haystack = `${field.key} ${field.label} ${field.description}`.toLowerCase()
+      return haystack.includes(normalized)
+    })
+  }, [fieldSearchText, fields])
+
   return (
     <main className="app-shell">
       <TopNav onHome={goHome} />
@@ -409,6 +470,22 @@ function App(): JSX.Element {
           <h2>2. Configure env values</h2>
           <p className="muted">Use defaults or override any field.</p>
 
+          <div className="field-search-row">
+            <label htmlFor="field-search" className="sr-only">
+              Search environment fields
+            </label>
+            <input
+              id="field-search"
+              type="search"
+              placeholder="Search env fields (key, label, description)"
+              value={fieldSearchText}
+              onChange={(event) => setFieldSearchText(event.currentTarget.value)}
+            />
+            <small>
+              Showing {visibleFields.length} of {fields.length} fields
+            </small>
+          </div>
+
           <div className="inline-actions">
             <label htmlFor="import-env" className="button">
               Import .env
@@ -431,8 +508,10 @@ function App(): JSX.Element {
           <div className="field-list">
             {!selectedService ? null : fields.length === 0 ? (
               <p className="muted">No configurable environment variables found in this template.</p>
+            ) : visibleFields.length === 0 ? (
+              <p className="muted">No fields match your search.</p>
             ) : (
-              fields.map((field) => (
+              visibleFields.map((field) => (
                 <FieldEditor
                   key={field.key}
                   field={field}
@@ -444,7 +523,7 @@ function App(): JSX.Element {
             )}
           </div>
 
-          <div className="actions">
+          <div className="actions sticky-actions">
             <button type="button" className="button" onClick={() => setStep(1)}>
               Back
             </button>

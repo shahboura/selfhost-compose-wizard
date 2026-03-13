@@ -208,4 +208,5 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       },
     ],
   },
+  // @scaffold-catalog-entries
 ]

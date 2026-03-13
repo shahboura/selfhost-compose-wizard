@@ -129,11 +129,23 @@ async function run() {
   const servicesRoot = path.join(rootDir, 'src', 'templates', 'services')
   const files = await walkFiles(servicesRoot)
   const composeFiles = files.filter((filePath) => /\.compose\.ya?ml$/.test(filePath))
+  const metaFiles = files.filter((filePath) => /\.meta\.json$/.test(filePath))
+  const expectedMetaFiles = new Set(composeFiles.map((composePath) => composePath.replace(/\.compose\.ya?ml$/, '.meta.json')))
   const failures = []
 
   for (const composePath of composeFiles) {
     const templateFailures = await validateComposeTemplate(composePath)
     failures.push(...templateFailures)
+  }
+
+  for (const metaPath of metaFiles) {
+    if (!expectedMetaFiles.has(metaPath)) {
+      failures.push({
+        path: metaPath,
+        reason: 'Meta file has no matching compose template',
+        detail: 'No corresponding *.compose.yaml|yml file found',
+      })
+    }
   }
 
   if (failures.length > 0) {
