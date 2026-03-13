@@ -6,7 +6,7 @@ export function inferFieldType(key) {
     return 'timezone'
   }
 
-  if (/(PASSWORD|SECRET|TOKEN|API_KEY|PRIVATE_KEY|CLIENT_SECRET)$/i.test(key)) {
+  if (/(PASSWORD|SECRET|TOKEN|API_KEY|PRIVATE_KEY|CLIENT_SECRET|(^|_)KEY)$/i.test(key)) {
     return 'secret'
   }
 

@@ -20,6 +20,8 @@ Privacy-first web wizard for generating `docker-compose.yaml` and `.env` files f
 | Immich | media | base |
 | IT Tools | utilities | base |
 | Jellyfin | media | base |
+| GetArcane | utilities | base |
+| GetArcane + OIDC | utilities | oidc |
 
 ## Tech stack
 
@@ -35,6 +37,14 @@ Privacy-first web wizard for generating `docker-compose.yaml` and `.env` files f
 npm install
 npm run dev
 ```
+
+## Run with Docker
+
+```bash
+docker compose -f docker-compose.app.yml up --build
+```
+
+App URL: `http://localhost:8080`
 
 ## Validation
 

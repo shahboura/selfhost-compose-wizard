@@ -18,6 +18,14 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
+### 2026-03-13 20:08 - GetArcane onboarding, mobile overflow hardening, and containerization
+**Agent:** orchestrator
+**Summary:** Added GetArcane templates, tightened mobile layout behavior, and introduced production container artifacts.
+- Added `getarcane` base/OIDC templates + metadata, service catalog entries, and references aligned to official docs/generator.
+- Hardened mobile layout for Step 2/3 by improving wrapping/min-width behavior in field headers, action rows, service details, and code panels.
+- Added Docker runtime artifacts (`Dockerfile`, `.dockerignore`, `docker-compose.app.yml`, `docker/nginx.conf`) and verified image build locally.
+- Ran full quality gates plus dependency freshness checks (`npm outdated`, `npm update`, tests/build/e2e/link/template validation).
+
 ### 2026-03-13 18:52 - Template scaffolding and field-coverage automation
 **Agent:** em-advisor
 **Summary:** Expanded service scaffolding to generate metadata and added template field-coverage validation in CI.

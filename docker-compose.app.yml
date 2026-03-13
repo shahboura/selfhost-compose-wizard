@@ -1,0 +1,9 @@
+services:
+  selfhost-compose-wizard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: selfhost-compose-wizard:latest
+    ports:
+      - '8080:8080'
+    restart: unless-stopped

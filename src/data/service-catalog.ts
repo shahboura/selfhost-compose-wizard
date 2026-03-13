@@ -208,5 +208,104 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       },
     ],
   },
+  {
+    id: 'getarcane',
+    name: 'GetArcane',
+    templateFile: 'services/getarcane/base.compose.yaml',
+    templateKey: 'services/getarcane/base.compose.yaml',
+    category: 'utilities',
+    description: 'Self-hosted Docker and compose management UI for homelab environments.',
+    tags: ['homelab', 'docker', 'arcane'],
+    riskWarnings: [
+      'Mounts /var/run/docker.sock, which grants broad host Docker control.',
+      'Uses cgroup: host; review host runtime isolation requirements.',
+    ],
+    fieldOverrides: {
+      ENCRYPTION_KEY: {
+        description: 'Arcane encryption key. Must be 32 bytes (hex/base64/raw).',
+        sensitive: true,
+      },
+      JWT_SECRET: {
+        description: 'Arcane JWT/session signing secret.',
+        sensitive: true,
+      },
+      DATA_DIR: {
+        description: 'Host path mounted to /app/data for Arcane state and projects.',
+      },
+    },
+    extraTooling: [
+      {
+        title: 'Generate Arcane secrets',
+        description: 'Generate ENCRYPTION_KEY and JWT_SECRET with OpenSSL.',
+        command: 'openssl rand -hex 32',
+        url: 'https://getarcane.app/docs/setup/installation',
+      },
+    ],
+    researchReferences: [
+      {
+        title: 'GetArcane installation (compose)',
+        url: 'https://getarcane.app/docs/setup/installation',
+      },
+      {
+        title: 'GetArcane environment variables',
+        url: 'https://getarcane.app/docs/configuration/environment',
+      },
+      {
+        title: 'GetArcane compose generator',
+        url: 'https://getarcane.app/generator',
+      },
+    ],
+  },
+  {
+    id: 'getarcane-oidc',
+    name: 'GetArcane + OIDC',
+    templateFile: 'services/getarcane/oidc.compose.yaml',
+    templateKey: 'services/getarcane/oidc.compose.yaml',
+    category: 'utilities',
+    description: 'GetArcane configured for OIDC single sign-on environments.',
+    tags: ['homelab', 'docker', 'oidc'],
+    riskWarnings: [
+      'Mounts /var/run/docker.sock, which grants broad host Docker control.',
+      'OIDC issuer URL must be configured without trailing slash.',
+    ],
+    fieldOverrides: {
+      ENCRYPTION_KEY: {
+        description: 'Arcane encryption key. Must be 32 bytes (hex/base64/raw).',
+        sensitive: true,
+      },
+      JWT_SECRET: {
+        description: 'Arcane JWT/session signing secret.',
+        sensitive: true,
+      },
+      OIDC_ISSUER_URL: {
+        description: 'OIDC issuer URL with no trailing slash.',
+      },
+      OIDC_SCOPES: {
+        description: 'Include any claim scopes needed for OIDC_ADMIN_CLAIM (for example groups).',
+      },
+    },
+    extraTooling: [
+      {
+        title: 'OIDC callback URL reminder',
+        description: 'Register this callback URI in your identity provider config.',
+        command: '${APP_URL}/auth/oidc/callback',
+        url: 'https://getarcane.app/docs/configuration/sso',
+      },
+    ],
+    researchReferences: [
+      {
+        title: 'GetArcane OIDC SSO configuration',
+        url: 'https://getarcane.app/docs/configuration/sso',
+      },
+      {
+        title: 'GetArcane environment variables',
+        url: 'https://getarcane.app/docs/configuration/environment',
+      },
+      {
+        title: 'GetArcane compose generator',
+        url: 'https://getarcane.app/generator',
+      },
+    ],
+  },
   // @scaffold-catalog-entries
 ]

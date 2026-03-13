@@ -5,6 +5,8 @@ import dozzleOauth2Proxy from './services/dozzle/oauth2-proxy.compose.yaml?raw'
 import immichBase from './services/immich/base.compose.yaml?raw'
 import itToolsBase from './services/it-tools/base.compose.yaml?raw'
 import jellyfinBase from './services/jellyfin/base.compose.yaml?raw'
+import getarcaneBase from './services/getarcane/base.compose.yaml?raw'
+import getarcaneOidc from './services/getarcane/oidc.compose.yaml?raw'
 // @scaffold-imports
 
 export const TEMPLATE_CONTENT = {
@@ -15,6 +17,8 @@ export const TEMPLATE_CONTENT = {
   'services/immich/base.compose.yaml': immichBase,
   'services/it-tools/base.compose.yaml': itToolsBase,
   'services/jellyfin/base.compose.yaml': jellyfinBase,
+  'services/getarcane/base.compose.yaml': getarcaneBase,
+  'services/getarcane/oidc.compose.yaml': getarcaneOidc,
   // @scaffold-mappings
 } as const satisfies Record<string, string>
 

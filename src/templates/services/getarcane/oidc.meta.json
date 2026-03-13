@@ -1,0 +1,109 @@
+{
+  "fields": {
+    "APP_URL": {
+      "type": "url",
+      "required": false,
+      "sensitive": false,
+      "description": "APP_URL URL.",
+      "recommendedDefault": "http://localhost:3552"
+    },
+    "DATA_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "DATA_DIR filesystem path.",
+      "recommendedDefault": "./arcane-data"
+    },
+    "ENCRYPTION_KEY": {
+      "type": "secret",
+      "required": true,
+      "sensitive": true,
+      "description": "ENCRYPTION_KEY secret value.",
+      "recommendedDefault": ""
+    },
+    "JWT_SECRET": {
+      "type": "secret",
+      "required": true,
+      "sensitive": true,
+      "description": "JWT_SECRET secret value.",
+      "recommendedDefault": ""
+    },
+    "OIDC_ADMIN_CLAIM": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "OIDC_ADMIN_VALUE": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "OIDC_CLIENT_ID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "OIDC_CLIENT_SECRET": {
+      "type": "secret",
+      "required": true,
+      "sensitive": true,
+      "description": "OIDC_CLIENT_SECRET secret value.",
+      "recommendedDefault": ""
+    },
+    "OIDC_ISSUER_URL": {
+      "type": "url",
+      "required": true,
+      "sensitive": false,
+      "description": "OIDC_ISSUER_URL URL.",
+      "recommendedDefault": ""
+    },
+    "OIDC_MERGE_ACCOUNTS": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "false"
+    },
+    "OIDC_SCOPES": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "openid email profile"
+    },
+    "PGID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "1000"
+    },
+    "PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "PORT numeric value.",
+      "recommendedDefault": "3552"
+    },
+    "PUID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "1000"
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": false,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": "Etc/UTC"
+    }
+  }
+}

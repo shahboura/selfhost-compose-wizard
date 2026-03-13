@@ -257,6 +257,8 @@ h1 {
 
 .service-details dd {
   margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .risk-panel {
@@ -351,10 +353,16 @@ select {
   gap: 1rem;
 }
 
+.field-head > div {
+  min-width: 0;
+  flex: 1;
+}
+
 .field-head h3 {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .field-head code {
@@ -363,6 +371,8 @@ select {
   border: 1px solid rgba(148, 163, 184, 0.4);
   border-radius: 6px;
   padding: 0.08rem 0.35rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .hint {
@@ -418,6 +428,7 @@ input[type='password']:disabled {
   gap: 0.5rem;
   justify-content: flex-end;
   margin-top: 1rem;
+  flex-wrap: wrap;
 }
 
 .sticky-actions {
@@ -449,7 +460,7 @@ input[type='password']:disabled {
 .code-grid {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
   gap: 0.75rem;
 }
 
@@ -458,6 +469,7 @@ input[type='password']:disabled {
   border-radius: 10px;
   overflow: hidden;
   display: grid;
+  min-width: 0;
 }
 
 .code-panel header {
@@ -474,6 +486,8 @@ input[type='password']:disabled {
   padding: 0.75rem;
   overflow: auto;
   max-height: 540px;
+  min-width: 0;
+  max-width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New,
     monospace;
   font-size: 0.84rem;
@@ -482,6 +496,8 @@ input[type='password']:disabled {
 
 .code-pre-wrap {
   position: relative;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .copy-indicator {

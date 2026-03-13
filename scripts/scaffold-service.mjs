@@ -138,7 +138,7 @@ async function updateRegistry(rootDir, service, variant) {
   }
 
   const updatedImports = fileContent.replace('// @scaffold-imports', `${importToken}\n// @scaffold-imports`)
-  const updatedMappings = updatedImports.replace('// @scaffold-mappings', `${mappingToken}\n  // @scaffold-mappings`)
+  const updatedMappings = updatedImports.replace('  // @scaffold-mappings', `${mappingToken}\n  // @scaffold-mappings`)
 
   if (updatedMappings === fileContent) {
     throw new Error('Unable to update template registry mappings. Please update src/templates/registry.ts manually.')
@@ -176,7 +176,7 @@ async function updateCatalog(rootDir, args) {
 
   const entry = `  {\n    id: ${toTsStringLiteral(id)},\n    name: ${toTsStringLiteral(args.name)},\n    templateFile: ${toTsStringLiteral(templatePath)},\n    templateKey: ${toTsStringLiteral(templatePath)},\n    category: ${toTsStringLiteral(args.category)},\n    description: ${toTsStringLiteral(args.description)},\n    tags: [${tags.map((tag) => toTsStringLiteral(tag)).join(', ')}],${riskWarningsBlock}\n    fieldOverrides: {},\n    extraTooling: [],${docsReference}  },\n`
 
-  const updated = fileContent.replace('// @scaffold-catalog-entries', `${entry}  // @scaffold-catalog-entries`)
+  const updated = fileContent.replace('  // @scaffold-catalog-entries', `${entry}  // @scaffold-catalog-entries`)
 
   if (updated === fileContent) {
     throw new Error('Unable to update service catalog. Please add the service entry manually.')
