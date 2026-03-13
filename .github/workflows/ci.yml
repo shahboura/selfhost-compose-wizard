@@ -11,8 +11,6 @@ concurrency:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   quality:
@@ -65,12 +63,8 @@ jobs:
           if-no-files-found: ignore
 
       - name: Lighthouse accessibility/performance audit
-        if: github.ref == 'refs/heads/main'
-        run: npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json
-
-      - name: Lighthouse accessibility/performance audit (PR, non-blocking)
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
+        if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json
 
       - name: Upload Lighthouse report
@@ -87,20 +81,30 @@ jobs:
         run: node ./scripts/generate-lighthouse-badges.mjs
 
       - name: Stage static site for GitHub Pages
-        if: github.ref == 'refs/heads/main' && success()
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
         run: mkdir -p dist/lighthouse && cp .badge-data/*.json dist/lighthouse/ && touch dist/.nojekyll
 
-      - name: Configure GitHub Pages
-        if: github.ref == 'refs/heads/main' && success()
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
-
       - name: Upload static site artifact for Pages
-        if: github.ref == 'refs/heads/main' && success()
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: ./dist
 
+  deploy-pages:
+    needs: quality
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+
       - name: Deploy GitHub Pages
         id: deployment
-        if: github.ref == 'refs/heads/main' && success()
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
