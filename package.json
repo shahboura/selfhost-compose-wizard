@@ -11,6 +11,8 @@
     "test": "vitest run src",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:lighthouse": "npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json",
+    "test:all": "npm run lint && npm run test && npm run validate:links && npm run test:e2e && npm run test:lighthouse && npm run build",
     "validate:links": "node ./scripts/validate-links.mjs",
     "scaffold:service": "node ./scripts/scaffold-service.mjs"
   },
