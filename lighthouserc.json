@@ -1,9 +1,10 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./dist",
+      "startServerCommand": "npm run preview -- --host 127.0.0.1 --port 4173",
+      "startServerReadyPattern": "127.0.0.1:4173",
       "url": [
-        "http://localhost/index.html"
+        "http://127.0.0.1:4173/selfhost-compose-wizard/"
       ],
       "numberOfRuns": 1,
       "settings": {
