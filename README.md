@@ -1,5 +1,9 @@
 # Selfhost Compose Wizard
 
+[![Validation](https://img.shields.io/github/actions/workflow/status/shahboura/selfhost-compose-wizard/ci.yml?branch=main&label=validation&logo=githubactions)](https://github.com/shahboura/selfhost-compose-wizard/actions/workflows/ci.yml)
+[![GitHub Pages](https://img.shields.io/website?url=https%3A%2F%2Fshahboura.github.io%2Fselfhost-compose-wizard%2F&label=github%20pages&logo=github)](https://shahboura.github.io/selfhost-compose-wizard/)
+[![License](https://img.shields.io/github/license/shahboura/selfhost-compose-wizard)](./LICENSE)
+
 ![Lighthouse Performance](https://img.shields.io/endpoint?url=https%3A%2F%2Fshahboura.github.io%2Fselfhost-compose-wizard%2Flighthouse%2Flighthouse-performance.json)
 ![Lighthouse Accessibility](https://img.shields.io/endpoint?url=https%3A%2F%2Fshahboura.github.io%2Fselfhost-compose-wizard%2Flighthouse%2Flighthouse-accessibility.json)
 ![Lighthouse Best Practices](https://img.shields.io/endpoint?url=https%3A%2F%2Fshahboura.github.io%2Fselfhost-compose-wizard%2Flighthouse%2Flighthouse-best-practices.json)
