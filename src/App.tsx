@@ -12,6 +12,13 @@ import { downloadTextFile } from './lib/download'
 import { parseEnvContent } from './lib/env'
 import { exportBundleAsZip } from './lib/export'
 import { buildFieldDefinitions, generateOutputs, resolveWizardStateForService, type GenerationOutput } from './lib/generator'
+import {
+  dedupeReferencesByUrl,
+  deriveAvailableCategories,
+  filterServices,
+  groupServicesByCategory,
+  sortAndFilterFields,
+} from './lib/service-utils'
 import { extractComposeVariables } from './lib/template-parser'
 import { TEMPLATE_CONTENT } from './templates/registry'
 import { SERVICE_CATEGORIES, type ServiceCategory, type ServiceDefinition, type WizardFieldState } from './types'
@@ -175,7 +182,7 @@ function App(): JSX.Element {
   }
 
   const categories = useMemo<ServiceCategory[]>(
-    () => SERVICE_CATEGORIES.filter((category) => SERVICE_CATALOG.some((service) => service.category === category)),
+    () => deriveAvailableCategories(SERVICE_CATALOG, SERVICE_CATEGORIES),
     [],
   )
 
@@ -195,33 +202,11 @@ function App(): JSX.Element {
   }
 
   const visibleServices = useMemo<ServiceDefinition[]>(() => {
-    const normalizedSearch = searchText.trim().toLowerCase()
-    return SERVICE_CATALOG.filter((service) => {
-      const categoryMatch = activeCategory === 'all' || service.category === activeCategory
-      if (!categoryMatch) {
-        return false
-      }
-
-      if (normalizedSearch.length === 0) {
-        return true
-      }
-
-      const haystack = `${service.name} ${service.description} ${service.tags.join(' ')}`.toLowerCase()
-      return haystack.includes(normalizedSearch)
-    })
+    return filterServices(SERVICE_CATALOG, searchText, activeCategory)
   }, [activeCategory, searchText])
 
   const groupedVisibleServices = useMemo<Record<ServiceCategory, ServiceDefinition[]>>(() => {
-    const base = SERVICE_CATEGORIES.reduce<Record<ServiceCategory, ServiceDefinition[]>>((accumulator, category) => {
-      accumulator[category] = []
-      return accumulator
-    }, {} as Record<ServiceCategory, ServiceDefinition[]>)
-
-    for (const service of visibleServices) {
-      base[service.category].push(service)
-    }
-
-    return base
+    return groupServicesByCategory(visibleServices, SERVICE_CATEGORIES)
   }, [visibleServices])
 
   const importEnvFile = async (file: File): Promise<void> => {
@@ -304,14 +289,7 @@ function App(): JSX.Element {
       return []
     }
 
-    const uniqueByUrl = new Map<string, { title: string; url: string }>()
-    for (const reference of selectedService.researchReferences) {
-      if (!uniqueByUrl.has(reference.url)) {
-        uniqueByUrl.set(reference.url, reference)
-      }
-    }
-
-    return [...uniqueByUrl.values()]
+    return dedupeReferencesByUrl(selectedService.researchReferences)
   }, [selectedService])
 
   const jumpToMissingFields = (): void => {
@@ -319,22 +297,7 @@ function App(): JSX.Element {
   }
 
   const visibleFields = useMemo(() => {
-    const normalized = fieldSearchText.trim().toLowerCase()
-    const sorted = [...fields].sort((left, right) => {
-      if (left.required !== right.required) {
-        return left.required ? -1 : 1
-      }
-      return left.key.localeCompare(right.key)
-    })
-
-    if (normalized.length === 0) {
-      return sorted
-    }
-
-    return sorted.filter((field) => {
-      const haystack = `${field.key} ${field.label} ${field.description}`.toLowerCase()
-      return haystack.includes(normalized)
-    })
+    return sortAndFilterFields(fields, fieldSearchText)
   }, [fieldSearchText, fields])
 
   return (
