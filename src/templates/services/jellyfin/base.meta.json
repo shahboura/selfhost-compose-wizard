@@ -1,0 +1,93 @@
+{
+  "id": "jellyfin",
+  "service": "jellyfin",
+  "variant": "base",
+  "name": "Jellyfin",
+  "category": "utilities",
+  "description": "Scaffolded metadata. Review and customize.",
+  "tags": [
+    "jellyfin"
+  ],
+  "docs": null,
+  "riskWarnings": [],
+  "references": [],
+  "fields": {
+    "JELLYFIN_CACHE_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_CACHE_DIR filesystem path.",
+      "recommendedDefault": "./jellyfin/cache"
+    },
+    "JELLYFIN_CONFIG_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_CONFIG_DIR filesystem path.",
+      "recommendedDefault": "./jellyfin/config"
+    },
+    "JELLYFIN_LOGS_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_LOGS_DIR filesystem path.",
+      "recommendedDefault": "./jellyfin/logs"
+    },
+    "JELLYFIN_MOVIES_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_MOVIES_DIR filesystem path.",
+      "recommendedDefault": "./jellyfin/movies"
+    },
+    "JELLYFIN_MUSIC_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_MUSIC_DIR filesystem path.",
+      "recommendedDefault": "./jellyfin/music"
+    },
+    "JELLYFIN_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_PORT numeric value.",
+      "recommendedDefault": "8096"
+    },
+    "JELLYFIN_TV_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_TV_DIR filesystem path.",
+      "recommendedDefault": "./jellyfin/tv"
+    },
+    "JELLYFIN_UDP_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "JELLYFIN_UDP_PORT numeric value.",
+      "recommendedDefault": "7359"
+    },
+    "PGID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "100"
+    },
+    "PUID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "1000"
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": true,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": ""
+    }
+  }
+}

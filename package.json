@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:lighthouse": "npx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json",
-    "test:all": "npm run lint && npm run test && npm run validate:links && npm run test:e2e && npm run test:lighthouse && npm run build",
+    "test:all": "npm run lint && npm run test && npm run validate:templates && npm run validate:links && npm run test:e2e && npm run test:lighthouse && npm run build",
+    "validate:templates": "node ./scripts/validate-templates.mjs",
     "validate:links": "node ./scripts/validate-links.mjs",
     "scaffold:service": "node ./scripts/scaffold-service.mjs"
   },

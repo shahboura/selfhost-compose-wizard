@@ -39,6 +39,9 @@ jobs:
       - name: Unit tests
         run: npm run test
 
+      - name: Validate template field coverage
+        run: npm run validate:templates
+
       - name: Validate links and references
         run: npm run validate:links
 

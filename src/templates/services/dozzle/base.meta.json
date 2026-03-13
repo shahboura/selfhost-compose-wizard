@@ -1,0 +1,51 @@
+{
+  "id": "dozzle",
+  "service": "dozzle",
+  "variant": "base",
+  "name": "Dozzle",
+  "category": "utilities",
+  "description": "Scaffolded metadata. Review and customize.",
+  "tags": [
+    "dozzle"
+  ],
+  "docs": null,
+  "riskWarnings": [],
+  "references": [],
+  "fields": {
+    "DOZZLE_DATA_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "DOZZLE_DATA_DIR filesystem path.",
+      "recommendedDefault": "./dozzle"
+    },
+    "DOZZLE_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "DOZZLE_PORT numeric value.",
+      "recommendedDefault": "8892"
+    },
+    "PGID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PUID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": true,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": ""
+    }
+  }
+}

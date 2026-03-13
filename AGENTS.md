@@ -18,6 +18,14 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
+### 2026-03-13 18:52 - Template scaffolding and field-coverage automation
+**Agent:** em-advisor
+**Summary:** Expanded service scaffolding to generate metadata and added template field-coverage validation in CI.
+- Reworked `scaffold:service` to create `.meta.json` alongside compose templates with inferred field metadata and optional docs/risk/tags.
+- Added `scripts/validate-templates.mjs` and CI step (`npm run validate:templates`) to enforce compose-to-metadata field coverage.
+- Added `scripts/sync-template-meta.mjs` and generated metadata files for all existing templates.
+- Updated test orchestration (`test:all`) and README scaffold notes to include template validation and metadata generation.
+
 ### 2026-03-13 18:29 - GEO metadata baseline and repository canonicalization
 **Agent:** em-advisor
 **Summary:** Added generative/search discoverability metadata aligned to the new GitHub repository URL.

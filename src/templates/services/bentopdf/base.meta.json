@@ -1,0 +1,44 @@
+{
+  "id": "bentopdf",
+  "service": "bentopdf",
+  "variant": "base",
+  "name": "Bentopdf",
+  "category": "utilities",
+  "description": "Scaffolded metadata. Review and customize.",
+  "tags": [
+    "bentopdf"
+  ],
+  "docs": null,
+  "riskWarnings": [],
+  "references": [],
+  "fields": {
+    "BENTOPDF_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "BENTOPDF_PORT numeric value.",
+      "recommendedDefault": "8080"
+    },
+    "PGID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PUID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": true,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": ""
+    }
+  }
+}

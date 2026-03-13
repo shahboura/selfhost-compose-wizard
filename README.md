@@ -42,7 +42,7 @@ npm run dev
 npm run test:all
 ```
 
-`test:all` runs lint, unit tests (Vitest), link validation, E2E tests, Lighthouse audit, and build.
+`test:all` runs lint, unit tests (Vitest), template validation, link validation, E2E tests, Lighthouse audit, and build.
 
 ## Add a new service template
 
@@ -53,5 +53,6 @@ npm run scaffold:service -- --service my-service --variant base --name "My Servi
 This scaffolds entries in:
 
 - `src/templates/services/<service>/<variant>.compose.yaml`
+- `src/templates/services/<service>/<variant>.meta.json` (field coverage and metadata starter)
 - `src/templates/registry.ts`
 - `src/data/service-catalog.ts`

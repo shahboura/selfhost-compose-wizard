@@ -1,0 +1,65 @@
+{
+  "id": "dozzle-oauth2-proxy",
+  "service": "dozzle",
+  "variant": "oauth2-proxy",
+  "name": "Dozzle (oauth2-proxy)",
+  "category": "utilities",
+  "description": "Scaffolded metadata. Review and customize.",
+  "tags": [
+    "dozzle"
+  ],
+  "docs": null,
+  "riskWarnings": [],
+  "references": [],
+  "fields": {
+    "DOZZLE_DATA_DIR": {
+      "type": "path",
+      "required": false,
+      "sensitive": false,
+      "description": "DOZZLE_DATA_DIR filesystem path.",
+      "recommendedDefault": "./dozzle"
+    },
+    "DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "./authenticated_emails"
+    },
+    "DOZZLE_OAUTH2_PROXY_CONFIG": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "./oauth2-proxy.cfg"
+    },
+    "DOZZLE_OAUTH2_PROXY_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "DOZZLE_OAUTH2_PROXY_PORT numeric value.",
+      "recommendedDefault": "4180"
+    },
+    "PGID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PUID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": true,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": ""
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "id": "immich",
+  "service": "immich",
+  "variant": "base",
+  "name": "Immich",
+  "category": "utilities",
+  "description": "Scaffolded metadata. Review and customize.",
+  "tags": [
+    "immich"
+  ],
+  "docs": null,
+  "riskWarnings": [],
+  "references": [],
+  "fields": {
+    "DB_DATA_LOCATION": {
+      "type": "path",
+      "required": true,
+      "sensitive": false,
+      "description": "DB_DATA_LOCATION filesystem path.",
+      "recommendedDefault": ""
+    },
+    "DB_DATABASE_NAME": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "DB_PASSWORD": {
+      "type": "secret",
+      "required": true,
+      "sensitive": true,
+      "description": "DB_PASSWORD secret value.",
+      "recommendedDefault": ""
+    },
+    "DB_USERNAME": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "IMMICH_CACHE_LOCATION": {
+      "type": "path",
+      "required": true,
+      "sensitive": false,
+      "description": "IMMICH_CACHE_LOCATION filesystem path.",
+      "recommendedDefault": ""
+    },
+    "IMMICH_CONFIG_LOCATION": {
+      "type": "path",
+      "required": true,
+      "sensitive": false,
+      "description": "IMMICH_CONFIG_LOCATION filesystem path.",
+      "recommendedDefault": ""
+    },
+    "IMMICH_MATPLOTLIB_LOCATION": {
+      "type": "path",
+      "required": true,
+      "sensitive": false,
+      "description": "IMMICH_MATPLOTLIB_LOCATION filesystem path.",
+      "recommendedDefault": ""
+    },
+    "IMMICH_SERVER_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "IMMICH_SERVER_PORT numeric value.",
+      "recommendedDefault": "2283"
+    },
+    "IMMICH_VALKEY_DATA": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "IMMICH_VERSION": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "release"
+    },
+    "PGID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PUID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": true,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": ""
+    },
+    "UPLOAD_LOCATION": {
+      "type": "path",
+      "required": true,
+      "sensitive": false,
+      "description": "UPLOAD_LOCATION filesystem path.",
+      "recommendedDefault": ""
+    }
+  }
+}
