@@ -10,6 +10,7 @@ Privacy-first web wizard for generating `docker-compose.yaml` and `.env` files f
 
 - Guided service selection and environment variable setup
 - Service-specific defaults, references, and risk warnings
+- In-form secure secret generation for supported fields
 - In-browser generation (no server-side form processing)
 - Bundle export: `docker-compose.yaml` + `.env`
 

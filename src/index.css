@@ -83,20 +83,6 @@ input:focus-visible {
   background: rgba(56, 189, 248, 0.2);
 }
 
-.selection-meta {
-  text-align: right;
-  color: #cbd5e1;
-  font-size: 0.9rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.2rem;
-}
-
-.selection-meta code {
-  font-size: 0.8rem;
-}
-
 .eyebrow {
   margin: 0;
   color: #38bdf8;
@@ -380,6 +366,18 @@ select {
   font-size: 0.85rem;
 }
 
+.validation-ok {
+  color: #86efac;
+}
+
+.validation-warn {
+  color: #fde68a;
+}
+
+.validation-error {
+  color: #fca5a5;
+}
+
 .required,
 .optional {
   border-radius: 999px;
@@ -401,6 +399,16 @@ select {
 .field-controls {
   display: grid;
   gap: 0.55rem;
+}
+
+.field-input-row {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.field-input-row > input {
+  flex: 1;
 }
 
 input[type='text'],
@@ -585,10 +593,6 @@ input[type='password']:disabled {
     flex-direction: column;
   }
 
-  .selection-meta {
-    text-align: left;
-  }
-
   .wizard-stepper {
     grid-template-columns: 1fr;
   }
@@ -600,5 +604,10 @@ input[type='password']:disabled {
   .tip-banner {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .field-input-row {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

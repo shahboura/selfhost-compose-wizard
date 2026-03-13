@@ -535,9 +535,12 @@ function App(): JSX.Element {
           </div>
 
           <section className="subsection">
-            <h3>Additional tooling / secrets</h3>
+            <h3>Security & setup helpers</h3>
+            <p className="muted">
+              Use in-form Generate buttons for supported secrets, or copy the service-specific commands below.
+            </p>
             {selectedService.extraTooling.length === 0 ? (
-              <p className="muted">No additional key-generation tooling is required for this template.</p>
+              <p className="muted">No additional helper commands are required for this template.</p>
             ) : (
               <ul className="tool-list">
                 {selectedService.extraTooling.map((tool) => (

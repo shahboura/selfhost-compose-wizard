@@ -3,6 +3,7 @@
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ALLOWED_FIELD_TYPES, extractComposeVariables } from './template-meta-utils.mjs'
+import { SERVICE_CATALOG } from '../src/data/service-catalog.ts'
 
 async function walkFiles(dirPath) {
   const entries = await readdir(dirPath, { withFileTypes: true })
@@ -131,6 +132,13 @@ async function run() {
   const composeFiles = files.filter((filePath) => /\.compose\.ya?ml$/.test(filePath))
   const metaFiles = files.filter((filePath) => /\.meta\.json$/.test(filePath))
   const expectedMetaFiles = new Set(composeFiles.map((composePath) => composePath.replace(/\.compose\.ya?ml$/, '.meta.json')))
+  const templateFilesFromCompose = new Set(
+    composeFiles.map(
+      (composePath) =>
+        `services/${composePath.replace(`${servicesRoot}${path.sep}`, '').replace(/\\/g, '/')}`,
+    ),
+  )
+  const templateFilesFromCatalog = new Set(SERVICE_CATALOG.map((service) => service.templateFile))
   const failures = []
 
   for (const composePath of composeFiles) {
@@ -144,6 +152,26 @@ async function run() {
         path: metaPath,
         reason: 'Meta file has no matching compose template',
         detail: 'No corresponding *.compose.yaml|yml file found',
+      })
+    }
+  }
+
+  for (const templateFile of templateFilesFromCatalog) {
+    if (!templateFilesFromCompose.has(templateFile)) {
+      failures.push({
+        path: 'src/data/service-catalog.ts',
+        reason: 'Catalog template missing compose file',
+        detail: templateFile,
+      })
+    }
+  }
+
+  for (const templateFile of templateFilesFromCompose) {
+    if (!templateFilesFromCatalog.has(templateFile)) {
+      failures.push({
+        path: 'src/data/service-catalog.ts',
+        reason: 'Compose template missing service catalog entry',
+        detail: templateFile,
       })
     }
   }
