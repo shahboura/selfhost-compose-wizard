@@ -11,6 +11,7 @@ export function CodePanel({ title, language, content }: CodePanelProps): JSX.Ele
   const [showCopyIndicator, setShowCopyIndicator] = useState<boolean>(false)
   const timeoutRef = useRef<number | undefined>(undefined)
   const lineCount = useMemo<number>(() => content.split('\n').length, [content])
+  const languageLabel = language === 'dotenv' ? '.env' : language
 
   useEffect(() => {
     return () => {
@@ -36,7 +37,7 @@ export function CodePanel({ title, language, content }: CodePanelProps): JSX.Ele
         <div>
           <h3>{title}</h3>
           <small>
-            {lineCount} lines • {language}
+            {lineCount} lines • {languageLabel}
           </small>
         </div>
       </header>

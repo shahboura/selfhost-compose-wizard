@@ -196,7 +196,10 @@ h1 {
 }
 
 .category-group h3 {
-  text-transform: capitalize;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  color: #7dd3fc;
 }
 
 .service-card {
@@ -210,6 +213,15 @@ h1 {
   gap: 0.5rem;
   cursor: pointer;
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.service-card h3 {
+  font-size: 1.02rem;
+}
+
+.service-card > p {
+  color: #cbd5e1;
+  font-size: 0.92rem;
 }
 
 .service-card:hover {
@@ -267,7 +279,7 @@ h1 {
 
 .service-category {
   color: #93c5fd;
-  font-size: 0.82rem;
+  font-size: 0.79rem;
 }
 
 .field-list {
@@ -471,9 +483,17 @@ input[type='password']:disabled {
   padding: 0.65rem 0.75rem;
   background: rgba(30, 41, 59, 0.6);
   border-bottom: 1px solid rgba(148, 163, 184, 0.25);
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+  display: block;
+}
+
+.code-panel header h3 {
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.code-panel header small {
+  display: block;
+  margin-top: 0.05rem;
 }
 
 .code-panel pre {
@@ -537,7 +557,17 @@ input[type='password']:disabled {
   gap: 0.4rem;
 }
 
-.tool-list pre {
+.copyable-pre-wrap {
+  position: relative;
+}
+
+.copyable-pre-wrap .copy-indicator {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.copyable-pre-wrap pre {
   margin: 0.35rem 0;
   padding: 0.45rem;
   border-radius: 8px;

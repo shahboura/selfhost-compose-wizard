@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
 import { CodePanel } from './components/CodePanel'
+import { CopyableCodeBlock } from './components/CopyableCodeBlock'
 import { FieldEditor } from './components/FieldEditor'
 import { PrivacyNotice } from './components/PrivacyNotice'
 import { ServiceDetails } from './components/ServiceDetails'
@@ -511,7 +512,7 @@ function App(): JSX.Element {
                     <p>
                       <strong>{tool.title}:</strong> {tool.description}
                     </p>
-                    {tool.command ? <pre>{tool.command}</pre> : null}
+                    {tool.command ? <CopyableCodeBlock content={tool.command} /> : null}
                     {tool.url ? (
                       <a href={tool.url} target="_blank" rel="noreferrer">
                         Source

@@ -19,6 +19,7 @@ interface FieldEditorProps {
 export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorProps): JSX.Element {
   const resolvedState = state ?? { value: '', useDefault: true }
   const [generatedNotice, setGeneratedNotice] = useState<string>('')
+  const [showSensitiveValue, setShowSensitiveValue] = useState<boolean>(false)
   const isTimezoneField = field.key === 'TZ' && timezoneOptions.length > 0
   const defaultValue = field.recommendedDefault ?? field.composeDefault ?? ''
   const helperText = field.recommendedDefault
@@ -45,6 +46,8 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
     onChange({ value: generated, useDefault: false })
     setGeneratedNotice('Generated secure value.')
   }
+
+  const currentInputType = field.sensitive && !showSensitiveValue ? 'password' : 'text'
 
   return (
     <article className="field-card">
@@ -101,7 +104,7 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
           ) : (
             <input
               id={inputId}
-              type={field.sensitive ? 'password' : 'text'}
+              type={currentInputType}
               value={resolvedState.useDefault ? defaultValue : resolvedState.value}
               onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
               readOnly={resolvedState.useDefault}
@@ -111,12 +114,22 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
             />
           )}
 
+          {field.sensitive ? (
+            <button
+              type="button"
+              className="button"
+              onClick={() => setShowSensitiveValue((current) => !current)}
+              aria-label={showSensitiveValue ? 'Hide value' : 'Show value'}
+            >
+              {showSensitiveValue ? 'Hide' : 'Show'}
+            </button>
+          ) : null}
+
           {generationSpec ? (
             <button
               type="button"
               className="button"
               onClick={handleGenerate}
-              disabled={resolvedState.useDefault}
               title="Generate secure value"
             >
               Generate
