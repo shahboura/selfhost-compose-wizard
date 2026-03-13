@@ -3,11 +3,13 @@ import type { JSX } from 'react'
 interface TopNavProps {
   selectedServiceName: string
   selectedTemplatePath: string
-  hasSelectedService: boolean
+  selectedServiceId: string
   onHome: () => void
 }
 
-export function TopNav({ selectedServiceName, selectedTemplatePath, hasSelectedService, onHome }: TopNavProps): JSX.Element {
+export function TopNav({ selectedServiceName, selectedTemplatePath, selectedServiceId, onHome }: TopNavProps): JSX.Element {
+  const hasSelectedService = selectedServiceId.trim().length > 0
+
   return (
     <header className="top-nav" role="banner">
       <div className="brand">

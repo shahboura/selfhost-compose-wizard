@@ -326,7 +326,7 @@ function App(): JSX.Element {
       <TopNav
         selectedServiceName={pageTitle}
         selectedTemplatePath={selectedTemplatePath}
-        hasSelectedService={Boolean(selectedService)}
+        selectedServiceId={selectedServiceId}
         onHome={goHome}
       />
 
@@ -439,15 +439,21 @@ function App(): JSX.Element {
           </div>
 
           <div className="field-list">
-            {fields.map((field) => (
-              <FieldEditor
-                key={field.key}
-                field={field}
-                state={wizardState[field.key]}
-                idPrefix="env-field"
-                onChange={(patch) => updateField(field.key, patch)}
-              />
-            ))}
+            {!selectedService ? (
+              <p className="muted">Select a service in Step 1 to configure environment values.</p>
+            ) : fields.length === 0 ? (
+              <p className="muted">No configurable environment variables found in this template.</p>
+            ) : (
+              fields.map((field) => (
+                <FieldEditor
+                  key={field.key}
+                  field={field}
+                  state={wizardState[field.key]}
+                  idPrefix="env-field"
+                  onChange={(patch) => updateField(field.key, patch)}
+                />
+              ))
+            )}
           </div>
 
           <div className="actions">

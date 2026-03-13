@@ -2,6 +2,8 @@ export interface ParsedEnvMap {
   [key: string]: string
 }
 
+const ENV_KEY_REGEX = /^[A-Za-z_][A-Za-z0-9_]*$/
+
 function needsQuoting(value: string): boolean {
   return value.length === 0 || /\s|#|=|\n|\r|"/.test(value)
 }
@@ -38,6 +40,10 @@ export function parseEnvContent(content: string): ParsedEnvMap {
     }
 
     const key = line.slice(0, separatorIndex).trim()
+    if (!ENV_KEY_REGEX.test(key)) {
+      continue
+    }
+
     let value = line.slice(separatorIndex + 1)
 
     if (value.startsWith('"') && value.endsWith('"') && value.length >= 2) {
@@ -47,6 +53,14 @@ export function parseEnvContent(content: string): ParsedEnvMap {
         .replace(/\\r/g, '\r')
         .replace(/\\"/g, '"')
         .replace(/\\\\/g, '\\')
+    }
+
+    if (!value.startsWith('"')) {
+      const commentIndex = value.indexOf(' #')
+      if (commentIndex >= 0) {
+        value = value.slice(0, commentIndex)
+      }
+      value = value.trimEnd()
     }
 
     parsed[key] = value
