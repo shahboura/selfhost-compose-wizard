@@ -18,6 +18,13 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
+### 2026-03-14 18:15 - Move README agentic section to footer area
+**Agent:** orchestrator
+**Summary:** Repositioned AI workflow note toward the end of README for cleaner onboarding flow.
+- Moved `## Agentic Development` block from near the tech stack to after setup/template guidance.
+- Kept wording and link target unchanged (`agents-opencode`) while changing only placement.
+- Preserved the prior SEO/GEO updates from earlier commit; no metadata changes in this pass.
+
 ### 2026-03-14 00:00 - SEO/GEO canonical URL switch and README agentic section
 **Agent:** blogger
 **Summary:** Updated discoverability metadata to the live GitHub Pages URL and added AI workflow documentation.

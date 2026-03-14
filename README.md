@@ -40,10 +40,6 @@ Privacy-first web wizard for generating `docker-compose.yaml` and `.env` files f
 - **Vitest** (unit tests)
 - Playwright (E2E)
 
-## Agentic Development
-
-This project is developed with AI-assisted workflows using [agents-opencode](https://github.com/shahboura/agents-opencode) — a set of specialized agents for orchestration, implementation, review, and documentation.
-
 ## Run locally
 
 ```bash
@@ -81,3 +77,7 @@ This scaffolds entries in:
 - `src/templates/services/<service>/<variant>.meta.json` (field coverage and metadata starter)
 - `src/templates/registry.ts`
 - `src/data/service-catalog.ts`
+
+## Agentic Development
+
+This project is developed with AI-assisted workflows using [agents-opencode](https://github.com/shahboura/agents-opencode) — a set of specialized agents for orchestration, implementation, review, and documentation.
