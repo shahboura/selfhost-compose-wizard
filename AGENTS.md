@@ -18,19 +18,13 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
-### 2026-03-14 18:15 - Move README agentic section to footer area
+### 2026-03-14 18:20 - SEO/GEO + README agentic updates (consolidated)
 **Agent:** orchestrator
-**Summary:** Repositioned AI workflow note toward the end of README for cleaner onboarding flow.
-- Moved `## Agentic Development` block from near the tech stack to after setup/template guidance.
-- Kept wording and link target unchanged (`agents-opencode`) while changing only placement.
-- Preserved the prior SEO/GEO updates from earlier commit; no metadata changes in this pass.
-
-### 2026-03-14 00:00 - SEO/GEO canonical URL switch and README agentic section
-**Agent:** blogger
-**Summary:** Updated discoverability metadata to the live GitHub Pages URL and added AI workflow documentation.
+**Summary:** Consolidated all 2026-03-14 documentation/discoverability work into one entry for cleaner history.
 - Switched canonical/public URL targets in `index.html` (`canonical`, `og:url`, and JSON-LD `url`) to `https://shahboura.github.io/selfhost-compose-wizard/`.
 - Updated GEO files: `public/sitemap.xml` `<loc>` and `public/llms.txt` canonical + primary README link to the live site.
-- Added `## Agentic Development` section to `README.md`, aligned to the requested reference wording and tailored for this repo.
+- Added `## Agentic Development` section to `README.md`, aligned to the requested reference wording and tailored for this repo, then moved it toward the end of README for cleaner onboarding flow.
+- Condensed AGENTS history by collapsing older verbose logs into `Historical milestones (condensed)` while preserving chronology.
 - Left repository references (`codeRepository` and repo links) on GitHub for source attribution.
 
 ### 2026-03-13 22:31 - CI supply-chain hardening and Pages deployment modernization
@@ -41,42 +35,9 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Pruned CI by splitting deploy into `deploy-pages` job with scoped `pages/id-token` permissions; kept top-level permissions at `contents: read`.
 - Consolidated duplicate Lighthouse steps into a single conditional step with PR non-blocking behavior retained.
 
-### 2026-03-13 22:20 - Env variable naming convention consolidation across templates
-**Agent:** orchestrator
-**Summary:** Standardized service env variable naming with explicit prefixes/suffixes across active and legacy templates.
-- Renamed generic and inconsistent keys to service-prefixed forms (GetArcane, Immich, BentoPDF OAuth2, Dozzle OAuth2) and aligned `_DIR`/`_FILE`/`_PORT` usage.
-- Updated generator metadata sources (`defaults.ts`, `service-catalog.ts`, `field-security.ts`) and adjusted secret/URL validation to new key patterns.
-- Extended template metadata inference to classify `*_FILE` as `path`, then rewrote all template meta files.
-- Verified with `validate:templates`, unit tests, and lint; no stale old-key references in templates.
-
-### 2026-03-13 20:08 - GetArcane onboarding, mobile overflow hardening, and containerization
-**Agent:** orchestrator
-**Summary:** Added GetArcane templates, tightened mobile layout behavior, and introduced production container artifacts.
-- Added `getarcane` base/OIDC templates + metadata, service catalog entries, and references aligned to official docs/generator.
-- Hardened mobile layout for Step 2/3 by improving wrapping/min-width behavior in field headers, action rows, service details, and code panels.
-- Added Docker runtime artifacts (`Dockerfile`, `.dockerignore`, `docker-compose.app.yml`, `docker/nginx.conf`) and verified image build locally.
-- Ran full quality gates plus dependency freshness checks (`npm outdated`, `npm update`, tests/build/e2e/link/template validation).
-
-### 2026-03-13 18:52 - Template scaffolding and field-coverage automation
-**Agent:** em-advisor
-**Summary:** Expanded service scaffolding to generate metadata and added template field-coverage validation in CI.
-- Reworked `scaffold:service` to create `.meta.json` alongside compose templates with inferred field metadata and optional docs/risk/tags.
-- Added `scripts/validate-templates.mjs` and CI step (`npm run validate:templates`) to enforce compose-to-metadata field coverage.
-- Added `scripts/sync-template-meta.mjs` and generated metadata files for all existing templates.
-- Updated test orchestration (`test:all`) and README scaffold notes to include template validation and metadata generation.
-
-### 2026-03-13 18:29 - GEO metadata baseline and repository canonicalization
-**Agent:** em-advisor
-**Summary:** Added generative/search discoverability metadata aligned to the new GitHub repository URL.
-- Updated `index.html` with canonical/OG metadata and JSON-LD (`SoftwareApplication`) using repo URL as temporary canonical.
-- Added `public/robots.txt`, `public/sitemap.xml`, and `public/llms.txt` for crawler and LLM discoverability.
-- Documented GEO/discoverability guidance in README with instructions to swap URLs once public site is live.
-- Confirmed no hardcoded secrets detected via pattern-based pre-push scan.
-
-### 2026-03-13 16:05 - UX simplification and quality hardening rollout
-**Agent:** orchestrator
-**Summary:** Coordinated final UX simplification + QA automation updates.
-- Simplified Step 1 with reduced copy and privacy footnote only on first page.
-- Added direct card-to-config navigation, Home reset, import guards, risk warnings, and export constraints.
-- Added Playwright e2e and CI pipeline gates; attempted Lighthouse local run (blocked by missing Chrome binary in local shell).
-- Established project context and conventions in this file for future orchestration continuity.
+### Historical milestones (condensed)
+- 2026-03-13 22:20 — Standardized env variable naming across templates; aligned metadata + validation rules.
+- 2026-03-13 20:08 — Added GetArcane templates, hardened mobile overflow behavior, and introduced Docker runtime artifacts.
+- 2026-03-13 18:52 — Expanded `scaffold:service` to emit metadata and added template field-coverage CI validation.
+- 2026-03-13 18:29 — Established GEO baseline (`robots.txt`, `sitemap.xml`, `llms.txt`) with initial repo canonicalization.
+- 2026-03-13 16:05 — Delivered UX simplification and QA hardening (navigation guards, Playwright, CI checks).
