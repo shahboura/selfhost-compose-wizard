@@ -1,6 +1,6 @@
 # Selfhost Compose Wizard
 
-Canonical: https://github.com/shahboura/selfhost-compose-wizard
+Canonical: https://shahboura.github.io/selfhost-compose-wizard/
 Repository: https://github.com/shahboura/selfhost-compose-wizard
 
 Summary:
@@ -14,7 +14,7 @@ Key capabilities:
 - In-browser processing (no server-side form processing)
 
 Primary docs:
-- README: https://github.com/shahboura/selfhost-compose-wizard#readme
+- README: https://shahboura.github.io/selfhost-compose-wizard/
 
 Topics:
 - homelab

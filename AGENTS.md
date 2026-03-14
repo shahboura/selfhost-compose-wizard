@@ -18,6 +18,14 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
 
+### 2026-03-14 00:00 - SEO/GEO canonical URL switch and README agentic section
+**Agent:** blogger
+**Summary:** Updated discoverability metadata to the live GitHub Pages URL and added AI workflow documentation.
+- Switched canonical/public URL targets in `index.html` (`canonical`, `og:url`, and JSON-LD `url`) to `https://shahboura.github.io/selfhost-compose-wizard/`.
+- Updated GEO files: `public/sitemap.xml` `<loc>` and `public/llms.txt` canonical + primary README link to the live site.
+- Added `## Agentic Development` section to `README.md`, aligned to the requested reference wording and tailored for this repo.
+- Left repository references (`codeRepository` and repo links) on GitHub for source attribution.
+
 ### 2026-03-13 22:31 - CI supply-chain hardening and Pages deployment modernization
 **Agent:** orchestrator
 **Summary:** Replaced third-party Pages publish action with official GitHub Pages actions and tightened CI permissions.
