@@ -14,11 +14,11 @@
       "description": "BENTOPDF_OAUTH2_PROXY_CONFIG_FILE filesystem path.",
       "recommendedDefault": ""
     },
-    "BENTOPDF_OAUTH2_PROXY_PORT": {
+    "OAUTH2_PROXY_PORT": {
       "type": "number",
       "required": true,
       "sensitive": false,
-      "description": "BENTOPDF_OAUTH2_PROXY_PORT numeric value.",
+      "description": "OAUTH2_PROXY_PORT numeric value.",
       "recommendedDefault": ""
     },
     "PGID": {

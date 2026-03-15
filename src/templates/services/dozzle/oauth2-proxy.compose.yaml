@@ -15,7 +15,7 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     ports:
-      - ${DOZZLE_OAUTH2_PROXY_PORT}:4180
+      - ${OAUTH2_PROXY_PORT}:4180
     volumes:
       - ${DOZZLE_OAUTH2_PROXY_CONFIG_FILE}:/oauth2-proxy.cfg:ro
       - ${DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE}:/authenticated_emails:ro

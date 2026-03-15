@@ -10,13 +10,11 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   AUDIOBOOKSHELF_METADATA: './audiobookshelf/metadata',
 
   BENTOPDF_PORT: '8080',
-  BENTOPDF_OAUTH2_PROXY_PORT: '7860',
   BENTOPDF_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
   BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './oauth2-proxy/authenticated_emails',
 
   DOZZLE_PORT: '8892',
   DOZZLE_DATA_DIR: './dozzle',
-  DOZZLE_OAUTH2_PROXY_PORT: '4180',
   DOZZLE_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
   DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './authenticated_emails',
 
@@ -30,7 +28,7 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   HOMEPAGE_CONFIG_PATH: './homepage/config',
   HOMEPAGE_PUBLIC_PATH: './homepage/public/images',
   HOMEPAGE_ALLOWED_HOSTS: 'localhost:3000',
-  OAUTH2_PROXY_PORT: '5400',
+  OAUTH2_PROXY_PORT: '4180',
   OAUTH2_PROXY_CONFIG_PATH: './oauth2-proxy.cfg',
   OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH: './authenticated_emails',
 
