@@ -1,22 +1,23 @@
 services:
   dozzle:
-    container_name: Dozzle
     image: amir20/dozzle:latest
+    container_name: dozzle
     security_opt:
       - no-new-privileges:true
-    restart: on-failure:5
+    environment:
+      # Common runtime identity
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
     ports:
       - ${DOZZLE_PORT:-8892}:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOZZLE_DATA_DIR:-./dozzle}:/data:rw
-    environment:
-     TZ: ${TZ}
-     PUID: ${PUID}
-     PGID: ${PGID}
     healthcheck:
       test: ["CMD", "/dozzle", "healthcheck"]
       interval: 10s
       timeout: 3s
       retries: 5
       start_period: 30s
+    restart: on-failure:5

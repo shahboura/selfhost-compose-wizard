@@ -1,28 +1,29 @@
-# Arcane Docker Compose Configuration
-# Generated at 1/18/2026, 12:57:52 PM
+# GetArcane single-service stack
 
 services:
   arcane:
     image: ghcr.io/getarcaneapp/arcane:latest
     container_name: arcane
-    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - ${GETARCANE_PORT:-3552}:3552
+    environment:
+      # Common runtime identity
+      TZ: ${TZ:-Etc/UTC}
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      APP_URL: ${GETARCANE_APP_URL:-http://localhost:3552}
+      ENCRYPTION_KEY: ${GETARCANE_ENCRYPTION_KEY}
+      JWT_SECRET: ${GETARCANE_JWT_SECRET}
+      LOG_LEVEL: info
+      LOG_JSON: 'false'
+      OIDC_ENABLED: 'false'
+      DATABASE_URL: file:data/arcane.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+      # - DOCKER_API_VERSION=1.43
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${GETARCANE_DATA_DIR:-./arcane-data}:/app/data:rw
-    environment:
-      - APP_URL=${GETARCANE_APP_URL:-http://localhost:3552}
-      - PUID=${PUID:-1000}
-      - PGID=${PGID:-1000}
-      - ENCRYPTION_KEY=${GETARCANE_ENCRYPTION_KEY}
-      - JWT_SECRET=${GETARCANE_JWT_SECRET}
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-      - TZ=${TZ:-Etc/UTC}
-      - OIDC_ENABLED=false
-      - DATABASE_URL=file:data/arcane.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
-      # - DOCKER_API_VERSION=1.43
     cgroup: host
     healthcheck:
       test: curl localhost:3552/api/health | grep \"status\":\"UP\"
@@ -30,3 +31,4 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
+    restart: on-failure:5

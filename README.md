@@ -16,21 +16,24 @@ Privacy-first web wizard for generating `docker-compose.yaml` and `.env` files f
 - Service-specific defaults, references, and risk warnings
 - In-form secure secret generation for supported fields
 - In-browser generation (no server-side form processing)
-- Bundle export: `docker-compose.yaml` + `.env`
+- Bundle export: `docker-compose.yaml` + `.env` (missing required values exported as explicit placeholders)
 
 ## Supported services
 
 | Service | Category | Variant |
 |---|---|---|
-| BentoPDF | utilities | base |
-| BentoPDF | utilities | oauth2-proxy |
-| Dozzle | observability | base |
-| Dozzle | observability | oauth2-proxy |
+| Audiobookshelf | media | base |
+| BentoPDF | documents | base |
+| BentoPDF | documents | oauth2-proxy |
+| Dozzle | operations | base |
+| Dozzle | operations | oauth2-proxy |
 | Immich | media | base |
-| IT Tools | utilities | base |
+| IT Tools | developer-tools | base |
 | Jellyfin | media | base |
-| GetArcane | utilities | base |
-| GetArcane + OIDC | utilities | oidc |
+| GetArcane | operations | base |
+| GetArcane + OIDC | operations | oidc |
+| Plex | media | base |
+| Watchtower | operations | base |
 
 ## Tech stack
 
@@ -68,7 +71,9 @@ npm run test:all
 ## Add a new service template
 
 ```bash
-npm run scaffold:service -- --service my-service --variant base --name "My Service" --category utilities --description "My service description"
+npm run scaffold:service -- --service my-service --variant base --name "My Service" --category operations --description "My service description"
+
+# categories: media, documents, operations, developer-tools, security
 ```
 
 This scaffolds entries in:

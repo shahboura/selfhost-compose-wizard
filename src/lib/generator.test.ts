@@ -19,7 +19,7 @@ describe('generator', () => {
     expect(customField?.required).toBe(true)
   })
 
-  it('uses default values when user opts out and flags missing required', () => {
+  it('uses default values, flags missing required, and emits placeholders', () => {
     const fields = buildFieldDefinitions({
       templateVariables: [
         { key: 'TZ', occurrences: 1 },
@@ -39,6 +39,7 @@ describe('generator', () => {
 
     expect(output.envContent).toContain('TZ=Etc/UTC')
     expect(output.missingRequired).toContain('CUSTOM_SECRET')
+    expect(output.envContent).toContain('CUSTOM_SECRET=__REQUIRED_CUSTOM_SECRET__')
   })
 
   it('serializes env values safely', () => {

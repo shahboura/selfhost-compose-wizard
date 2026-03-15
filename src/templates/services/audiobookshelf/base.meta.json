@@ -1,0 +1,60 @@
+{
+  "fields": {
+    "AUDIOBOOKSHELF_AUDIOBOOKS": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "AUDIOBOOKSHELF_CONFIG": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "AUDIOBOOKSHELF_METADATA": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "AUDIOBOOKSHELF_PODCASTS": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "AUDIOBOOKSHELF_PORT": {
+      "type": "number",
+      "required": false,
+      "sensitive": false,
+      "description": "AUDIOBOOKSHELF_PORT numeric value.",
+      "recommendedDefault": "13378"
+    },
+    "PGID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "1000"
+    },
+    "PUID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "1000"
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": false,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": "UTC"
+    }
+  }
+}

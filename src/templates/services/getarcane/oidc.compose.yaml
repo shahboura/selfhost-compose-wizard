@@ -1,38 +1,42 @@
-# Arcane Docker Compose Configuration
-# Generated at 1/18/2026, 12:57:52 PM
+# GetArcane OIDC stack
+# OIDC-related variables are grouped below for clarity
 
 services:
   arcane:
     image: ghcr.io/getarcaneapp/arcane:latest
     container_name: arcane
-    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - ${GETARCANE_PORT:-3552}:3552
+    environment:
+      # Common runtime identity
+      TZ: ${TZ:-Etc/UTC}
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      APP_URL: ${GETARCANE_APP_URL:-http://localhost:3552}
+      ENCRYPTION_KEY: ${GETARCANE_ENCRYPTION_KEY}
+      JWT_SECRET: ${GETARCANE_JWT_SECRET}
+      LOG_LEVEL: info
+      LOG_JSON: 'false'
+      AUTH_LOCAL_ENABLED: 'false'
+      OIDC_ENABLED: 'true'
+
+      # OIDC provider configuration
+      # GETARCANE_OIDC_ISSUER_URL should not include a trailing slash.
+      # Configure your provider callback URL as ${GETARCANE_APP_URL}/auth/oidc/callback.
+      GETARCANE_OIDC_CLIENT_ID: ${GETARCANE_OIDC_CLIENT_ID}
+      GETARCANE_OIDC_CLIENT_SECRET: ${GETARCANE_OIDC_CLIENT_SECRET}
+      GETARCANE_OIDC_ISSUER_URL: ${GETARCANE_OIDC_ISSUER_URL}
+      GETARCANE_OIDC_SCOPES: ${GETARCANE_OIDC_SCOPES:-openid email profile}
+      GETARCANE_OIDC_ADMIN_CLAIM: ${GETARCANE_OIDC_ADMIN_CLAIM}
+      GETARCANE_OIDC_ADMIN_VALUE: ${GETARCANE_OIDC_ADMIN_VALUE}
+      GETARCANE_OIDC_MERGE_ACCOUNTS: ${GETARCANE_OIDC_MERGE_ACCOUNTS:-false}
+      DATABASE_URL: file:data/arcane.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+      # - DOCKER_API_VERSION=1.43
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${GETARCANE_DATA_DIR:-./arcane-data}:/app/data:rw
-    environment:
-      - APP_URL=${GETARCANE_APP_URL:-http://localhost:3552}
-      - PUID=${PUID:-1000}
-      - PGID=${PGID:-1000}
-      - ENCRYPTION_KEY=${GETARCANE_ENCRYPTION_KEY}
-      - JWT_SECRET=${GETARCANE_JWT_SECRET}
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-      - TZ=${TZ:-Etc/UTC}
-      - AUTH_LOCAL_ENABLED=false
-      - OIDC_ENABLED=true
-      # GETARCANE_OIDC_ISSUER_URL should not include a trailing slash.
-      # Configure your provider callback URL as ${GETARCANE_APP_URL}/auth/oidc/callback.
-      - GETARCANE_OIDC_CLIENT_ID=${GETARCANE_OIDC_CLIENT_ID}
-      - GETARCANE_OIDC_CLIENT_SECRET=${GETARCANE_OIDC_CLIENT_SECRET}
-      - GETARCANE_OIDC_ISSUER_URL=${GETARCANE_OIDC_ISSUER_URL}
-      - GETARCANE_OIDC_SCOPES=${GETARCANE_OIDC_SCOPES:-openid email profile}
-      - GETARCANE_OIDC_ADMIN_CLAIM=${GETARCANE_OIDC_ADMIN_CLAIM}
-      - GETARCANE_OIDC_ADMIN_VALUE=${GETARCANE_OIDC_ADMIN_VALUE}
-      - GETARCANE_OIDC_MERGE_ACCOUNTS=${GETARCANE_OIDC_MERGE_ACCOUNTS:-false}
-      - DATABASE_URL=file:data/arcane.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
-      # - DOCKER_API_VERSION=1.43
     cgroup: host
     healthcheck:
       test: curl localhost:3552/api/health | grep \"status\":\"UP\"
@@ -40,3 +44,4 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
+    restart: on-failure:5

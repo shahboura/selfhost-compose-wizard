@@ -134,6 +134,34 @@ h1 {
   font-size: 0.9rem;
 }
 
+.privacy-inline {
+  margin-top: 0.35rem;
+  color: #9fb3c8;
+  font-size: 0.9rem;
+}
+
+.quick-start-inline {
+  margin-top: 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  color: #dbeafe;
+}
+
+.quick-find-row {
+  margin-top: 0.75rem;
+}
+
+.filter-toggle-row {
+  margin-top: 0.6rem;
+}
+
+.compact-filters {
+  margin-top: 0.6rem;
+  max-width: 320px;
+}
+
 .wizard-stepper {
   list-style: none;
   margin: 0;

@@ -1,11 +1,11 @@
 services:
   ittools:
-    container_name: IT-TOOLS
     image: corentinth/it-tools:latest
-    healthcheck:
-     test: curl -f http://localhost:80/ || exit 1
+    container_name: it-tools
     security_opt:
       - no-new-privileges:true
-    restart: on-failure:5
     ports:
       - ${IT_TOOLS_PORT:-5545}:80
+    healthcheck:
+      test: curl -f http://localhost:80/ || exit 1
+    restart: on-failure:5

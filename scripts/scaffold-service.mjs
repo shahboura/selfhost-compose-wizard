@@ -4,7 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { buildFieldSchema } from './template-meta-utils.mjs'
 
-const ALLOWED_CATEGORIES = new Set(['media', 'observability', 'utilities'])
+const ALLOWED_CATEGORIES = new Set(['media', 'documents', 'operations', 'developer-tools', 'security'])
 const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 function toTsStringLiteral(value) {
@@ -16,7 +16,7 @@ function parseArgs(argv) {
     service: '',
     variant: 'base',
     name: '',
-    category: 'utilities',
+    category: 'operations',
     description: '',
     docs: '',
     risk: [],

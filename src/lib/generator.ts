@@ -96,17 +96,23 @@ function resolveFieldValue(field: FieldDefinition, state?: WizardFieldState): st
   return state.value.trim()
 }
 
+function buildRequiredPlaceholder(key: string): string {
+  return `__REQUIRED_${key}__`
+}
+
 export function generateOutputs({ fields, templateContent, wizardState }: GenerateOutputsParams): GenerationOutput {
   const missingRequired: string[] = []
   const envLines: string[] = []
 
   for (const field of fields) {
     const value = resolveFieldValue(field, wizardState[field.key])
+    const resolvedOutputValue = field.required && value.length === 0 ? buildRequiredPlaceholder(field.key) : value
+
     if (field.required && value.length === 0) {
       missingRequired.push(field.key)
     }
 
-    envLines.push(`${field.key}=${serializeEnvValue(value)}`)
+    envLines.push(`${field.key}=${serializeEnvValue(resolvedOutputValue)}`)
   }
 
   return {

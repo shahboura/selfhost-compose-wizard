@@ -1,6 +1,6 @@
 import type { TemplateKey } from './templates/registry'
 
-export const SERVICE_CATEGORIES = ['media', 'observability', 'utilities'] as const
+export const SERVICE_CATEGORIES = ['media', 'documents', 'operations', 'developer-tools', 'security'] as const
 
 export type ServiceCategory = (typeof SERVICE_CATEGORIES)[number]
 

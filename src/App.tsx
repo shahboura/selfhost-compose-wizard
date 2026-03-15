@@ -2,10 +2,8 @@ import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
 import { CodePanel } from './components/CodePanel'
 import { CopyableCodeBlock } from './components/CopyableCodeBlock'
 import { FieldEditor } from './components/FieldEditor'
-import { PrivacyNotice } from './components/PrivacyNotice'
 import { ServiceDetails } from './components/ServiceDetails'
 import { ServiceCard } from './components/ServiceCard'
-import { ServiceFilters } from './components/ServiceFilters'
 import { TopNav } from './components/TopNav'
 import { WizardStepper } from './components/WizardStepper'
 import { SERVICE_CATALOG } from './data/service-catalog'
@@ -32,6 +30,7 @@ function App(): JSX.Element {
   const [searchText, setSearchText] = useState<string>('')
   const [fieldSearchText, setFieldSearchText] = useState<string>('')
   const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all')
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false)
   const [importStatus, setImportStatus] = useState<string>('')
   const [showOnboardingTip, setShowOnboardingTip] = useState<boolean>(() => {
     if (typeof window === 'undefined') {
@@ -145,6 +144,7 @@ function App(): JSX.Element {
     setSearchText('')
     setFieldSearchText('')
     setActiveCategory('all')
+    setShowAdvancedFilters(false)
     setImportStatus('')
     setWizardState({})
   }
@@ -285,6 +285,10 @@ function App(): JSX.Element {
   }
 
   const hasMissingRequired = output ? output.missingRequired.length > 0 : false
+  const statusClassName =
+    importStatus.toLowerCase().includes('failed') || importStatus.toLowerCase().includes('unable')
+      ? 'error-text'
+      : 'status-note'
   const selectedResearchReferences = useMemo(() => {
     if (!selectedService) {
       return []
@@ -309,54 +313,90 @@ function App(): JSX.Element {
         Generate docker compose + env files with a guided wizard.
       </p>
 
-      {step === 1 && showOnboardingTip ? (
-        <section className="tip-banner" aria-live="polite">
-          <p>
-            Quick start: choose a service card to jump straight into configuration. Use Home (Alt+H)
-            anytime.
-          </p>
-          <button type="button" className="button" onClick={dismissOnboardingTip}>
-            Got it
-          </button>
-        </section>
-      ) : null}
-
-      {importStatus && step === 1 ? <p className="status-note">{importStatus}</p> : null}
-
-      {importStatus && step === 2 ? <p className="status-note">{importStatus}</p> : null}
-
-      {step === 1 ? <PrivacyNotice /> : null}
-
-      {step === 1 ? (
-        <ServiceFilters
-          search={searchText}
-          category={activeCategory}
-          categories={categories}
-          onSearchChange={setSearchText}
-          onCategoryChange={handleCategoryChange}
-        />
-      ) : null}
-
       {selectedService && step > 1 ? <ServiceDetails service={selectedService} /> : null}
 
-      <WizardStepper
-        currentStep={step}
-        steps={[
-          'Select service',
-          'Configure values',
-          'Generate files',
-        ]}
-      />
+      {step > 1 ? (
+        <WizardStepper
+          currentStep={step}
+          steps={[
+            'Select service',
+            'Configure values',
+            'Generate files',
+          ]}
+        />
+      ) : null}
 
       {step === 1 ? (
         <section className="card">
           <h2>1. Choose a service</h2>
+          <p className="muted">Select a template card to jump directly into configuration.</p>
+          <p className="privacy-inline">Privacy-first: all generation runs in your browser.</p>
+
+          {showOnboardingTip ? (
+            <p className="quick-start-inline" aria-live="polite">
+              Quick start: choose a service card. Use Home (Alt+H) anytime.
+              <button type="button" className="button" onClick={dismissOnboardingTip}>
+                Dismiss
+              </button>
+            </p>
+          ) : null}
+
+          {importStatus ? <p className={statusClassName}>{importStatus}</p> : null}
+
+          <div className="quick-find-row">
+            <label htmlFor="service-search" className="sr-only">
+              Search services
+            </label>
+            <input
+              id="service-search"
+              type="search"
+              value={searchText}
+              placeholder="Quick search services"
+              onChange={(event) => setSearchText(event.currentTarget.value)}
+            />
+          </div>
+
+          <div className="filter-toggle-row">
+            <button
+              type="button"
+              className="button"
+              onClick={() => setShowAdvancedFilters((current) => !current)}
+              aria-expanded={showAdvancedFilters}
+            >
+              {showAdvancedFilters ? 'Hide filters' : 'More filters'}
+            </button>
+          </div>
+
+          {showAdvancedFilters ? (
+            <div className="compact-filters">
+              <label htmlFor="service-category" className="filter-control">
+                Category
+                <select
+                  id="service-category"
+                  value={activeCategory}
+                  onChange={(event) => handleCategoryChange(event.currentTarget.value)}
+                >
+                  <option value="all">All categories</option>
+                  {categories.map((entry) => (
+                    <option key={entry} value={entry}>
+                      {entry}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          ) : null}
+
           {visibleServices.length === 0 ? (
             <p className="muted">No services matched your current filters.</p>
           ) : (
             <div className="grouped-services">
-              {Object.entries(groupedVisibleServices).map(([category, services]) =>
-                services.length === 0 ? null : (
+              {Object.entries(groupedVisibleServices).map(([category, services]) => {
+                if (!Array.isArray(services) || services.length === 0) {
+                  return null
+                }
+
+                return (
                   <section key={category} className="category-group">
                     <h3>{category}</h3>
                     <div className="service-grid">
@@ -370,21 +410,10 @@ function App(): JSX.Element {
                       ))}
                     </div>
                   </section>
-                ),
-              )}
+                )
+              })}
             </div>
           )}
-
-          <div className="actions">
-            <button
-              type="button"
-              className="button primary"
-              disabled={!selectedService || Boolean(templateError)}
-              onClick={() => setStep(2)}
-            >
-              Continue
-            </button>
-          </div>
 
           {templateError ? <p className="error-text">Failed to load template: {templateError}</p> : null}
         </section>
@@ -394,6 +423,7 @@ function App(): JSX.Element {
         <section className="card">
           <h2>2. Configure env values</h2>
           <p className="muted">Use defaults or override any field.</p>
+          {importStatus ? <p className={statusClassName}>{importStatus}</p> : null}
 
           <div className="field-search-row">
             <label htmlFor="field-search" className="sr-only">
@@ -473,7 +503,7 @@ function App(): JSX.Element {
 
           {output.missingRequired.length > 0 ? (
             <div className="warning">
-              <strong>Review required values:</strong>
+              <strong>Missing required values will export as placeholders:</strong>
               <ul>
                 {output.missingRequired.map((missingKey) => (
                   <li key={missingKey}>{missingKey}</li>
@@ -545,8 +575,8 @@ function App(): JSX.Element {
             <button type="button" className="button" onClick={() => setStep(2)}>
               Back to fields
             </button>
-            <button type="button" className="button" disabled={hasMissingRequired} onClick={() => void exportBundle()}>
-              Export bundle
+            <button type="button" className="button" onClick={() => void exportBundle()}>
+              {hasMissingRequired ? 'Export bundle (with placeholders)' : 'Export bundle'}
             </button>
             <button type="button" className="button" onClick={() => setStep(1)}>
               Start over

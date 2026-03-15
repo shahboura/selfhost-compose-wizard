@@ -1,43 +1,50 @@
-# for better separation, better to put all dozzle related data in one folder.
+# Dozzle + OAuth2 Proxy stack
+# - oauth2-proxy performs authentication
+# - dozzle serves logs behind the proxy
 
 services:
   oauth2-proxy:
-    container_name: dozzle-oidc
     image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: dozzle-oidc
+    security_opt:
+      - no-new-privileges:true
     command: --config /oauth2-proxy.cfg
     environment:
+      # Common runtime identity
       TZ: ${TZ}
       PUID: ${PUID}
       PGID: ${PGID}
+    ports:
+      - ${DOZZLE_OAUTH2_PROXY_PORT:-4180}:4180
     volumes:
       - ${DOZZLE_OAUTH2_PROXY_CONFIG_FILE:-./oauth2-proxy.cfg}:/oauth2-proxy.cfg:ro
       - ${DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:-./authenticated_emails}:/authenticated_emails:ro
-    restart: on-failure:5
-    ports:
-      - ${DOZZLE_OAUTH2_PROXY_PORT:-4180}:4180
     depends_on:
       - dozzle
+    restart: on-failure:5
 
   dozzle:
-    container_name: Dozzle
     image: amir20/dozzle:latest
+    container_name: dozzle
     security_opt:
       - no-new-privileges:true
-    restart: on-failure:5
+    environment:
+      # Common runtime identity
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      # Forward-auth headers from oauth2-proxy
+      DOZZLE_AUTH_PROVIDER: forward-proxy
+      DOZZLE_AUTH_HEADER_USER: X-Forwarded-User
+      DOZZLE_AUTH_HEADER_EMAIL: X-Forwarded-Email
+      DOZZLE_AUTH_HEADER_NAME: X-Forwarded-Preferred-Username
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOZZLE_DATA_DIR:-./dozzle}:/data:rw
-    environment:
-     TZ: ${TZ}
-     PUID: ${PUID}
-     PGID: ${PGID}
-     DOZZLE_AUTH_PROVIDER: forward-proxy
-     DOZZLE_AUTH_HEADER_USER: X-Forwarded-User
-     DOZZLE_AUTH_HEADER_EMAIL: X-Forwarded-Email
-     DOZZLE_AUTH_HEADER_NAME: X-Forwarded-Preferred-Username
     healthcheck:
       test: ["CMD", "/dozzle", "healthcheck"]
       interval: 10s
       timeout: 3s
       retries: 5
       start_period: 30s
+    restart: on-failure:5

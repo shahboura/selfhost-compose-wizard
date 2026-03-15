@@ -35,6 +35,16 @@ export const FIELD_DESCRIPTIONS: Record<string, string> = {
   GETARCANE_OIDC_ISSUER_URL: 'OIDC issuer URL with no trailing slash.',
   GETARCANE_OIDC_SCOPES:
     'Include any claim scopes needed for GETARCANE_OIDC_ADMIN_CLAIM (for example groups).',
+  AUDIOBOOKSHELF_CONFIG: 'Host path for Audiobookshelf config/database directory.',
+  AUDIOBOOKSHELF_METADATA: 'Host path for Audiobookshelf metadata/cache directory.',
+  AUDIOBOOKSHELF_AUDIOBOOKS: 'Host path for Audiobooks media library.',
+  AUDIOBOOKSHELF_PODCASTS: 'Host path for podcasts media library.',
+  PLEX_CONFIG: 'Host path for Plex config/library database.',
+  PLEX_MOVIES: 'Host path for Plex movies library.',
+  PLEX_MUSIC: 'Host path for Plex music library.',
+  PLEX_TV: 'Host path for Plex TV library.',
+  PLEX_CLAIM: 'Optional Plex claim token used for initial server claim flow.',
+  WATCHTOWER_SCHEDULE: 'Cron schedule expression in 6-field format used by Watchtower.',
 }
 
 export const SENSITIVE_KEYS: Set<string> = new Set<string>([

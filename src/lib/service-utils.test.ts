@@ -14,7 +14,7 @@ const sampleServices: ServiceDefinition[] = [
     name: 'Alpha',
     templateFile: 'services/alpha/base.compose.yaml',
     templateKey: 'services/bentopdf/base.compose.yaml',
-    category: 'utilities',
+    category: 'operations',
     description: 'Utility tool',
     tags: ['tooling'],
     fieldOverrides: {},
@@ -37,19 +37,19 @@ const sampleServices: ServiceDefinition[] = [
 
 describe('service-utils', () => {
   it('derives available categories based on catalog presence', () => {
-    const categories = deriveAvailableCategories(sampleServices, ['media', 'observability', 'utilities'])
-    expect(categories).toEqual(['media', 'utilities'])
+    const categories = deriveAvailableCategories(sampleServices, ['media', 'documents', 'operations'])
+    expect(categories).toEqual(['media', 'operations'])
   })
 
   it('filters services by search and category', () => {
     expect(filterServices(sampleServices, 'media', 'all').map((service) => service.id)).toEqual(['beta'])
-    expect(filterServices(sampleServices, '', 'utilities').map((service) => service.id)).toEqual(['alpha'])
+    expect(filterServices(sampleServices, '', 'operations').map((service) => service.id)).toEqual(['alpha'])
   })
 
   it('groups services by category', () => {
-    const grouped = groupServicesByCategory(sampleServices, ['media', 'utilities'])
+    const grouped = groupServicesByCategory(sampleServices, ['media', 'operations'])
     expect(grouped.media).toHaveLength(1)
-    expect(grouped.utilities).toHaveLength(1)
+    expect(grouped.operations).toHaveLength(1)
   })
 
   it('deduplicates references by URL', () => {

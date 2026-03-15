@@ -1,31 +1,37 @@
-# for better separation, better to put all bentopdf related data in one folder.
+# BentoPDF + OAuth2 Proxy stack
+# - oauth2-proxy performs authentication
+# - bentopdf serves the app behind the proxy
 
 services:
   oauth2-proxy:
-    container_name: bentopdf-oidc
     image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: bentopdf-oidc
+    security_opt:
+      - no-new-privileges:true
     command: --config /oauth2-proxy.cfg
     environment:
+      # Common runtime identity
       TZ: ${TZ}
       PUID: ${PUID}
       PGID: ${PGID}
-    networks:
-      bentopdf-oauth2: {}
+    ports:
+      - ${BENTOPDF_OAUTH2_PROXY_PORT:-7860}:7860
     volumes:
       - ${BENTOPDF_OAUTH2_PROXY_CONFIG_FILE:-./oauth2-proxy.cfg}:/oauth2-proxy.cfg:ro
       - ${BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:-./oauth2-proxy/authenticated_emails}:/authenticated_emails:ro
-    restart: on-failure:5
-    ports:
-      - ${BENTOPDF_OAUTH2_PROXY_PORT:-7860}:7860
+    networks:
+      bentopdf-oauth2: {}
     depends_on:
       - bentopdf
+    restart: on-failure:5
 
   bentopdf:
-    container_name: bentopdf
     image: ghcr.io/alam00000/bentopdf-simple:latest
+    container_name: bentopdf
     security_opt:
       - no-new-privileges:true
     environment:
+      # Common runtime identity
       TZ: ${TZ}
       PUID: ${PUID}
       PGID: ${PGID}

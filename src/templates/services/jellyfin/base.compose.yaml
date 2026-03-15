@@ -1,9 +1,13 @@
 services:
   jellyfin:
     image: jellyfin/jellyfin:latest
-    container_name: Jellyfin
+    container_name: jellyfin
     user: ${PUID:-1000}:${PGID:-100}
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
     environment:
+      # Common runtime identity
       TZ: ${TZ}
     ports:
       - ${JELLYFIN_PORT:-8096}:8096
@@ -17,14 +21,13 @@ services:
       - ${JELLYFIN_MUSIC_DIR:-./jellyfin/music}:/music:rw
       - ${JELLYFIN_TV_DIR:-./jellyfin/tv}:/shows:rw
     devices:
-    # Optional - only needed if you want to use hardware acceleration for video encoding/decoding
+      # Optional - only needed if you want to use hardware acceleration for video encoding/decoding
       - /dev/dri/renderD128:/dev/dri/renderD128
       - /dev/dri/card0:/dev/dri/card0
-    restart: on-failure:5
-    network_mode: host
     healthcheck:
       test: timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8096' || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 90s
+    restart: on-failure:5

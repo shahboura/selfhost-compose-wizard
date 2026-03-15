@@ -1,0 +1,26 @@
+services:
+  watchtower:
+    image: nickfedor/watchtower:latest
+    container_name: watchtower
+    hostname: watchtower
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    environment:
+      TZ: ${TZ:-Etc/UTC}
+      WATCHTOWER_CLEANUP: ${WATCHTOWER_CLEANUP:-true}
+      WATCHTOWER_REMOVE_VOLUMES: ${WATCHTOWER_REMOVE_VOLUMES:-false}
+      WATCHTOWER_INCLUDE_RESTARTING: ${WATCHTOWER_INCLUDE_RESTARTING:-true}
+      WATCHTOWER_INCLUDE_STOPPED: ${WATCHTOWER_INCLUDE_STOPPED:-false}
+      WATCHTOWER_SCHEDULE: "${WATCHTOWER_SCHEDULE:-0 0 */12 * * *}"
+      WATCHTOWER_LABEL_ENABLE: ${WATCHTOWER_LABEL_ENABLE:-false}
+      WATCHTOWER_TIMEOUT: ${WATCHTOWER_TIMEOUT:-45s}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    healthcheck:
+      test: ["CMD", "/watchtower", "--health-check"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: on-failure:5

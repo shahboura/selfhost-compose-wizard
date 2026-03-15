@@ -1,0 +1,60 @@
+{
+  "fields": {
+    "PGID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "100"
+    },
+    "PLEX_CLAIM": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PLEX_CONFIG": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PLEX_MOVIES": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PLEX_MUSIC": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PLEX_TV": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PUID": {
+      "type": "text",
+      "required": false,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": "1000"
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": false,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": "UTC"
+    }
+  }
+}
