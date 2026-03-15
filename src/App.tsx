@@ -242,7 +242,6 @@ function App(): JSX.Element {
     }
   }
 
-  const hasMissingRequired = output ? output.missingRequired.length > 0 : false
   const statusClassName =
     importStatus.toLowerCase().includes('failed') || importStatus.toLowerCase().includes('unable')
       ? 'error-text'
@@ -468,14 +467,12 @@ function App(): JSX.Element {
             />
           </div>
 
-          <section className="subsection">
-            <h3>Security & setup helpers</h3>
-            <p className="muted">
-              Use in-form Generate buttons for supported secrets, or copy the service-specific commands below.
-            </p>
-            {selectedService.extraTooling.length === 0 ? (
-              <p className="muted">No additional helper commands are required for this template.</p>
-            ) : (
+          {selectedService.extraTooling.length > 0 ? (
+            <section className="subsection">
+              <h3>Security & setup helpers</h3>
+              <p className="muted">
+                Use in-form Generate buttons for supported secrets, or copy the service-specific commands below.
+              </p>
               <ul className="tool-list">
                 {selectedService.extraTooling.map((tool) => (
                   <li key={tool.title}>
@@ -491,8 +488,8 @@ function App(): JSX.Element {
                   </li>
                 ))}
               </ul>
-            )}
-          </section>
+            </section>
+          ) : null}
 
           <section className="subsection">
             <h3>Defaults research references</h3>
@@ -516,7 +513,7 @@ function App(): JSX.Element {
               Back to fields
             </button>
             <button type="button" className="button" onClick={() => void exportBundle()}>
-              {hasMissingRequired ? 'Export bundle (with placeholders)' : 'Export bundle'}
+              Export bundle
             </button>
             <button type="button" className="button" onClick={() => setStep(1)}>
               Start over

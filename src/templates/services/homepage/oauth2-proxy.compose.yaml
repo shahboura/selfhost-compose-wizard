@@ -14,8 +14,8 @@ services:
     ports:
       - ${OAUTH2_PROXY_PORT}:4180
     volumes:
-      - ${OAUTH2_PROXY_CONFIG_PATH}:/oauth2-proxy.cfg:ro
-      - ${OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH}:/authenticated_emails:ro
+      - ${OAUTH2_PROXY_CONFIG_FILE}:/oauth2-proxy.cfg:ro
+      - ${OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE}:/authenticated_emails:ro
     networks:
       homepage-oauth2: {}
     depends_on:

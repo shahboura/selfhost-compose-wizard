@@ -7,18 +7,18 @@
       "description": "DOZZLE_DATA_DIR filesystem path.",
       "recommendedDefault": ""
     },
-    "DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE": {
+    "OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE filesystem path.",
+      "description": "OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE filesystem path.",
       "recommendedDefault": ""
     },
-    "DOZZLE_OAUTH2_PROXY_CONFIG_FILE": {
+    "OAUTH2_PROXY_CONFIG_FILE": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "DOZZLE_OAUTH2_PROXY_CONFIG_FILE filesystem path.",
+      "description": "OAUTH2_PROXY_CONFIG_FILE filesystem path.",
       "recommendedDefault": ""
     },
     "OAUTH2_PROXY_PORT": {

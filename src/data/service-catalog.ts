@@ -67,10 +67,10 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     description: 'BentoPDF with OIDC reverse-proxy authentication flow.',
     tags: ['pdf', 'oauth2-proxy', 'oidc'],
     fieldOverrides: {
-      OAUTH2_PROXY_CONFIG_PATH: {
+      OAUTH2_PROXY_CONFIG_FILE: {
         description: 'Path to oauth2-proxy configuration file on host.',
       },
-      OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH: {
+      OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: {
         description: 'Path to authenticated emails file on host.',
       },
       OAUTH2_PROXY_PORT: {
@@ -133,10 +133,10 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       'Mounts /var/run/docker.sock, which grants broad host Docker control.',
     ],
     fieldOverrides: {
-      OAUTH2_PROXY_CONFIG_PATH: {
+      OAUTH2_PROXY_CONFIG_FILE: {
         description: 'Path to oauth2-proxy config file mounted read-only.',
       },
-      OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH: {
+      OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: {
         description: 'Path to allowed-authenticated-emails file mounted read-only.',
       },
       OAUTH2_PROXY_PORT: {
@@ -216,6 +216,16 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       'Mounts /var/run/docker.sock, which grants broad host Docker control.',
     ],
     fieldOverrides: {
+      OAUTH2_PROXY_CONFIG_FILE: {
+        description: 'Path to oauth2-proxy config file mounted read-only.',
+      },
+      OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: {
+        description: 'Path to authenticated-emails file mounted read-only.',
+      },
+      OAUTH2_PROXY_PORT: {
+        description: 'Published oauth2-proxy port (official default is 4180).',
+        recommendedDefault: '4180',
+      },
       HOMEPAGE_CONFIG_PATH: {
         description: 'Host path for Homepage configuration files.',
       },
@@ -224,16 +234,6 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       },
       HOMEPAGE_ALLOWED_HOSTS: {
         description: 'Allowed hosts for Homepage requests, may include host:port values.',
-      },
-      OAUTH2_PROXY_CONFIG_PATH: {
-        description: 'Path to oauth2-proxy config file mounted read-only.',
-      },
-      OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH: {
-        description: 'Path to authenticated-emails file mounted read-only.',
-      },
-      OAUTH2_PROXY_PORT: {
-        description: 'Published oauth2-proxy port (official default is 4180).',
-        recommendedDefault: '4180',
       },
     },
     extraTooling: [

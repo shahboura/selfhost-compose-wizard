@@ -21,18 +21,18 @@
       "description": "HOMEPAGE_PUBLIC_PATH filesystem path.",
       "recommendedDefault": ""
     },
-    "OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH": {
+    "OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH filesystem path.",
+      "description": "OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE filesystem path.",
       "recommendedDefault": ""
     },
-    "OAUTH2_PROXY_CONFIG_PATH": {
+    "OAUTH2_PROXY_CONFIG_FILE": {
       "type": "path",
       "required": true,
       "sensitive": false,
-      "description": "OAUTH2_PROXY_CONFIG_PATH filesystem path.",
+      "description": "OAUTH2_PROXY_CONFIG_FILE filesystem path.",
       "recommendedDefault": ""
     },
     "OAUTH2_PROXY_PORT": {

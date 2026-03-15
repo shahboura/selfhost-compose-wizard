@@ -10,13 +10,11 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   AUDIOBOOKSHELF_METADATA: './audiobookshelf/metadata',
 
   BENTOPDF_PORT: '8080',
-  BENTOPDF_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
-  BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './oauth2-proxy/authenticated_emails',
+  OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
+  OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './authenticated_emails',
 
   DOZZLE_PORT: '8080',
   DOZZLE_DATA_DIR: './dozzle',
-  DOZZLE_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
-  DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './authenticated_emails',
 
   GETARCANE_PORT: '3552',
   GETARCANE_APP_URL: 'http://localhost:3552',
@@ -29,8 +27,6 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   HOMEPAGE_PUBLIC_PATH: './homepage/public/images',
   HOMEPAGE_ALLOWED_HOSTS: 'localhost:3000',
   OAUTH2_PROXY_PORT: '4180',
-  OAUTH2_PROXY_CONFIG_PATH: './oauth2-proxy.cfg',
-  OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH: './authenticated_emails',
 
   IMMICH_DB_USER: 'postgres',
   IMMICH_DB_NAME: 'immich',
@@ -76,12 +72,9 @@ export const FIELD_DESCRIPTIONS: Record<string, string> = {
   IMMICH_DB_USER: 'Immich Postgres username used by app and DB.',
   IMMICH_DB_NAME: 'Immich Postgres database name.',
   IMMICH_VERSION: 'Immich image tag/version selector.',
-  BENTOPDF_OAUTH2_PROXY_CONFIG_FILE: 'Path to oauth2-proxy configuration file on host.',
-  BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:
-    'Path to authenticated emails file on host.',
-  DOZZLE_OAUTH2_PROXY_CONFIG_FILE: 'Path to oauth2-proxy config file mounted read-only.',
-  DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:
-    'Path to allowed-authenticated-emails file mounted read-only.',
+  OAUTH2_PROXY_CONFIG_FILE: 'Path to oauth2-proxy configuration file on host.',
+  OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:
+    'Path to authenticated-emails file mounted read-only for oauth2-proxy.',
   GETARCANE_APP_URL: 'Public base URL used by Arcane for callback and link generation.',
   GETARCANE_PORT: 'Published HTTP port for Arcane web UI.',
   GETARCANE_DATA_DIR: 'Host path mounted to /app/data for Arcane state and projects.',
@@ -94,9 +87,6 @@ export const FIELD_DESCRIPTIONS: Record<string, string> = {
     'Allowed hosts for Homepage requests, may include host:port values.',
   HOMEPAGE_CONFIG_PATH: 'Host path for Homepage configuration files.',
   HOMEPAGE_PUBLIC_PATH: 'Host path for Homepage public/images directory.',
-  OAUTH2_PROXY_CONFIG_PATH: 'Path to oauth2-proxy config file mounted read-only.',
-  OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH:
-    'Path to authenticated-emails file mounted read-only for oauth2-proxy.',
   AUDIOBOOKSHELF_CONFIG: 'Host path for Audiobookshelf config/database directory.',
   AUDIOBOOKSHELF_METADATA: 'Host path for Audiobookshelf metadata/cache directory.',
   AUDIOBOOKSHELF_AUDIOBOOKS: 'Host path for Audiobooks media library.',
