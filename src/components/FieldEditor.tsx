@@ -35,6 +35,16 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
   const generationSpec = useMemo(() => getSecretGenerationSpec(field.key, field.sensitive), [field.key, field.sensitive])
 
   const activeValue = resolvedState.useDefault ? defaultValue : resolvedState.value
+  const inputValue = resolvedState.useDefault ? '' : resolvedState.value
+  const inputPlaceholder = resolvedState.useDefault
+    ? defaultValue
+      ? `Using default: ${defaultValue}`
+      : field.required
+        ? 'Required value'
+        : 'Optional override'
+    : field.required
+      ? 'Required value'
+      : 'Optional override'
   const validation = useMemo(() => validateFieldValue(field.key, activeValue), [activeValue, field.key])
 
   const handleGenerate = (): void => {
@@ -88,10 +98,9 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
               <input
                 id={inputId}
                 type="text"
-                value={resolvedState.useDefault ? defaultValue : resolvedState.value}
+                value={inputValue}
                 onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
-                readOnly={resolvedState.useDefault}
-                placeholder={field.required ? 'Required value' : 'Optional override'}
+                placeholder={inputPlaceholder}
                 aria-describedby={hintId}
                 autoComplete="off"
                 list={`${inputId}-timezone-list`}
@@ -107,10 +116,9 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
               <input
                 id={inputId}
                 type={currentInputType}
-                value={resolvedState.useDefault ? defaultValue : resolvedState.value}
+                value={inputValue}
                 onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
-                readOnly={resolvedState.useDefault}
-                placeholder={field.required ? 'Required value' : 'Optional override'}
+                placeholder={inputPlaceholder}
                 aria-describedby={hintId}
                 autoComplete="off"
               />
