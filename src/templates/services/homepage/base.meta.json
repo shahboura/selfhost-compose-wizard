@@ -1,0 +1,46 @@
+{
+  "fields": {
+    "HOMEPAGE_ALLOWED_HOSTS": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "HOMEPAGE_CONFIG_PATH": {
+      "type": "path",
+      "required": true,
+      "sensitive": false,
+      "description": "HOMEPAGE_CONFIG_PATH filesystem path.",
+      "recommendedDefault": ""
+    },
+    "HOMEPAGE_PORT": {
+      "type": "number",
+      "required": true,
+      "sensitive": false,
+      "description": "HOMEPAGE_PORT numeric value.",
+      "recommendedDefault": ""
+    },
+    "PGID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "PUID": {
+      "type": "text",
+      "required": true,
+      "sensitive": false,
+      "description": "Environment variable used by this compose template.",
+      "recommendedDefault": ""
+    },
+    "TZ": {
+      "type": "timezone",
+      "required": true,
+      "sensitive": false,
+      "description": "Timezone in TZ database format.",
+      "recommendedDefault": ""
+    }
+  }
+}

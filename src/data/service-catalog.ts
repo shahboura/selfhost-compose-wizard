@@ -8,7 +8,7 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     templateKey: 'services/audiobookshelf/base.compose.yaml',
     category: 'media',
     description: 'Self-hosted audiobooks and podcasts server.',
-    tags: ['audiobooks', 'podcasts', 'media'],
+    tags: ['audiobooks', 'podcasts'],
     fieldOverrides: {
       AUDIOBOOKSHELF_CONFIG: {
         description: 'Host path for Audiobookshelf config/database directory.',
@@ -160,6 +160,97 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
     ],
   },
   {
+    id: 'homepage',
+    name: 'Homepage',
+    templateFile: 'services/homepage/base.compose.yaml',
+    templateKey: 'services/homepage/base.compose.yaml',
+    category: 'operations',
+    description: 'Highly customizable service dashboard for homelab apps.',
+    tags: ['dashboard', 'docker', 'widgets'],
+    riskWarnings: [
+      'Mounts /var/run/docker.sock, which grants broad host Docker control.',
+    ],
+    fieldOverrides: {
+      HOMEPAGE_CONFIG_PATH: {
+        description: 'Host path for Homepage configuration files.',
+      },
+      HOMEPAGE_PUBLIC_PATH: {
+        description: 'Host path for Homepage public/images directory.',
+      },
+      HOMEPAGE_ALLOWED_HOSTS: {
+        description: 'Allowed hosts for Homepage requests, may include host:port values.',
+      },
+      HOMEPAGE_PORT: {
+        description: 'Published HTTP port for Homepage web UI.',
+      },
+    },
+    extraTooling: [],
+    researchReferences: [
+      {
+        title: 'Homepage docker installation docs',
+        url: 'https://gethomepage.dev/installation/docker/',
+      },
+      {
+        title: 'Homepage settings config docs',
+        url: 'https://gethomepage.dev/configs/settings/',
+      },
+    ],
+  },
+  {
+    id: 'homepage-oauth2-proxy',
+    name: 'Homepage + OAuth2 Proxy',
+    templateFile: 'services/homepage/oauth2-proxy.compose.yaml',
+    templateKey: 'services/homepage/oauth2-proxy.compose.yaml',
+    category: 'operations',
+    description: 'Homepage protected by OAuth2 Proxy in front of the dashboard.',
+    tags: ['dashboard', 'oauth2-proxy', 'oidc'],
+    riskWarnings: [
+      'Mounts /var/run/docker.sock, which grants broad host Docker control.',
+    ],
+    fieldOverrides: {
+      HOMEPAGE_CONFIG_PATH: {
+        description: 'Host path for Homepage configuration files.',
+      },
+      HOMEPAGE_PUBLIC_PATH: {
+        description: 'Host path for Homepage public/images directory.',
+      },
+      HOMEPAGE_ALLOWED_HOSTS: {
+        description: 'Allowed hosts for Homepage requests, may include host:port values.',
+      },
+      OAUTH2_PROXY_CONFIG_PATH: {
+        description: 'Path to oauth2-proxy config file mounted read-only.',
+      },
+      OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH: {
+        description: 'Path to authenticated-emails file mounted read-only.',
+      },
+      OAUTH2_PROXY_PORT: {
+        description: 'Published oauth2-proxy port.',
+      },
+    },
+    extraTooling: [
+      {
+        title: 'Generate OAuth2 Proxy cookie secret',
+        description: 'Generate a secure cookie secret for oauth2-proxy configuration.',
+        command: "openssl rand -base64 32 | tr -- '+/' '-_'",
+        url: 'https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/#generating-a-cookie-secret',
+      },
+    ],
+    researchReferences: [
+      {
+        title: 'Homepage docker installation docs',
+        url: 'https://gethomepage.dev/installation/docker/',
+      },
+      {
+        title: 'OAuth2 Proxy installation',
+        url: 'https://oauth2-proxy.github.io/oauth2-proxy/installation',
+      },
+      {
+        title: 'OAuth2 Proxy configuration overview',
+        url: 'https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview',
+      },
+    ],
+  },
+  {
     id: 'immich',
     name: 'Immich',
     templateFile: 'services/immich/base.compose.yaml',
@@ -177,14 +268,7 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
         recommendedDefault: 'v2',
       },
     },
-    extraTooling: [
-      {
-        title: 'Generate a strong DB password',
-        description: 'Optional helper command to create an alphanumeric DB password.',
-        command: 'pwgen 32 1',
-        url: 'https://docs.immich.app/install/docker-compose/',
-      },
-    ],
+    extraTooling: [],
     researchReferences: [
       {
         title: 'Immich docker compose install',

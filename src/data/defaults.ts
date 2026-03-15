@@ -26,6 +26,14 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   GETARCANE_OIDC_SCOPES: 'openid email profile',
   GETARCANE_OIDC_MERGE_ACCOUNTS: 'false',
 
+  HOMEPAGE_PORT: '3000',
+  HOMEPAGE_CONFIG_PATH: './homepage/config',
+  HOMEPAGE_PUBLIC_PATH: './homepage/public/images',
+  HOMEPAGE_ALLOWED_HOSTS: 'localhost:3000',
+  OAUTH2_PROXY_PORT: '5400',
+  OAUTH2_PROXY_CONFIG_PATH: './oauth2-proxy.cfg',
+  OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH: './authenticated_emails',
+
   IMMICH_DB_USER: 'postgres',
   IMMICH_DB_NAME: 'immich',
   IMMICH_VERSION: 'v2',
@@ -84,6 +92,13 @@ export const FIELD_DESCRIPTIONS: Record<string, string> = {
   GETARCANE_OIDC_ISSUER_URL: 'OIDC issuer URL with no trailing slash.',
   GETARCANE_OIDC_SCOPES:
     'Include any claim scopes needed for GETARCANE_OIDC_ADMIN_CLAIM (for example groups).',
+  HOMEPAGE_ALLOWED_HOSTS:
+    'Allowed hosts for Homepage requests, may include host:port values.',
+  HOMEPAGE_CONFIG_PATH: 'Host path for Homepage configuration files.',
+  HOMEPAGE_PUBLIC_PATH: 'Host path for Homepage public/images directory.',
+  OAUTH2_PROXY_CONFIG_PATH: 'Path to oauth2-proxy config file mounted read-only.',
+  OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH:
+    'Path to authenticated-emails file mounted read-only for oauth2-proxy.',
   AUDIOBOOKSHELF_CONFIG: 'Host path for Audiobookshelf config/database directory.',
   AUDIOBOOKSHELF_METADATA: 'Host path for Audiobookshelf metadata/cache directory.',
   AUDIOBOOKSHELF_AUDIOBOOKS: 'Host path for Audiobooks media library.',

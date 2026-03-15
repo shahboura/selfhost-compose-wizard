@@ -8,6 +8,8 @@ import itToolsBase from './services/it-tools/base.compose.yaml?raw'
 import jellyfinBase from './services/jellyfin/base.compose.yaml?raw'
 import getarcaneBase from './services/getarcane/base.compose.yaml?raw'
 import getarcaneOidc from './services/getarcane/oidc.compose.yaml?raw'
+import homepageBase from './services/homepage/base.compose.yaml?raw'
+import homepageOauth2Proxy from './services/homepage/oauth2-proxy.compose.yaml?raw'
 import plexBase from './services/plex/base.compose.yaml?raw'
 import watchtowerBase from './services/watchtower/base.compose.yaml?raw'
 // @scaffold-imports
@@ -23,6 +25,8 @@ export const TEMPLATE_CONTENT = {
   'services/jellyfin/base.compose.yaml': jellyfinBase,
   'services/getarcane/base.compose.yaml': getarcaneBase,
   'services/getarcane/oidc.compose.yaml': getarcaneOidc,
+  'services/homepage/base.compose.yaml': homepageBase,
+  'services/homepage/oauth2-proxy.compose.yaml': homepageOauth2Proxy,
   'services/plex/base.compose.yaml': plexBase,
   'services/watchtower/base.compose.yaml': watchtowerBase,
   // @scaffold-mappings

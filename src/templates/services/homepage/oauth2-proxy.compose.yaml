@@ -1,0 +1,51 @@
+# Homepage + OAuth2 Proxy stack
+# - oauth2-proxy performs authentication
+# - homepage serves dashboard behind the proxy
+
+services:
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: homepage-oidc
+    security_opt:
+      - no-new-privileges:true
+    command: --config /oauth2-proxy.cfg
+    environment:
+      TZ: ${TZ}
+    ports:
+      - ${OAUTH2_PROXY_PORT}:5400
+    volumes:
+      - ${OAUTH2_PROXY_CONFIG_PATH}:/oauth2-proxy.cfg:ro
+      - ${OAUTH2_PROXY_AUTHENTICATED_EMAILS_PATH}:/authenticated_emails:ro
+    networks:
+      homepage-oauth2: {}
+    depends_on:
+      - homepage
+    restart: on-failure:5
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      # Common runtime identity
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${HOMEPAGE_CONFIG_PATH}:/app/config:rw
+      - ${HOMEPAGE_PUBLIC_PATH}:/app/public/images:rw
+    networks:
+      homepage-oauth2: {}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: on-failure:5
+
+networks:
+  homepage-oauth2: {}

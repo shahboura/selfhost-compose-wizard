@@ -4,7 +4,6 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 
 ### Active conventions
 - Active templates live under `src/templates/services/*`.
-- Root legacy templates are archived under `templates-legacy/root-imports/*`.
 - Add new services via `npm run scaffold:service -- ...` when possible.
 - Keep package choices mainstream and stable; verify with audit + CI.
 

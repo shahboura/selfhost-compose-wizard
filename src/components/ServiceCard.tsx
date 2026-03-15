@@ -20,9 +20,13 @@ export function ServiceCard({ service, selected, onSelect }: ServiceCardProps): 
       <p>{service.description}</p>
       <p className="service-category">Category: {service.category}</p>
       <div className="tags">
-        {service.tags.map((tag) => (
-          <span key={tag}>{tag}</span>
-        ))}
+        {service.tags
+          .filter((tag) => tag !== service.category)
+          .map((tag) => (
+            <span key={tag} className="tag-chip">
+              {tag}
+            </span>
+          ))}
       </div>
     </button>
   )
