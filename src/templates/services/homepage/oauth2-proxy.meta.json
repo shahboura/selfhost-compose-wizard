@@ -42,20 +42,6 @@
       "description": "OAUTH2_PROXY_PORT numeric value.",
       "recommendedDefault": ""
     },
-    "PGID": {
-      "type": "text",
-      "required": true,
-      "sensitive": false,
-      "description": "Environment variable used by this compose template.",
-      "recommendedDefault": ""
-    },
-    "PUID": {
-      "type": "text",
-      "required": true,
-      "sensitive": false,
-      "description": "Environment variable used by this compose template.",
-      "recommendedDefault": ""
-    },
     "TZ": {
       "type": "timezone",
       "required": true,

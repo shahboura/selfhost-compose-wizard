@@ -7,10 +7,7 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      # Common runtime identity
       TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
     ports:
       - ${HOMEPAGE_PORT}:3000
