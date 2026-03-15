@@ -8,13 +8,13 @@ services:
     security_opt:
       - no-new-privileges:true
     ports:
-      - ${GETARCANE_PORT:-3552}:3552
+      - ${GETARCANE_PORT}:3552
     environment:
       # Common runtime identity
-      TZ: ${TZ:-Etc/UTC}
-      PUID: ${PUID:-1000}
-      PGID: ${PGID:-1000}
-      APP_URL: ${GETARCANE_APP_URL:-http://localhost:3552}
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      APP_URL: ${GETARCANE_APP_URL}
       ENCRYPTION_KEY: ${GETARCANE_ENCRYPTION_KEY}
       JWT_SECRET: ${GETARCANE_JWT_SECRET}
       LOG_LEVEL: info
@@ -28,15 +28,15 @@ services:
       GETARCANE_OIDC_CLIENT_ID: ${GETARCANE_OIDC_CLIENT_ID}
       GETARCANE_OIDC_CLIENT_SECRET: ${GETARCANE_OIDC_CLIENT_SECRET}
       GETARCANE_OIDC_ISSUER_URL: ${GETARCANE_OIDC_ISSUER_URL}
-      GETARCANE_OIDC_SCOPES: ${GETARCANE_OIDC_SCOPES:-openid email profile}
+      GETARCANE_OIDC_SCOPES: ${GETARCANE_OIDC_SCOPES}
       GETARCANE_OIDC_ADMIN_CLAIM: ${GETARCANE_OIDC_ADMIN_CLAIM}
       GETARCANE_OIDC_ADMIN_VALUE: ${GETARCANE_OIDC_ADMIN_VALUE}
-      GETARCANE_OIDC_MERGE_ACCOUNTS: ${GETARCANE_OIDC_MERGE_ACCOUNTS:-false}
+      GETARCANE_OIDC_MERGE_ACCOUNTS: ${GETARCANE_OIDC_MERGE_ACCOUNTS}
       DATABASE_URL: file:data/arcane.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
       # - DOCKER_API_VERSION=1.43
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${GETARCANE_DATA_DIR:-./arcane-data}:/app/data:rw
+      - ${GETARCANE_DATA_DIR}:/app/data:rw
     cgroup: host
     healthcheck:
       test: curl localhost:3552/api/health | grep \"status\":\"UP\"

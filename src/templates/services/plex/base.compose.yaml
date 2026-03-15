@@ -10,9 +10,9 @@ services:
       - no-new-privileges:true
     environment:
       # Common runtime identity
-      TZ: ${TZ:-UTC}
-      PUID: ${PUID:-1000}
-      PGID: ${PGID:-100}
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
       VERSION: public
       PLEX_CLAIM: claim-${PLEX_CLAIM}
     volumes:

@@ -272,6 +272,12 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       GETARCANE_DATA_DIR: {
         description: 'Host path mounted to /app/data for Arcane state and projects.',
       },
+      GETARCANE_APP_URL: {
+        description: 'Public base URL used by Arcane for callback and link generation.',
+      },
+      GETARCANE_PORT: {
+        description: 'Published HTTP port for Arcane web UI.',
+      },
     },
     extraTooling: [
       {
@@ -322,6 +328,18 @@ export const SERVICE_CATALOG: ServiceDefinition[] = [
       },
       GETARCANE_OIDC_SCOPES: {
         description: 'Include any claim scopes needed for GETARCANE_OIDC_ADMIN_CLAIM (for example groups).',
+      },
+      GETARCANE_OIDC_MERGE_ACCOUNTS: {
+        description: 'Whether OIDC login should merge accounts automatically when emails match.',
+      },
+      GETARCANE_APP_URL: {
+        description: 'Public base URL used by Arcane for callback and link generation.',
+      },
+      GETARCANE_PORT: {
+        description: 'Published HTTP port for Arcane web UI.',
+      },
+      GETARCANE_DATA_DIR: {
+        description: 'Host path mounted to /app/data for Arcane state and projects.',
       },
     },
     extraTooling: [

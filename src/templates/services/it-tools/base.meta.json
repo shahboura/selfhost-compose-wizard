@@ -2,10 +2,10 @@
   "fields": {
     "IT_TOOLS_PORT": {
       "type": "number",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "IT_TOOLS_PORT numeric value.",
-      "recommendedDefault": "5545"
+      "recommendedDefault": ""
     }
   }
 }

@@ -2,10 +2,10 @@
   "fields": {
     "PGID": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "100"
+      "recommendedDefault": ""
     },
     "PLEX_CLAIM": {
       "type": "text",
@@ -44,17 +44,17 @@
     },
     "PUID": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "1000"
+      "recommendedDefault": ""
     },
     "TZ": {
       "type": "timezone",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Timezone in TZ database format.",
-      "recommendedDefault": "UTC"
+      "recommendedDefault": ""
     }
   }
 }

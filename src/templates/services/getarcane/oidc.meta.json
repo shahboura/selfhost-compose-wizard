@@ -2,17 +2,17 @@
   "fields": {
     "GETARCANE_APP_URL": {
       "type": "url",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "GETARCANE_APP_URL URL.",
-      "recommendedDefault": "http://localhost:3552"
+      "recommendedDefault": ""
     },
     "GETARCANE_DATA_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "GETARCANE_DATA_DIR filesystem path.",
-      "recommendedDefault": "./arcane-data"
+      "recommendedDefault": ""
     },
     "GETARCANE_ENCRYPTION_KEY": {
       "type": "secret",
@@ -65,45 +65,45 @@
     },
     "GETARCANE_OIDC_MERGE_ACCOUNTS": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "false"
+      "recommendedDefault": ""
     },
     "GETARCANE_OIDC_SCOPES": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "openid email profile"
+      "recommendedDefault": ""
     },
     "GETARCANE_PORT": {
       "type": "number",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "GETARCANE_PORT numeric value.",
-      "recommendedDefault": "3552"
+      "recommendedDefault": ""
     },
     "PGID": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "1000"
+      "recommendedDefault": ""
     },
     "PUID": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "1000"
+      "recommendedDefault": ""
     },
     "TZ": {
       "type": "timezone",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Timezone in TZ database format.",
-      "recommendedDefault": "Etc/UTC"
+      "recommendedDefault": ""
     }
   }
 }

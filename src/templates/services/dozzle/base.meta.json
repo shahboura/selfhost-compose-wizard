@@ -2,17 +2,17 @@
   "fields": {
     "DOZZLE_DATA_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "DOZZLE_DATA_DIR filesystem path.",
-      "recommendedDefault": "./dozzle"
+      "recommendedDefault": ""
     },
     "DOZZLE_PORT": {
       "type": "number",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "DOZZLE_PORT numeric value.",
-      "recommendedDefault": "8892"
+      "recommendedDefault": ""
     },
     "PGID": {
       "type": "text",

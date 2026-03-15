@@ -2,31 +2,31 @@
   "fields": {
     "DOZZLE_DATA_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "DOZZLE_DATA_DIR filesystem path.",
-      "recommendedDefault": "./dozzle"
+      "recommendedDefault": ""
     },
     "DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE filesystem path.",
-      "recommendedDefault": "./authenticated_emails"
+      "recommendedDefault": ""
     },
     "DOZZLE_OAUTH2_PROXY_CONFIG_FILE": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "DOZZLE_OAUTH2_PROXY_CONFIG_FILE filesystem path.",
-      "recommendedDefault": "./oauth2-proxy.cfg"
+      "recommendedDefault": ""
     },
     "DOZZLE_OAUTH2_PROXY_PORT": {
       "type": "number",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "DOZZLE_OAUTH2_PROXY_PORT numeric value.",
-      "recommendedDefault": "4180"
+      "recommendedDefault": ""
     },
     "PGID": {
       "type": "text",

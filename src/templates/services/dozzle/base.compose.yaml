@@ -10,10 +10,10 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     ports:
-      - ${DOZZLE_PORT:-8892}:8080
+      - ${DOZZLE_PORT}:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${DOZZLE_DATA_DIR:-./dozzle}:/data:rw
+      - ${DOZZLE_DATA_DIR}:/data:rw
     healthcheck:
       test: ["CMD", "/dozzle", "healthcheck"]
       interval: 10s

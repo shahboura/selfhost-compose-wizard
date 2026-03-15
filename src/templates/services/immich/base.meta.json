@@ -51,10 +51,10 @@
     },
     "IMMICH_SERVER_PORT": {
       "type": "number",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "IMMICH_SERVER_PORT numeric value.",
-      "recommendedDefault": "2283"
+      "recommendedDefault": ""
     },
     "IMMICH_UPLOAD_DIR": {
       "type": "path",
@@ -72,10 +72,10 @@
     },
     "IMMICH_VERSION": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "release"
+      "recommendedDefault": ""
     },
     "PGID": {
       "type": "text",

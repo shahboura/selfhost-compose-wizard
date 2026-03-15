@@ -7,13 +7,13 @@ services:
     security_opt:
       - no-new-privileges:true
     ports:
-      - ${GETARCANE_PORT:-3552}:3552
+      - ${GETARCANE_PORT}:3552
     environment:
       # Common runtime identity
-      TZ: ${TZ:-Etc/UTC}
-      PUID: ${PUID:-1000}
-      PGID: ${PGID:-1000}
-      APP_URL: ${GETARCANE_APP_URL:-http://localhost:3552}
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      APP_URL: ${GETARCANE_APP_URL}
       ENCRYPTION_KEY: ${GETARCANE_ENCRYPTION_KEY}
       JWT_SECRET: ${GETARCANE_JWT_SECRET}
       LOG_LEVEL: info
@@ -23,7 +23,7 @@ services:
       # - DOCKER_API_VERSION=1.43
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${GETARCANE_DATA_DIR:-./arcane-data}:/app/data:rw
+      - ${GETARCANE_DATA_DIR}:/app/data:rw
     cgroup: host
     healthcheck:
       test: curl localhost:3552/api/health | grep \"status\":\"UP\"

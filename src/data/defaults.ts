@@ -2,15 +2,64 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   TZ: 'Etc/UTC',
   PUID: '1000',
   PGID: '1000',
+
+  AUDIOBOOKSHELF_PORT: '13378',
+  AUDIOBOOKSHELF_CONFIG: './audiobookshelf/config',
+  AUDIOBOOKSHELF_AUDIOBOOKS: './audiobookshelf/audiobooks',
+  AUDIOBOOKSHELF_PODCASTS: './audiobookshelf/podcasts',
+  AUDIOBOOKSHELF_METADATA: './audiobookshelf/metadata',
+
+  BENTOPDF_PORT: '8080',
+  BENTOPDF_OAUTH2_PROXY_PORT: '7860',
+  BENTOPDF_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
+  BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './oauth2-proxy/authenticated_emails',
+
+  DOZZLE_PORT: '8892',
+  DOZZLE_DATA_DIR: './dozzle',
+  DOZZLE_OAUTH2_PROXY_PORT: '4180',
+  DOZZLE_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
+  DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './authenticated_emails',
+
+  GETARCANE_PORT: '3552',
+  GETARCANE_APP_URL: 'http://localhost:3552',
+  GETARCANE_DATA_DIR: './arcane-data',
+  GETARCANE_OIDC_SCOPES: 'openid email profile',
+  GETARCANE_OIDC_MERGE_ACCOUNTS: 'false',
+
   IMMICH_DB_USER: 'postgres',
   IMMICH_DB_NAME: 'immich',
   IMMICH_VERSION: 'v2',
+  IMMICH_SERVER_PORT: '2283',
   IMMICH_UPLOAD_DIR: './library',
   IMMICH_DB_DATA_DIR: './postgres',
   IMMICH_VALKEY_DIR: './valkey',
   IMMICH_MODEL_CACHE_DIR: './model-cache',
   IMMICH_MODEL_CONFIG_DIR: './model-config',
   IMMICH_MATPLOTLIB_DIR: './matplotlib',
+
+  IT_TOOLS_PORT: '5545',
+
+  JELLYFIN_PORT: '8096',
+  JELLYFIN_UDP_PORT: '7359',
+  JELLYFIN_CONFIG_DIR: './jellyfin/config',
+  JELLYFIN_CACHE_DIR: './jellyfin/cache',
+  JELLYFIN_LOGS_DIR: './jellyfin/logs',
+  JELLYFIN_MOVIES_DIR: './jellyfin/movies',
+  JELLYFIN_MUSIC_DIR: './jellyfin/music',
+  JELLYFIN_TV_DIR: './jellyfin/tv',
+
+  PLEX_CONFIG: './plex/config',
+  PLEX_MOVIES: './plex/movies',
+  PLEX_MUSIC: './plex/music',
+  PLEX_TV: './plex/tv',
+
+  WATCHTOWER_CLEANUP: 'true',
+  WATCHTOWER_REMOVE_VOLUMES: 'false',
+  WATCHTOWER_INCLUDE_RESTARTING: 'true',
+  WATCHTOWER_INCLUDE_STOPPED: 'false',
+  WATCHTOWER_SCHEDULE: '0 0 */12 * * *',
+  WATCHTOWER_LABEL_ENABLE: 'false',
+  WATCHTOWER_TIMEOUT: '45s',
 }
 
 export const FIELD_DESCRIPTIONS: Record<string, string> = {

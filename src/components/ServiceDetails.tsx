@@ -7,42 +7,50 @@ interface ServiceDetailsProps {
 
 export function ServiceDetails({ service }: ServiceDetailsProps): JSX.Element {
   const docsReference = service.researchReferences[0]
+  const visibleTags = service.tags.slice(0, 2)
+  const hiddenTagCount = Math.max(0, service.tags.length - visibleTags.length)
+  const warningCount = service.riskWarnings?.length ?? 0
 
   return (
-    <section className="card service-details" aria-label="Selected service details">
-      <h2>Selected service</h2>
-      <p className="muted">{service.description}</p>
-      <dl>
+    <section className="card service-summary" aria-label="Selected service summary">
+      <div className="service-summary-head">
         <div>
-          <dt>Category</dt>
-          <dd>{service.category}</dd>
-        </div>
-        <div>
-          <dt>Tags</dt>
-          <dd>{service.tags.join(', ')}</dd>
+          <p className="muted">Selected service</p>
+          <h2>{service.name}</h2>
         </div>
         {docsReference ? (
-          <div>
-            <dt>Docs</dt>
-            <dd>
-              <a href={docsReference.url} target="_blank" rel="noreferrer">
-                {docsReference.title}
-              </a>
-            </dd>
+          <a href={docsReference.url} target="_blank" rel="noreferrer" className="button service-doc-link">
+            Docs
+          </a>
+        ) : null}
+      </div>
+
+      <div className="service-summary-meta">
+        <span className="summary-chip">{service.category}</span>
+        {visibleTags.map((tag) => (
+          <span key={tag} className="summary-chip secondary">
+            {tag}
+          </span>
+        ))}
+        {hiddenTagCount > 0 ? <span className="summary-chip secondary">+{hiddenTagCount} tags</span> : null}
+        {warningCount > 0 ? <span className="summary-chip warning">Warnings: {warningCount}</span> : null}
+      </div>
+
+      <details className="service-details-expand">
+        <summary>Service details</summary>
+        <p className="muted">{service.description}</p>
+
+        {service.riskWarnings && service.riskWarnings.length > 0 ? (
+          <div className="risk-panel" role="note" aria-label="Deployment risk warnings">
+            <strong>Risk warnings</strong>
+            <ul>
+              {service.riskWarnings.map((warning) => (
+                <li key={warning}>{warning}</li>
+              ))}
+            </ul>
           </div>
         ) : null}
-      </dl>
-
-      {service.riskWarnings && service.riskWarnings.length > 0 ? (
-        <div className="risk-panel" role="note" aria-label="Deployment risk warnings">
-          <strong>Risk warnings</strong>
-          <ul>
-            {service.riskWarnings.map((warning) => (
-              <li key={warning}>{warning}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      </details>
     </section>
   )
 }

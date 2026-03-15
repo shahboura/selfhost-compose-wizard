@@ -30,15 +30,7 @@ function App(): JSX.Element {
   const [searchText, setSearchText] = useState<string>('')
   const [fieldSearchText, setFieldSearchText] = useState<string>('')
   const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all')
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false)
   const [importStatus, setImportStatus] = useState<string>('')
-  const [showOnboardingTip, setShowOnboardingTip] = useState<boolean>(() => {
-    if (typeof window === 'undefined') {
-      return true
-    }
-
-    return window.localStorage.getItem('onboarding_tip_dismissed') !== 'true'
-  })
   const [wizardState, setWizardState] = useState<Record<string, WizardFieldState>>({})
   const selectedServiceIdRef = useRef<string>('')
   const envImportRequestIdRef = useRef<number>(0)
@@ -144,42 +136,8 @@ function App(): JSX.Element {
     setSearchText('')
     setFieldSearchText('')
     setActiveCategory('all')
-    setShowAdvancedFilters(false)
     setImportStatus('')
     setWizardState({})
-  }
-
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent): void => {
-      if (!(event.altKey && event.key.toLowerCase() === 'h')) {
-        return
-      }
-
-      const target = event.target as HTMLElement | null
-      const tagName = target?.tagName.toLowerCase()
-      const isTypingContext =
-        tagName === 'input' ||
-        tagName === 'textarea' ||
-        tagName === 'select' ||
-        target?.isContentEditable === true
-
-      if (isTypingContext) {
-        return
-      }
-
-      event.preventDefault()
-      goHome()
-    }
-
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [])
-
-  const dismissOnboardingTip = (): void => {
-    setShowOnboardingTip(false)
-    window.localStorage.setItem('onboarding_tip_dismissed', 'true')
   }
 
   const categories = useMemo<ServiceCategory[]>(
@@ -332,18 +290,9 @@ function App(): JSX.Element {
           <p className="muted">Select a template card to jump directly into configuration.</p>
           <p className="privacy-inline">Privacy-first: all generation runs in your browser.</p>
 
-          {showOnboardingTip ? (
-            <p className="quick-start-inline" aria-live="polite">
-              Quick start: choose a service card. Use Home (Alt+H) anytime.
-              <button type="button" className="button" onClick={dismissOnboardingTip}>
-                Dismiss
-              </button>
-            </p>
-          ) : null}
-
           {importStatus ? <p className={statusClassName}>{importStatus}</p> : null}
 
-          <div className="quick-find-row">
+          <div className="service-filters-inline">
             <label htmlFor="service-search" className="sr-only">
               Search services
             </label>
@@ -356,36 +305,27 @@ function App(): JSX.Element {
             />
           </div>
 
-          <div className="filter-toggle-row">
+          <div className="category-chip-row" role="group" aria-label="Filter services by category">
             <button
               type="button"
-              className="button"
-              onClick={() => setShowAdvancedFilters((current) => !current)}
-              aria-expanded={showAdvancedFilters}
+              className="category-chip"
+              data-active={activeCategory === 'all'}
+              onClick={() => handleCategoryChange('all')}
             >
-              {showAdvancedFilters ? 'Hide filters' : 'More filters'}
+              All
             </button>
+            {categories.map((entry) => (
+              <button
+                key={entry}
+                type="button"
+                className="category-chip"
+                data-active={activeCategory === entry}
+                onClick={() => handleCategoryChange(entry)}
+              >
+                {entry}
+              </button>
+            ))}
           </div>
-
-          {showAdvancedFilters ? (
-            <div className="compact-filters">
-              <label htmlFor="service-category" className="filter-control">
-                Category
-                <select
-                  id="service-category"
-                  value={activeCategory}
-                  onChange={(event) => handleCategoryChange(event.currentTarget.value)}
-                >
-                  <option value="all">All categories</option>
-                  {categories.map((entry) => (
-                    <option key={entry} value={entry}>
-                      {entry}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          ) : null}
 
           {visibleServices.length === 0 ? (
             <p className="muted">No services matched your current filters.</p>

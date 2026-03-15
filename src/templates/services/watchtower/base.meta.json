@@ -2,59 +2,59 @@
   "fields": {
     "TZ": {
       "type": "timezone",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Timezone in TZ database format.",
-      "recommendedDefault": "Etc/UTC"
+      "recommendedDefault": ""
     },
     "WATCHTOWER_CLEANUP": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "true"
+      "recommendedDefault": ""
     },
     "WATCHTOWER_INCLUDE_RESTARTING": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "true"
+      "recommendedDefault": ""
     },
     "WATCHTOWER_INCLUDE_STOPPED": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "false"
+      "recommendedDefault": ""
     },
     "WATCHTOWER_LABEL_ENABLE": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "false"
+      "recommendedDefault": ""
     },
     "WATCHTOWER_REMOVE_VOLUMES": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "false"
+      "recommendedDefault": ""
     },
     "WATCHTOWER_SCHEDULE": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "0 0 */12 * * *"
+      "recommendedDefault": ""
     },
     "WATCHTOWER_TIMEOUT": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "45s"
+      "recommendedDefault": ""
     }
   }
 }

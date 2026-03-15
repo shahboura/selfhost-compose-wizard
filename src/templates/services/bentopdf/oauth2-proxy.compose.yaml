@@ -15,10 +15,10 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     ports:
-      - ${BENTOPDF_OAUTH2_PROXY_PORT:-7860}:7860
+      - ${BENTOPDF_OAUTH2_PROXY_PORT}:7860
     volumes:
-      - ${BENTOPDF_OAUTH2_PROXY_CONFIG_FILE:-./oauth2-proxy.cfg}:/oauth2-proxy.cfg:ro
-      - ${BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE:-./oauth2-proxy/authenticated_emails}:/authenticated_emails:ro
+      - ${BENTOPDF_OAUTH2_PROXY_CONFIG_FILE}:/oauth2-proxy.cfg:ro
+      - ${BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE}:/authenticated_emails:ro
     networks:
       bentopdf-oauth2: {}
     depends_on:

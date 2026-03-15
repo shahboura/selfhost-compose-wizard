@@ -2,73 +2,73 @@
   "fields": {
     "JELLYFIN_CACHE_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_CACHE_DIR filesystem path.",
-      "recommendedDefault": "./jellyfin/cache"
+      "recommendedDefault": ""
     },
     "JELLYFIN_CONFIG_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_CONFIG_DIR filesystem path.",
-      "recommendedDefault": "./jellyfin/config"
+      "recommendedDefault": ""
     },
     "JELLYFIN_LOGS_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_LOGS_DIR filesystem path.",
-      "recommendedDefault": "./jellyfin/logs"
+      "recommendedDefault": ""
     },
     "JELLYFIN_MOVIES_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_MOVIES_DIR filesystem path.",
-      "recommendedDefault": "./jellyfin/movies"
+      "recommendedDefault": ""
     },
     "JELLYFIN_MUSIC_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_MUSIC_DIR filesystem path.",
-      "recommendedDefault": "./jellyfin/music"
+      "recommendedDefault": ""
     },
     "JELLYFIN_PORT": {
       "type": "number",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_PORT numeric value.",
-      "recommendedDefault": "8096"
+      "recommendedDefault": ""
     },
     "JELLYFIN_TV_DIR": {
       "type": "path",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_TV_DIR filesystem path.",
-      "recommendedDefault": "./jellyfin/tv"
+      "recommendedDefault": ""
     },
     "JELLYFIN_UDP_PORT": {
       "type": "number",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "JELLYFIN_UDP_PORT numeric value.",
-      "recommendedDefault": "7359"
+      "recommendedDefault": ""
     },
     "PGID": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "100"
+      "recommendedDefault": ""
     },
     "PUID": {
       "type": "text",
-      "required": false,
+      "required": true,
       "sensitive": false,
       "description": "Environment variable used by this compose template.",
-      "recommendedDefault": "1000"
+      "recommendedDefault": ""
     },
     "TZ": {
       "type": "timezone",

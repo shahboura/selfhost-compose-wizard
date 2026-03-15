@@ -43,13 +43,13 @@ services:
     restart: on-failure:5
 
   immich-server:
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION}
     container_name: immich-server
     user: ${PUID}:${PGID}
     security_opt:
       - no-new-privileges:true
     ports:
-      - ${IMMICH_SERVER_PORT:-2283}:2283
+      - ${IMMICH_SERVER_PORT}:2283
     environment:
       # Common runtime identity
       TZ: ${TZ}
@@ -68,7 +68,7 @@ services:
     restart: on-failure:10
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION}
     container_name: immich-learning
     user: ${PUID}:${PGID}
     security_opt:

@@ -2,7 +2,7 @@ services:
   jellyfin:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
-    user: ${PUID:-1000}:${PGID:-100}
+    user: ${PUID}:${PGID}
     network_mode: host
     security_opt:
       - no-new-privileges:true
@@ -10,16 +10,16 @@ services:
       # Common runtime identity
       TZ: ${TZ}
     ports:
-      - ${JELLYFIN_PORT:-8096}:8096
-      - ${JELLYFIN_UDP_PORT:-7359}:7359/udp
+      - ${JELLYFIN_PORT}:8096
+      - ${JELLYFIN_UDP_PORT}:7359/udp
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${JELLYFIN_CONFIG_DIR:-./jellyfin/config}:/config:rw
-      - ${JELLYFIN_CACHE_DIR:-./jellyfin/cache}:/cache:rw
-      - ${JELLYFIN_LOGS_DIR:-./jellyfin/logs}:/logs:rw
-      - ${JELLYFIN_MOVIES_DIR:-./jellyfin/movies}:/movies:rw
-      - ${JELLYFIN_MUSIC_DIR:-./jellyfin/music}:/music:rw
-      - ${JELLYFIN_TV_DIR:-./jellyfin/tv}:/shows:rw
+      - ${JELLYFIN_CONFIG_DIR}:/config:rw
+      - ${JELLYFIN_CACHE_DIR}:/cache:rw
+      - ${JELLYFIN_LOGS_DIR}:/logs:rw
+      - ${JELLYFIN_MOVIES_DIR}:/movies:rw
+      - ${JELLYFIN_MUSIC_DIR}:/music:rw
+      - ${JELLYFIN_TV_DIR}:/shows:rw
     devices:
       # Optional - only needed if you want to use hardware acceleration for video encoding/decoding
       - /dev/dri/renderD128:/dev/dri/renderD128
