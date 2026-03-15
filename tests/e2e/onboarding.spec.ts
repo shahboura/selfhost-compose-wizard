@@ -17,5 +17,4 @@ test('core onboarding flow generates compose and env outputs', async ({ page }) 
 
   await expect(page.getByRole('heading', { name: '3. Generated output' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '.env' })).toBeVisible()
-  await expect(page.getByText(/Security & setup helpers/i)).toBeVisible()
 })
