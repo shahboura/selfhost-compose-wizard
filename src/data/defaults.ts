@@ -13,7 +13,7 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   BENTOPDF_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
   BENTOPDF_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './oauth2-proxy/authenticated_emails',
 
-  DOZZLE_PORT: '8892',
+  DOZZLE_PORT: '8080',
   DOZZLE_DATA_DIR: './dozzle',
   DOZZLE_OAUTH2_PROXY_CONFIG_FILE: './oauth2-proxy.cfg',
   DOZZLE_OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE: './authenticated_emails',
@@ -43,7 +43,7 @@ export const RECOMMENDED_DEFAULTS: Record<string, string> = {
   IMMICH_MODEL_CONFIG_DIR: './model-config',
   IMMICH_MATPLOTLIB_DIR: './matplotlib',
 
-  IT_TOOLS_PORT: '5545',
+  IT_TOOLS_PORT: '8080',
 
   JELLYFIN_PORT: '8096',
   JELLYFIN_UDP_PORT: '7359',
