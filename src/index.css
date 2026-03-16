@@ -674,6 +674,9 @@ input[type='password']:disabled {
 }
 
 .footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   text-underline-offset: 2px;
 }
 
