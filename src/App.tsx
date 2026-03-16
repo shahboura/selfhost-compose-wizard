@@ -521,6 +521,21 @@ function App(): JSX.Element {
           </div>
         </section>
       ) : null}
+
+      <footer className="site-footer card" aria-label="Site attribution and discoverability links">
+        <p className="muted">Built by Shehab ElHadidy.</p>
+        <div className="footer-links">
+          <a href="https://github.com/shahboura" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a href="https://github.com/shahboura/selfhost-compose-wizard" target="_blank" rel="noreferrer">
+            Repository
+          </a>
+          <a href="https://www.linkedin.com/in/shehabelhadidy/" target="_blank" rel="noreferrer">
+            LinkedIn
+          </a>
+        </div>
+      </footer>
     </main>
   )
 }

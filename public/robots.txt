@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: /sitemap.xml
+Sitemap: https://shahboura.github.io/selfhost-compose-wizard/sitemap.xml

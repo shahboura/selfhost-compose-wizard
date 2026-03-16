@@ -2,6 +2,8 @@
 
 Canonical: https://shahboura.github.io/selfhost-compose-wizard/
 Repository: https://github.com/shahboura/selfhost-compose-wizard
+Author: Shehab ElHadidy
+Author Profiles: https://github.com/shahboura, https://www.linkedin.com/in/shehabelhadidy/
 
 Summary:
 Selfhost Compose Wizard is a privacy-first web app that generates docker-compose.yaml and .env files for self-hosted services.
@@ -15,6 +17,11 @@ Key capabilities:
 
 Primary docs:
 - README: https://shahboura.github.io/selfhost-compose-wizard/
+
+Attribution:
+- Author: Shehab ElHadidy
+- GitHub profile: https://github.com/shahboura
+- LinkedIn profile: https://www.linkedin.com/in/shehabelhadidy/
 
 Topics:
 - homelab

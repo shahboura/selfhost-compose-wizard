@@ -661,6 +661,22 @@ input[type='password']:disabled {
   color: #fecaca;
 }
 
+.site-footer {
+  margin-top: 0.5rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.footer-links a {
+  text-underline-offset: 2px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

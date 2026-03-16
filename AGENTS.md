@@ -6,6 +6,7 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 - Active templates live under `src/templates/services/*`.
 - Add new services via `npm run scaffold:service -- ...` when possible.
 - Keep package choices mainstream and stable; verify with audit + CI.
+- For UI/context additions, proactively load `ux-responsive` and apply responsive + accessibility-first practices.
 
 ### Quality gates
 - `npm run lint`
@@ -16,6 +17,15 @@ This repository contains a privacy-first Docker Compose generator wizard built w
 ### CI
 - Workflow: `.github/workflows/ci.yml`
 - Includes security audit, lint, unit tests, build, e2e, and Lighthouse step.
+
+### 2026-03-17 01:24 - SEO/GEO attribution refresh + UX-responsive convention
+**Agent:** orchestrator
+**Summary:** Applied discoverability/attribution updates and codified proactive responsive-design guidance.
+- Updated `index.html` SEO metadata (author/creator/publisher, OG author, Twitter cards, `rel="me"` links).
+- Enriched JSON-LD with author/creator `sameAs` links (GitHub + LinkedIn) and updated visible author naming.
+- Updated `public/llms.txt` attribution fields for GEO consumers.
+- Added site footer attribution links in `src/App.tsx` and styling in `src/index.css`.
+- Added active convention to proactively load `ux-responsive` for future UI/context changes.
 
 ### 2026-03-14 18:20 - SEO/GEO + README agentic updates (consolidated)
 **Agent:** orchestrator
