@@ -525,7 +525,13 @@ function App(): JSX.Element {
 
       <footer className="site-footer card" aria-label="Site attribution and discoverability links">
         <p className="muted">Built by Shehab ElHadidy.</p>
-        <p className="muted">Powered by agentic development workflows.</p>
+        <p className="muted">
+          Powered by agentic development using{' '}
+          <a href="https://github.com/shahboura/agents-opencode" target="_blank" rel="noreferrer">
+            agents-opencode
+          </a>
+          .
+        </p>
         <div className="footer-links">
           <a
             href="https://github.com/shahboura/selfhost-compose-wizard"
