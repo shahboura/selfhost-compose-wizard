@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
 import { CodePanel } from './components/CodePanel'
 import { CopyableCodeBlock } from './components/CopyableCodeBlock'
 import { FieldEditor } from './components/FieldEditor'
-import { GitHubIcon } from './components/Icons'
+import { GitHubIcon, LinkedInIcon } from './components/Icons'
 import { ServiceDetails } from './components/ServiceDetails'
 import { ServiceCard } from './components/ServiceCard'
 import { TopNav } from './components/TopNav'
@@ -524,7 +524,29 @@ function App(): JSX.Element {
       ) : null}
 
       <footer className="site-footer card" aria-label="Site attribution and discoverability links">
-        <p className="muted">Built by Shehab ElHadidy.</p>
+        <p className="muted footer-attribution">
+          <span>Built by Shehab ElHadidy.</span>
+          <span className="footer-icons" aria-label="Author profiles and repository links">
+            <a
+              href="https://github.com/shahboura/selfhost-compose-wizard"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open repository on GitHub"
+              title="GitHub Repository"
+            >
+              <GitHubIcon title="GitHub" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/shehabelhadidy/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open LinkedIn profile"
+              title="LinkedIn"
+            >
+              <LinkedInIcon title="LinkedIn" />
+            </a>
+          </span>
+        </p>
         <p className="muted">
           Powered by agentic development using{' '}
           <a href="https://github.com/shahboura/agents-opencode" target="_blank" rel="noreferrer">
@@ -532,21 +554,6 @@ function App(): JSX.Element {
           </a>
           .
         </p>
-        <div className="footer-links">
-          <a
-            href="https://github.com/shahboura/selfhost-compose-wizard"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open repository on GitHub"
-            title="GitHub Repository"
-          >
-            <GitHubIcon title="GitHub" />
-            <span>Repository</span>
-          </a>
-          <a href="https://www.linkedin.com/in/shehabelhadidy/" target="_blank" rel="noreferrer">
-            LinkedIn
-          </a>
-        </div>
       </footer>
     </main>
   )

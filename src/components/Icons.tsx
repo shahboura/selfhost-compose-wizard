@@ -88,3 +88,15 @@ export function GitHubIcon({ title }: IconProps): JSX.Element {
     </svg>
   )
 }
+
+export function LinkedInIcon({ title }: IconProps): JSX.Element {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden={title ? undefined : true} role="img">
+      {title ? <title>{title}</title> : null}
+      <path
+        d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zM10 9h3.83v1.64h.06c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.66 4.8 6.12V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.84 0-2.12 1.43-2.12 2.9V21h-4z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
