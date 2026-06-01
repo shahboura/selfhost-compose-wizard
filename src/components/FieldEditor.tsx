@@ -14,10 +14,11 @@ interface FieldEditorProps {
   field: FieldDefinition
   state?: WizardFieldState
   idPrefix: string
+  highlighted?: boolean
   onChange: (patch: Partial<WizardFieldState>) => void
 }
 
-export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorProps): JSX.Element {
+export function FieldEditor({ field, state, idPrefix, highlighted, onChange }: FieldEditorProps): JSX.Element {
   const resolvedState = state ?? { value: '', useDefault: true }
   const [generatedNotice, setGeneratedNotice] = useState<string>('')
   const [showSensitiveValue, setShowSensitiveValue] = useState<boolean>(false)
@@ -61,7 +62,7 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
   const currentInputType = field.sensitive && !showSensitiveValue ? 'password' : 'text'
 
   return (
-    <article className="field-card">
+    <article className={`field-card${highlighted ? ' field-card-highlighted' : ''}`}>
       <div className="field-head">
         <div>
           <h3 id={`${inputId}-label`}>
@@ -72,8 +73,8 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
             {helperText}
           </p>
           {generationSpec ? <p className="hint">{generationSpec.note}</p> : null}
-          {validation ? <p className={`hint validation-${validation.level}`}>{validation.message}</p> : null}
-          {generatedNotice ? <p className="hint validation-ok">{generatedNotice}</p> : null}
+          {validation ? <p id={`${inputId}-validation`} className={`hint validation-${validation.level}`}>{validation.message}</p> : null}
+          {generatedNotice ? <p className="hint validation-ok" role="status" aria-live="polite">{generatedNotice}</p> : null}
         </div>
         {field.required ? <span className="required">Required</span> : <span className="optional">Optional</span>}
       </div>
@@ -102,6 +103,9 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
                 onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
                 placeholder={inputPlaceholder}
                 aria-describedby={hintId}
+                aria-required={field.required}
+                aria-invalid={validation?.level === 'error' ? true : undefined}
+                aria-errormessage={validation ? `${inputId}-validation` : undefined}
                 autoComplete="off"
                 list={`${inputId}-timezone-list`}
               />
@@ -120,6 +124,9 @@ export function FieldEditor({ field, state, idPrefix, onChange }: FieldEditorPro
                 onChange={(event) => onChange({ value: event.currentTarget.value, useDefault: false })}
                 placeholder={inputPlaceholder}
                 aria-describedby={hintId}
+                aria-required={field.required}
+                aria-invalid={validation?.level === 'error' ? true : undefined}
+                aria-errormessage={validation ? `${inputId}-validation` : undefined}
                 autoComplete="off"
               />
 

@@ -33,6 +33,8 @@ function App(): JSX.Element {
   const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all')
   const [importStatus, setImportStatus] = useState<string>('')
   const [wizardState, setWizardState] = useState<Record<string, WizardFieldState>>({})
+  const [confirmStartOver, setConfirmStartOver] = useState<boolean>(false)
+  const [highlightedFieldKeys, setHighlightedFieldKeys] = useState<string[]>([])
   const selectedServiceIdRef = useRef<string>('')
   const envImportRequestIdRef = useRef<number>(0)
 
@@ -139,6 +141,8 @@ function App(): JSX.Element {
     setActiveCategory('all')
     setImportStatus('')
     setWizardState({})
+    setConfirmStartOver(false)
+    setHighlightedFieldKeys([])
   }
 
   const categories = useMemo<ServiceCategory[]>(
@@ -257,6 +261,11 @@ function App(): JSX.Element {
 
   const jumpToMissingFields = (): void => {
     setStep(2)
+    if (output?.missingRequired) {
+      setHighlightedFieldKeys(output.missingRequired)
+      // Clear highlights after 3 seconds
+      setTimeout(() => setHighlightedFieldKeys([]), 3000)
+    }
   }
 
   const visibleFields = useMemo(() => {
@@ -285,12 +294,13 @@ function App(): JSX.Element {
       ) : null}
 
       {step === 1 ? (
+        <div role="region" aria-live="polite" aria-label="Step 1: Choose a service">
         <section className="card">
           <h2>1. Choose a service</h2>
           <p className="muted">Select a template card to jump directly into configuration.</p>
           <p className="privacy-inline">Privacy-first: all generation runs in your browser.</p>
 
-          {importStatus ? <p className={statusClassName}>{importStatus}</p> : null}
+          {importStatus ? <p className={statusClassName} role="status" aria-live="polite">{importStatus}</p> : null}
 
           <div className="service-filters-inline">
             <label htmlFor="service-search" className="sr-only">
@@ -310,6 +320,7 @@ function App(): JSX.Element {
               type="button"
               className="category-chip"
               data-active={activeCategory === 'all'}
+              aria-pressed={activeCategory === 'all'}
               onClick={() => handleCategoryChange('all')}
             >
               All
@@ -320,6 +331,7 @@ function App(): JSX.Element {
                 type="button"
                 className="category-chip"
                 data-active={activeCategory === entry}
+                aria-pressed={activeCategory === entry}
                 onClick={() => handleCategoryChange(entry)}
               >
                 {entry}
@@ -357,13 +369,15 @@ function App(): JSX.Element {
 
           {templateError ? <p className="error-text">Failed to load template: {templateError}</p> : null}
         </section>
+        </div>
       ) : null}
 
       {step === 2 ? (
+        <div role="region" aria-live="polite" aria-label="Step 2: Configure env values">
         <section className="card">
           <h2>2. Configure env values</h2>
           <p className="muted">Use defaults or override any field.</p>
-          {importStatus ? <p className={statusClassName}>{importStatus}</p> : null}
+          {importStatus ? <p className={statusClassName} role="status" aria-live="polite">{importStatus}</p> : null}
 
           <div className="field-search-row">
             <label htmlFor="field-search" className="sr-only">
@@ -412,6 +426,7 @@ function App(): JSX.Element {
                   field={field}
                   state={wizardState[field.key]}
                   idPrefix="env-field"
+                  highlighted={highlightedFieldKeys.includes(field.key)}
                   onChange={(patch) => updateField(field.key, patch)}
                 />
               ))
@@ -432,9 +447,11 @@ function App(): JSX.Element {
             </button>
           </div>
         </section>
+        </div>
       ) : null}
 
       {step === 3 && output && selectedService ? (
+        <div role="region" aria-live="polite" aria-label="Step 3: Generated output">
         <section className="card">
           <h2>3. Generated output</h2>
           <p className="muted">
@@ -516,11 +533,24 @@ function App(): JSX.Element {
             <button type="button" className="button" onClick={() => void exportBundle()}>
               Export bundle
             </button>
-            <button type="button" className="button" onClick={() => setStep(1)}>
-              Start over
-            </button>
+            {confirmStartOver ? (
+              <>
+                <span className="muted" role="alert">This will clear all your configuration. Are you sure?</span>
+                <button type="button" className="button" onClick={goHome}>
+                  Yes, start over
+                </button>
+                <button type="button" className="button" onClick={() => setConfirmStartOver(false)}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button type="button" className="button" onClick={() => setConfirmStartOver(true)}>
+                Start over
+              </button>
+            )}
           </div>
         </section>
+        </div>
       ) : null}
 
       <footer className="site-footer card" aria-label="Site attribution and discoverability links">

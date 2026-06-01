@@ -2,7 +2,7 @@
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light;
+  color-scheme: dark;
   color: #e2e8f0;
   background: #0b1220;
   font-synthesis: none;
@@ -41,7 +41,7 @@ input:focus-visible {
 .app-shell {
   width: min(1200px, 95vw);
   margin: 0 auto;
-  padding: 2rem 0 4rem;
+  padding: 2rem max(1rem, 2vw) 4rem;
   display: grid;
   gap: 1rem;
 }
@@ -223,7 +223,12 @@ h1 {
   display: grid;
   gap: 0.5rem;
   cursor: pointer;
-  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .service-card {
+    transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+  }
 }
 
 .service-card:hover {
@@ -363,6 +368,25 @@ h1 {
   gap: 0.6rem;
 }
 
+.field-card-highlighted {
+  animation: field-highlight-pulse 0.6s ease-in-out 3;
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.5);
+}
+
+@keyframes field-highlight-pulse {
+  0%, 100% { background: rgba(15, 23, 42, 0.85); }
+  50% { background: rgba(251, 191, 36, 0.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-card-highlighted {
+    animation: none;
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.5);
+  }
+}
+
 .field-head {
   display: flex;
   justify-content: space-between;
@@ -459,10 +483,12 @@ h1 {
   background: transparent;
   color: #cbd5e1;
   cursor: pointer;
-  padding: 0.1rem;
+  padding: 0.25rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
 }
 
 .inline-icon-button:hover {
@@ -501,6 +527,7 @@ input[type='password']:disabled {
   position: sticky;
   bottom: 0;
   padding-top: 0.55rem;
+  padding-bottom: env(safe-area-inset-bottom, 0.55rem);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0), rgba(15, 23, 42, 0.95) 40%);
 }
 
@@ -593,8 +620,13 @@ input[type='password']:disabled {
   line-height: 1;
   opacity: 0;
   transform: translateY(-2px);
-  transition: opacity 120ms ease, transform 120ms ease;
   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .copy-indicator {
+    transition: opacity 120ms ease, transform 120ms ease;
+  }
 }
 
 .copy-indicator[data-visible='true'] {
@@ -729,5 +761,38 @@ input[type='password']:disabled {
 
   .service-summary-head {
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .code-panel pre {
+    max-height: max(40vh, 240px);
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .actions .button {
+    flex: 1;
+    text-align: center;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .category-chip-row {
+    gap: 0.35rem;
+  }
+
+  .category-chip {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .app-shell {
+    padding: 1.25rem max(0.75rem, 3vw) 3rem;
   }
 }

@@ -14,7 +14,6 @@ export function ServiceCard({ service, selected, onSelect }: ServiceCardProps): 
       className="service-card"
       data-selected={selected}
       onClick={() => onSelect(service.id)}
-      aria-pressed={selected}
     >
       <h3>{service.name}</h3>
       <p>{service.description}</p>

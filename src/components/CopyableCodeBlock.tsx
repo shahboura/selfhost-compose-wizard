@@ -32,6 +32,9 @@ export function CopyableCodeBlock({ content }: CopyableCodeBlockProps): JSX.Elem
       <button type="button" className="copy-indicator" data-visible="true" onClick={() => void copy()}>
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>
+      <span className="sr-only" aria-live="polite" role="status">
+        {copied ? 'Copied to clipboard' : ''}
+      </span>
       <pre>{content}</pre>
     </div>
   )

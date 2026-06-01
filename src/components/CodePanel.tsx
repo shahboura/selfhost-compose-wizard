@@ -57,6 +57,9 @@ export function CodePanel({ title, language, content }: CodePanelProps): JSX.Ele
         >
           {copied ? <CheckIcon /> : <CopyIcon />}
         </button>
+        <span className="sr-only" aria-live="polite" role="status">
+          {copied ? 'Copied to clipboard' : ''}
+        </span>
         <pre>{content}</pre>
       </div>
     </section>
